@@ -7,46 +7,55 @@ import Networking
 @Observable
 public final class StoryListScreenModel {
     public init() {}
-    
+
+    @ObservationIgnored
+    @Dependency(\.apiService) private var apiService
+
+    var state: State = .loading
+    var presentedStory: Story?
+
     enum State {
-        case data([StoryItemViewModel])
+        case data([UserItemViewModel])
         case empty
         case error(String)
         case loading
     }
-    
-    @ObservationIgnored
-    @Dependency(\.apiService) private var apiService
-    
-    var state: State = .loading
-    var presentedStory: Story?
-    
+
     func onAppear() async {
         do {
-            let users = try await apiService.request(.getUsers, of: [User].self, decoder: .init())
-            dump(users)
-            state = .data([])
+            let users = try await apiService.request(
+                .getUsers(page: 0),
+                of: [User].self,
+                decoder: .default
+            )
+            
+            let viewModels = mapToViewModel(users)
+            
+            state = .data(viewModels)
         } catch {
             state = .error("Stories are not loading right now, try again later...")
         }
     }
     
-    private func mapToViewModel(_ models: [Story]) -> [StoryItemViewModel] {
-        models.map { model in
-            StoryItemViewModel(
-                id: model.id,
-                imageURL: model.imageURL,
-                body: model.username,
-                seen: false,
+    private func mapToViewModel(_ users: [User]) -> [UserItemViewModel] {
+        users.compactMap { user in
+            guard let imageURL = URL(string: user.profilePictureURL) else {
+                 return nil
+            }
+            return UserItemViewModel(
+                id: user.id,
+                imageURL: imageURL,
+                body: user.name,
+                seen: false, // TODO
                 onTap: { [weak self] in
-                    self?.presentedStory = model
+//                    self?.presentedStory = user
                 }
             )
         }
     }
 }
 
-struct StoryItemViewModel: Identifiable {
+struct UserItemViewModel: Identifiable {
     let id: Int
     let imageURL: URL
     let body: String

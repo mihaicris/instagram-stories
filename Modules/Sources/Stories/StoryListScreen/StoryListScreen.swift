@@ -31,7 +31,7 @@ public struct StoryListScreen: View {
 }
 
 struct StoryItemsView: View {
-    let items: [StoryItemViewModel]
+    let items: [UserItemViewModel]
     
     var body: some View {
         VStack {
@@ -40,11 +40,11 @@ struct StoryItemsView: View {
                 
                 Spacer()
                 
-//                HeartButtonView(action: {}, unread: true)
-//                    .tint(.black)
-//                
-//                MessagesButtonView(action: {})
-//                    .tint(.black)
+                HeartButtonView(action: {}, unread: true)
+                    .tint(.black)
+                
+                MessagesButtonView(action: {})
+                    .tint(.black)
             }
             .padding(.horizontal)
             
@@ -72,7 +72,7 @@ struct StoryItemsView: View {
     }
 
     struct ItemListView: View {
-        let items: [StoryItemViewModel]
+        let items: [UserItemViewModel]
         
         private let itemSize: CGFloat = 90
 

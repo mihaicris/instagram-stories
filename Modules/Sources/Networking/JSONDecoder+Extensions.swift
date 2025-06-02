@@ -1,6 +1,8 @@
 import Foundation
 
 extension JSONDecoder {
+    public static let `default` = JSONDecoder()
+    
     public static let snakeCase: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase

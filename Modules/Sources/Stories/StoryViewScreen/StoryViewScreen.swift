@@ -28,8 +28,8 @@ struct StoryViewScreen: View {
                 MediaView(url: url)
                 HStack {
                     MesssageInputButtonView(action: {})
-//                    HeartButtonView(action: {}, unread: false)
-//                    MessagesButtonView(action: {})
+                    HeartButtonView(action: {}, unread: false)
+                    MessagesButtonView(action: {})
                 }
                 .tint(.white)
                 .padding(.horizontal, 8)
