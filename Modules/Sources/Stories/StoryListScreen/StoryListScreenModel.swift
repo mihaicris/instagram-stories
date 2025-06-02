@@ -34,7 +34,6 @@ public final class StoryListScreenModel {
     }
     
     func loadContent() async {
-        print("loading page = \(currentPage)")
         do {
             let users = try await apiService.request(.getUsers(page: currentPage), of: [User].self, decoder: .default)
             viewModels += mapToViewModel(users)

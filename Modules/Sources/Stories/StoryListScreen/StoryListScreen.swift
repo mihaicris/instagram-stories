@@ -22,6 +22,10 @@ public struct StoryListScreen: View {
 
         case .error(let message):
             Text(message)
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding()
 
         case .loading:
             ProgressView()
@@ -135,6 +139,8 @@ struct StoryItemsView: View {
     }
 }
 
+import  Dependencies
 #Preview {
+    let _ = prepareDependencies { $0.apiService = FakeAPIService() }
     StoryListScreen(model: StoryListScreenModel())
 }
