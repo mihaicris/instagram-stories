@@ -12,7 +12,7 @@
 
 /* Begin PBXFileReference section */
 		83630C352DE8BB5100CB80C9 /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		838A6DA22DEA403F00A7ADDB /* Modules */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Modules; path = /Users/mihaicris/cloned/lucru/XcodeTestTemplate/Modules; sourceTree = "<absolute>"; };
+		8398F9F92DED9C340044E249 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Modules; sourceTree = "<group>"; };
 		83C57F6E2DED8EB000483551 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -39,8 +39,8 @@
 		83630C2C2DE8BB5100CB80C9 = {
 			isa = PBXGroup;
 			children = (
+				8398F9F92DED9C340044E249 /* Modules */,
 				83C57F6E2DED8EB000483551 /* Makefile */,
-				838A6DA22DEA403F00A7ADDB /* Modules */,
 				83630C372DE8BB5100CB80C9 /* Main */,
 				83D77AB52DE9EC7800629B79 /* Frameworks */,
 				83630C362DE8BB5100CB80C9 /* Products */,
@@ -84,7 +84,7 @@
 			packageProductDependencies = (
 				8398F9EF2DED9A020044E249 /* Stories */,
 			);
-			productName = Template;
+			productName = Instagram;
 			productReference = 83630C352DE8BB5100CB80C9 /* Instagram.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -289,7 +289,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ro.mihaicris.Template;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.mihaicris.Instagram;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -316,7 +316,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ro.mihaicris.Template;
+				PRODUCT_BUNDLE_IDENTIFIER = ro.mihaicris.Instagram;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

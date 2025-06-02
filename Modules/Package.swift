@@ -7,7 +7,7 @@ let package = Package(
     name: "Modules",
     platforms: [.iOS(.v18)],
     products: [
-        .library(name: "Feature", targets: ["Feature"]),
+        .library(name: "Stories", targets: ["Stories"]),
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
@@ -18,7 +18,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Feature",
+            name: "Stories",
             dependencies: commonDependencies() + [
                 .product(name: "Kingfisher", package: "Kingfisher"),
                 "Networking",
