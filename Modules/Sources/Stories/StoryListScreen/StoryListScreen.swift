@@ -79,7 +79,7 @@ struct StoryItemsView: View {
         var body: some View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    ForEach(items) { item in
+                    ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                         Button(action: item.onTap) {
                             VStack {
                                 KFImage(item.imageURL)
@@ -104,6 +104,13 @@ struct StoryItemsView: View {
                         .buttonStyle(PlainButtonStyle())
                         .tint(.black)
                         .frame(maxWidth: itemSize * 1.3)
+                        .onAppear {
+                            Task {
+                                if index == items.count - 1{
+                                    await item.onAppear()
+                                }
+                            }
+                        }
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)

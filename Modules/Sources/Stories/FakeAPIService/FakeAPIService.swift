@@ -6,12 +6,19 @@ import Mockable
 let fakeAPIService: APIService = {
     let mock = MockAPIService()
     
-    let getUserRequest = Parameter<URLRequest>.matching { request in
-        request.url?.absoluteString.contains("/users") ?? false
-    }
-    
     given(mock)
-        .request(getUserRequest, of: .any, decoder: .any).willReturn(User.mockData)
+        .request(.any, of: .any, decoder: .any).willProduce { request, _, _ in
+            guard
+                let url = request.url,
+                let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+                components.path == "/users",
+                let value = components.queryItems?.first(where: { $0.name == "page" })?.value as? String,
+                let page = Int(value)
+            else {
+                return Array<User>()
+            }
+            return User.mockData(page: page)
+        }
 
     return mock
 }()

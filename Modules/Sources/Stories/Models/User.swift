@@ -1,6 +1,6 @@
 import Foundation
 
-public struct User: Codable, Identifiable, Sendable {
+public struct User: Codable, Identifiable, Sendable, Equatable {
     public let id: Int
     public let name: String
     public let profilePictureURL: String
@@ -27,12 +27,13 @@ struct APIUserResponse: Codable {
 }
 
 extension User {
-    public static var mockData: [User] {
+    public static func mockData(page: Int) -> [User] {
         do {
             let decoder = JSONDecoder()
             let data = Data(json.utf8)
             let response = try decoder.decode(APIUserResponse.self, from: data)
-            return response.pages.flatMap { $0.users }
+            let wrappedIndex = page % response.pages.count // circular access over the 3 pages --> Infinite loop
+            return response.pages[wrappedIndex].users
         } catch {
             return []
         }
