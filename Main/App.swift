@@ -4,7 +4,7 @@ import Stories
 @main
 struct InstagramApp: App {
     init() {
-        prepareServices()
+        setupDependencies()
     }
     
     var body: some Scene {

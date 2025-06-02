@@ -3,7 +3,7 @@ import Foundation
 import Networking
 import Mockable
 
-let fakeAPIService: APIService = {
+let mockAPIService: APIService = {
     let mock = MockAPIService()
     
     given(mock)
@@ -23,9 +23,9 @@ let fakeAPIService: APIService = {
     return mock
 }()
 
-public func prepareServices() {
+public func setupDependencies() {
     prepareDependencies {
-        $0.apiService = fakeAPIService
+        $0.apiService = mockAPIService
     }
 }
 
