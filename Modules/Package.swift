@@ -11,9 +11,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
-        .package(url: "https://github.com/Kolos65/Mockable.git", .upToNextMajor(from: "0.3.0")),
+//        .package(url: "https://github.com/Kolos65/Mockable.git", .upToNextMajor(from: "0.3.0")),
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "8.3.0")),
-        .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", .upToNextMajor(from: "1.3.0")),
         .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.9.0")),
     ],
     targets: [
@@ -41,16 +40,15 @@ let package = Package(
 
 func commonSwiftSettings(languageMode: SwiftLanguageMode) -> [SwiftSetting] {
     [
-        .define("MOCKING", .when(configuration: .debug)),
+ //       .define("MOCKING", .when(configuration: .debug)),
         .swiftLanguageMode(languageMode),
     ]
 }
 
 func commonDependencies() -> [Target.Dependency] {
     [
-        .product(name: "CustomDump", package: "swift-custom-dump"),
         .product(name: "Dependencies", package: "swift-dependencies"),
-        .product(name: "Mockable", package: "Mockable"),
+  //      .product(name: "Mockable", package: "Mockable"),
     ]
 }
 

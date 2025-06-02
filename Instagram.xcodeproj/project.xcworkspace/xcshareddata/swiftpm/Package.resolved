@@ -1,5 +1,5 @@
 {
-  "originHash" : "a09015f48801aeadf48b47377a382df800eea8163387b243b2dedf3d2b45259a",
+  "originHash" : "02ae6ae840e59430337688d57e77573c2c9670adcbaa75b4a46b607270640a63",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -29,15 +29,6 @@
       }
     },
     {
-      "identity" : "mockable",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Kolos65/Mockable.git",
-      "state" : {
-        "revision" : "118a0b8934e585b80952586db30bcb72aef45a74",
-        "version" : "0.3.2"
-      }
-    },
-    {
       "identity" : "swift-clocks",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-clocks",
@@ -53,15 +44,6 @@
       "state" : {
         "revision" : "82a4ae7170d98d8538ec77238b7eb8e7199ef2e8",
         "version" : "1.3.1"
-      }
-    },
-    {
-      "identity" : "swift-custom-dump",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-custom-dump",
-      "state" : {
-        "revision" : "82645ec760917961cfa08c9c0c7104a57a0fa4b1",
-        "version" : "1.3.3"
       }
     },
     {

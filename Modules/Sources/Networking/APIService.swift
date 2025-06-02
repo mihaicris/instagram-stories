@@ -3,7 +3,6 @@ import Dependencies
 import Foundation
 import Mockable
 
-@Mockable
 public protocol APIService: Sendable {
     func request<T: Sendable & Decodable>(
         _ request: URLRequest,
