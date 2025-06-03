@@ -12,10 +12,13 @@ public struct StoryListScreen: View {
     public var body: some View {
         switch model.state {
         case .data(let items):
-            StoryItemsView(items: items)
-                .fullScreenCover(item: $model.presentedStory) {
-                    StoryViewScreen(model: .init(story: $0))
-                }
+            StoryItemsView(
+                items: items,
+                isLoadingMore: model.isLoadingMore
+            )
+            .fullScreenCover(item: $model.presentedStory) {
+                StoryViewScreen(model: .init(story: $0))
+            }
 
         case .empty:
             Text("Empty Stance / in progress")
@@ -36,6 +39,7 @@ public struct StoryListScreen: View {
 
 struct StoryItemsView: View {
     let items: [UserItemViewModel]
+    let isLoadingMore: Bool
     
     var body: some View {
         VStack {
@@ -52,7 +56,10 @@ struct StoryItemsView: View {
             }
             .padding(.horizontal)
             
-            ItemListView(items: items)
+            ItemListView(
+                items: items,
+                isLoadingMore: isLoadingMore
+            )
             
             Spacer()
         }
@@ -77,6 +84,8 @@ struct StoryItemsView: View {
 
     struct ItemListView: View {
         let items: [UserItemViewModel]
+        let isLoadingMore: Bool
+
         
         private let itemSize: CGFloat = 90
 
@@ -110,11 +119,15 @@ struct StoryItemsView: View {
                         .frame(maxWidth: itemSize * 1.3)
                         .onAppear {
                             Task {
-                                if index == items.count - 1{
+                                if index == items.count - 3 {
                                     await item.onAppear()
                                 }
                             }
                         }
+                    }
+                    if isLoadingMore {
+                        ProgressView()
+                            .padding(.horizontal)
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)

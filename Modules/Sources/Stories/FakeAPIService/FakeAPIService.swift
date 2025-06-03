@@ -8,6 +8,7 @@ struct FakeAPIService: APIService {
         of: T.Type,
         decoder: JSONDecoder
     ) async throws -> T {
+        try await Task.sleep(nanoseconds: 2_000_000_000) // Simulate network delay
         guard
             let url = request.url,
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false),

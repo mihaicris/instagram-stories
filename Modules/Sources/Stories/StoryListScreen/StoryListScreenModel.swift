@@ -12,6 +12,7 @@ public final class StoryListScreenModel {
     @Dependency(\.apiService) private var apiService
 
     var state: State = .loading
+    var isLoadingMore: Bool = false
     var presentedStory: Story?
     
     @ObservationIgnored
@@ -34,6 +35,8 @@ public final class StoryListScreenModel {
     }
     
     func loadContent() async {
+        isLoadingMore = !viewModels.isEmpty
+        defer { isLoadingMore = false }
         do {
             let users = try await apiService.request(.getUsers(page: currentPage), of: [User].self, decoder: .default)
             viewModels += mapToViewModel(users)
