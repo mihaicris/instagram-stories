@@ -4,6 +4,7 @@ DESTINATION := "platform=iOS Simulator,arch=arm64,name=iPhone 16e,OS=18.5"
 PROJECT := Instagram.xcodeproj
 SCHEME := Instagram
 PARAMETERS := -project $(PROJECT) -scheme $(SCHEME) -destination $(DESTINATION)
+DERIVED_DATA := $(shell echo $$HOME)/Library/Developer/Xcode/DerivedData
 
 default: debug
 
@@ -24,11 +25,6 @@ release: environment
 debug: environment
 	@xcodebuild $(PARAMETERS) -configuration Debug build | xcbeautify
 
-.PHONY: spm-update
-spm-update:
-	rm -f $(PROJECT)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-	@xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
-
 .PHONY: test
 test: environment 
 	@set -o pipefail && xcodebuild $(PARAMETERS) test | xcbeautify --renderer github-actions
@@ -37,6 +33,11 @@ test: environment
 clean:
 	@xcodebuild $(PARAMETERS) clean | xcbeautify
 	@rm -rf DerivedData
+
+.PHONY: spm-update
+spm-update:
+	rm -f $(PROJECT)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+	@xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
 
 .PHONY: fresh
 fresh:
@@ -57,3 +58,8 @@ pretty: formatter-swift linter-swift
 .PHONY: unused
 unused:
 	@periphery scan --project $(PROJECT) --schemes $(SCHEME) --retain-swift-ui-previews --retain-objc-accessible
+
+.PHONY: derived-data
+derived-data:
+	@open $(DERIVED_DATA)
+
