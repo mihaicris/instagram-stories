@@ -9,22 +9,25 @@ default: debug
 
 .PHONY: environment
 environment:
+	@echo ""
 	@echo "→ $(XCODE_VERSION)"
 	@echo "→ $(SWIFT_VERSION)"
 	@echo "→ macOS $(shell sw_vers -productVersion)"
+	@echo "→ Swiftlint $(shell swiftlint version)"
+	@echo ""
 
 .PHONY: release
 release: environment
-	xcodebuild $(PARAMETERS) -configuration Release build | xcbeautify
+	@xcodebuild $(PARAMETERS) -configuration Release build | xcbeautify
 
 .PHONY: debug
 debug: environment
-	xcodebuild $(PARAMETERS) -configuration Debug build | xcbeautify
+	@xcodebuild $(PARAMETERS) -configuration Debug build | xcbeautify
 
 .PHONY: spm-update
 spm-update:
 	rm -f $(PROJECT)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-	xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
+	@xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
 
 .PHONY: test
 test: environment 
@@ -32,7 +35,7 @@ test: environment
 
 .PHONY: clean
 clean:
-	xcodebuild clean $(PARAMETERS) -configuration Debug  | xcbeautify
+	@xcodebuild clean $(PARAMETERS) -configuration Debug  | xcbeautify
 	@rm -rf DerivedData
 
 .PHONY: fresh
@@ -42,15 +45,15 @@ fresh:
 
 .PHONY: linter-swift
 linter-swift:
-	swiftlint --config .swiftlint.yml --fix
+	@swiftlint --config .swiftlint.yml --fix
 
 .PHONY: formatter-swift
 formatter-swift:
-	swift format --in-place --parallel --recursive Main Modules
+	@swift format --in-place --parallel --recursive Main Modules
 
 .PHONY: pretty
 pretty: formatter-swift linter-swift 
 
 .PHONY: unused
 unused:
-	periphery scan --project $(PROJECT) --schemes Instagram --retain-swift-ui-previews --retain-objc-accessible
+	@periphery scan --project $(PROJECT) --schemes $(SCHEME) --retain-swift-ui-previews --retain-objc-accessible
