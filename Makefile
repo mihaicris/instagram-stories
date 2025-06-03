@@ -31,11 +31,11 @@ spm-update:
 
 .PHONY: test
 test: environment 
-	@set -o pipefail && xcodebuild test $(PARAMETERS) | xcbeautify --renderer github-actions
+	@set -o pipefail && xcodebuild $(PARAMETERS) test | xcbeautify --renderer github-actions
 
 .PHONY: clean
 clean:
-	@xcodebuild clean $(PARAMETERS) -configuration Debug  | xcbeautify
+	@xcodebuild $(PARAMETERS) clean | xcbeautify
 	@rm -rf DerivedData
 
 .PHONY: fresh
