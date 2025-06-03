@@ -38,7 +38,7 @@ disabled_rules:
 # - return_arrow_whitespace
 # - statement_position
 # - syntactic_sugar
- - trailing_comma
+# - trailing_comma
 # - trailing_newline
 # - trailing_semicolon
 # - trailing_whitespace
