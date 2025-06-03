@@ -94,16 +94,3 @@ struct StoryViewScreen: View {
     }
 
 }
-
-#Preview {
-    StoryViewScreen(
-        model: .init(
-            story: .init(
-                id: 1,
-                imageURL: .applicationDirectory,
-                username: "mihai",
-                seen: false
-            )
-        )
-    )
-}

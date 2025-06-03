@@ -12,13 +12,11 @@ public struct StoryListScreen: View {
     public var body: some View {
         switch model.state {
         case .data(let items):
-            StoryItemsView(
-                items: items,
-                isLoadingMore: model.isLoadingMore
-            )
-            .fullScreenCover(item: $model.presentedStory) {
-                StoryViewScreen(model: .init(story: $0))
-            }
+            StoryItemsView(items: items)
+                .environment(\.isLoadingMore, model.isLoadingMore)
+                .fullScreenCover(item: $model.presentedStory) {
+                    StoryViewScreen(model: .init(story: $0))
+                }
 
         case .empty:
             Text("Empty Stance / in progress")
@@ -37,9 +35,19 @@ public struct StoryListScreen: View {
     }
 }
 
+extension EnvironmentValues {
+    private struct IsLoadingMoreKey: EnvironmentKey {
+        static let defaultValue: Bool = false
+    }
+    
+    fileprivate var isLoadingMore: Bool {
+        get { self[IsLoadingMoreKey.self] }
+        set { self[IsLoadingMoreKey.self] = newValue }
+    }
+}
+
 struct StoryItemsView: View {
     let items: [UserItemViewModel]
-    let isLoadingMore: Bool
     
     var body: some View {
         VStack {
@@ -56,10 +64,7 @@ struct StoryItemsView: View {
             }
             .padding(.horizontal)
             
-            ItemListView(
-                items: items,
-                isLoadingMore: isLoadingMore
-            )
+            ItemListView(items: items)
             
             Spacer()
         }
@@ -83,9 +88,8 @@ struct StoryItemsView: View {
     }
 
     struct ItemListView: View {
+        @Environment(\.isLoadingMore) private var isLoadingMore
         let items: [UserItemViewModel]
-        let isLoadingMore: Bool
-
         
         private let itemSize: CGFloat = 90
 
@@ -93,7 +97,11 @@ struct StoryItemsView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     ForEach(Array(items.enumerated()), id: \.offset) { index, item in
-                        Button(action: item.onTap) {
+                        Button(action: {
+                            Task {
+                        await item.onTap()
+                            }
+                        }) {
                             VStack {
                                 KFImage(item.imageURL)
                                     .resizable()

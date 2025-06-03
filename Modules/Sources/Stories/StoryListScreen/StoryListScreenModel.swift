@@ -38,7 +38,11 @@ public final class StoryListScreenModel {
         isLoadingMore = !viewModels.isEmpty
         defer { isLoadingMore = false }
         do {
-            let users = try await apiService.request(.getUsers(page: currentPage), of: [User].self, decoder: .default)
+            let users: [User] = try await apiService.request(
+                .getUsers(page: currentPage),
+                of: [User].self,
+                decoder: .default
+            )
             viewModels += mapToViewModel(users)
             state = .data(viewModels)
         } catch {
@@ -60,7 +64,10 @@ public final class StoryListScreenModel {
                 body: user.name,
                 seen: false, // TODO
                 onTap: { [weak self] in
-//                    self?.presentedStory = user
+                    guard let self else {
+                        return
+                    }
+                    await onUserTap(userID: user.id)
                 },
                 onAppear: { [weak self] in
                     guard let self else { return }
@@ -70,6 +77,18 @@ public final class StoryListScreenModel {
             )
         }
     }
+    
+    private func onUserTap(userID: Int) async {
+        do {
+            let _: Story = try await apiService.request(
+                .getStory(userID: userID),
+                of: Story.self,
+                decoder: .default
+            )
+        } catch {
+            // TODO: Mihai - Implement
+        }
+    }
 }
 
 struct UserItemViewModel: Identifiable, Equatable {
@@ -77,7 +96,7 @@ struct UserItemViewModel: Identifiable, Equatable {
     let imageURL: URL
     let body: String
     let seen: Bool
-    let onTap: () -> Void
+    let onTap: () async -> Void
     let onAppear: () async -> Void
     
     static func == (lhs: UserItemViewModel, rhs: UserItemViewModel) -> Bool {

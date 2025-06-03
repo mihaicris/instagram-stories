@@ -10,4 +10,13 @@ extension URLRequest {
         )
         return request
     }
+    
+    static func getStory(userID: Int) -> URLRequest {
+        let url = URL(string: "https://dummy.com/getStory")!
+        let request: URLRequest = URLRequest.makeRequest(
+            url: url,
+            method: .get(queryParameters: ["userID": userID])
+        )
+        return request
+    }
 }

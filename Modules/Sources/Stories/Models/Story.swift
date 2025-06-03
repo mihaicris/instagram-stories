@@ -2,14 +2,19 @@ import Foundation
 
 struct Story: Codable, Identifiable {
     let id: Int
-    let imageURL: URL
+    let userID: Int
+    let mediaList: [Media]
     let username: String
     let seen: Bool
-}
-
-struct StoryDetails: Codable {
-    let id: Int
-    let userId: String
-    let username: String
-    let imageURL: URL
+    
+    struct Media: Codable, Identifiable {
+        let id: Int
+        let type: String
+        let url: URL
+        
+        enum `Type`: String, Codable {
+            case image
+            case video
+        }
+    }
 }
