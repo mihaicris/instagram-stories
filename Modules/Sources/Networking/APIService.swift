@@ -1,7 +1,6 @@
 import Alamofire
 import Dependencies
 import Foundation
-import Mockable
 
 public protocol APIService: Sendable {
     func request<T: Sendable & Decodable>(
@@ -11,11 +10,12 @@ public protocol APIService: Sendable {
     ) async throws -> T
 }
 
-public enum APIServiceKey: DependencyKey {
-    static public let liveValue: APIService = APIServiceLive()
-}
 
 extension DependencyValues {
+    private enum APIServiceKey: DependencyKey {
+        static public let liveValue: APIService = APIServiceLive()
+    }
+
     public var apiService: APIService {
         get { self[APIServiceKey.self] }
         set { self[APIServiceKey.self] = newValue }

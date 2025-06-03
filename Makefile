@@ -44,4 +44,4 @@ pretty: formatter-swift linter-swift
 
 .PHONY: unused
 unused:
-	periphery scan --project Instagram.xcodeproj --schemes Instagram --targets Instagram --retain-swift-ui-previews --retain-objc-accessible
+	periphery scan --project Instagram.xcodeproj --schemes Instagram --retain-swift-ui-previews --retain-objc-accessible
