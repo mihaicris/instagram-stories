@@ -7,7 +7,6 @@
 *.xcscmblueprint
 .DS_Store
 .idea
-.package.resolved
 .tuist_default_targets
 Brewfile.lock.json
 Derived/
@@ -17,7 +16,6 @@ Modules/.netrc
 Modules/.swiftpm/config/registries.json
 Modules/.swiftpm/xcode/**/*.xcscheme
 Modules/.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
-Modules/Package.resolved
 Modules/Packages
 Modules/xcuserdata/
 Pods/
@@ -26,7 +24,6 @@ Tuist/Dependencies/Carthage
 Tuist/Dependencies/Cocoapods
 Tuist/Dependencies/SwiftPackageManager
 Tuist/Dependencies/graph.json
-Tuist/Package.resolved
 build/
 graph.json
 graph.png
