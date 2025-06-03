@@ -16,5 +16,4 @@ final class StoryViewScreenModel {
     init(story: Story) {
         self.story = story
     }
-
 }

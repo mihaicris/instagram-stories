@@ -22,6 +22,11 @@ debug: environment
 test: environment 
 	@set -o pipefail && xcodebuild test -scheme Instagram -destination "platform=iOS Simulator,name=iPhone 16 Pro" | xcbeautify --renderer github-actions
 
+.PHONY: spm-update
+spm-update:
+	rm Instagram.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+	@xcodebuild -resolvePackageDependencies -project Instagram.xcodeproj -scheme Instagram | xcbeautify
+
 .PHONY: clean
 clean:
 	@xcodebuild clean -project Instagram.xcodeproj -scheme Instagram -configuration Debug -destination $(BUILD_DESTINATION) | xcbeautify

@@ -53,7 +53,6 @@ struct StoryViewScreen: View {
                     }
             )
         }
-
     }
 
     struct MediaView: View {
@@ -93,5 +92,4 @@ struct StoryViewScreen: View {
             }
         }
     }
-
 }

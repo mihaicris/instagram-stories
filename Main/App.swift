@@ -5,9 +5,7 @@ import SwiftUI
 @main
 struct InstagramApp: App {
     init() {
-        prepareDependencies {
-            $0.apiService = FakeAPIService()
-        }
+        prepareDependencies { $0.apiService = FakeAPIService() }
     }
 
     var body: some Scene {

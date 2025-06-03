@@ -4,7 +4,7 @@ import Networking
 extension URLRequest {
     static func getUsers(page: Int) -> URLRequest {
         let url = URL(string: "https://dummy.com/users")!
-        let request: URLRequest = URLRequest.makeRequest(
+        let request = URLRequest.makeRequest(
             url: url,
             method: .get(queryParameters: ["page": page])
         )
@@ -13,7 +13,7 @@ extension URLRequest {
 
     static func getStory(userID: Int) -> URLRequest {
         let url = URL(string: "https://dummy.com/story")!
-        let request: URLRequest = URLRequest.makeRequest(
+        let request = URLRequest.makeRequest(
             url: url,
             method: .get(queryParameters: ["userID": userID])
         )

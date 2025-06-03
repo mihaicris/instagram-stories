@@ -146,7 +146,6 @@ struct StoryItemsView: View {
                     Text(item.body)
                         .font(.caption)
                         .truncationMode(.tail)
-
                 }
                 .padding(metric * 0.05)
             }
@@ -170,6 +169,6 @@ struct StoryItemsView: View {
 }
 
 #Preview {
-    let _ = prepareDependencies { $0.apiService = FakeAPIService() }
-    StoryListScreen(model: StoryListScreenModel())
+    prepareDependencies { $0.apiService = FakeAPIService() }
+    return StoryListScreen(model: StoryListScreenModel())
 }
