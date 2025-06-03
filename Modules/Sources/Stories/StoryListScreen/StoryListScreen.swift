@@ -90,41 +90,20 @@ struct StoryItemsView: View {
     struct ItemListView: View {
         @Environment(\.isLoadingMore) private var isLoadingMore
         let items: [UserItemViewModel]
+        private let metric: CGFloat = 90
         
-        private let itemSize: CGFloat = 90
-
         var body: some View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                         Button(action: {
-                            Task {
-                        await item.onTap()
-                            }
-                        }) {
-                            VStack {
-                                KFImage(item.imageURL)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: itemSize, height: itemSize)
-                                    .clipShape(Circle())
-                                    .padding(itemSize * 0.04)
-                                    .overlay {
-                                        if !item.seen {
-                                            UnreadStoryMarkerView(lineWidth: itemSize * 0.03)
-                                        }
-                                    }
-                                
-                                Text(item.body)
-                                    .font(.caption)
-                                    .truncationMode(.tail)
-                                    
-                            }
-                            .padding(itemSize * 0.05)
-                        }
+                            Task { await item.onTap() }
+                        }, label: {
+                            ItemView(item: item, metric: metric)
+                        })
                         .buttonStyle(PlainButtonStyle())
                         .tint(.black)
-                        .frame(maxWidth: itemSize * 1.3)
+                        .frame(maxWidth: metric * 1.3)
                         .onAppear {
                             Task {
                                 if index == items.count - 3 {
@@ -134,12 +113,39 @@ struct StoryItemsView: View {
                         }
                     }
                     if isLoadingMore {
-                        ProgressView()
-                            .padding(.horizontal)
+                        ProgressView().padding(.horizontal)
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal)
+            }
+        }
+        
+        struct ItemView: View {
+            let item: UserItemViewModel
+            let metric: CGFloat
+
+            var body: some View {
+                VStack {
+                    KFImage(item.imageURL)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: metric, height: metric)
+                        .clipShape(Circle())
+                        .padding(metric * 0.04)
+                        .overlay {
+                            if !item.seen {
+                                UnreadStoryMarkerView(lineWidth: metric * 0.03)
+                            }
+                        }
+                    
+                    
+                    Text(item.body)
+                        .font(.caption)
+                        .truncationMode(.tail)
+                        
+                }
+                .padding(metric * 0.05)
             }
         }
         

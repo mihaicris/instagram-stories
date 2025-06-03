@@ -62,7 +62,7 @@ public final class StoryListScreenModel {
                 id: user.id,
                 imageURL: imageURL,
                 body: user.name,
-                seen: false, // TODO
+                seen: false, // TODO: (Mihai C): Implement this
                 onTap: { [weak self] in
                     guard let self else {
                         return
@@ -80,13 +80,15 @@ public final class StoryListScreenModel {
     
     private func onUserTap(userID: Int) async {
         do {
-            let _: Story = try await apiService.request(
+            let story: Story = try await apiService.request(
                 .getStory(userID: userID),
                 of: Story.self,
                 decoder: .default
             )
+            print(story)
         } catch {
             // TODO: Mihai - Implement
+            print(error.localizedDescription)
         }
     }
 }

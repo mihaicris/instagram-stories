@@ -12,7 +12,7 @@ extension URLRequest {
     }
     
     static func getStory(userID: Int) -> URLRequest {
-        let url = URL(string: "https://dummy.com/getStory")!
+        let url = URL(string: "https://dummy.com/story")!
         let request: URLRequest = URLRequest.makeRequest(
             url: url,
             method: .get(queryParameters: ["userID": userID])
