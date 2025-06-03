@@ -7,13 +7,14 @@ let package = Package(
     name: "Modules",
     platforms: [.iOS(.v18)],
     products: [
-        .library(name: "Stories", targets: ["Stories"]),
+        .library(name: "Stories", targets: ["Stories"])
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
-//        .package(url: "https://github.com/Kolos65/Mockable.git", .upToNextMajor(from: "0.3.0")),
+        //        .package(url: "https://github.com/Kolos65/Mockable.git", .upToNextMajor(from: "0.3.0")),
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "8.3.0")),
-        .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.9.0")),
+        .package(
+            url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.9.0")),
     ],
     targets: [
         .target(
@@ -28,7 +29,7 @@ let package = Package(
         .target(
             name: "Networking",
             dependencies: commonDependencies() + [
-                .product(name: "Alamofire", package: "Alamofire"),
+                .product(name: "Alamofire", package: "Alamofire")
             ],
             swiftSettings: commonSwiftSettings(languageMode: .v6)
         ),
@@ -40,15 +41,14 @@ let package = Package(
 
 func commonSwiftSettings(languageMode: SwiftLanguageMode) -> [SwiftSetting] {
     [
- //       .define("MOCKING", .when(configuration: .debug)),
-        .swiftLanguageMode(languageMode),
+        //       .define("MOCKING", .when(configuration: .debug)),
+        .swiftLanguageMode(languageMode)
     ]
 }
 
 func commonDependencies() -> [Target.Dependency] {
     [
-        .product(name: "Dependencies", package: "swift-dependencies"),
-  //      .product(name: "Mockable", package: "Mockable"),
+        .product(name: "Dependencies", package: "swift-dependencies")
+        //      .product(name: "Mockable", package: "Mockable"),
     ]
 }
-

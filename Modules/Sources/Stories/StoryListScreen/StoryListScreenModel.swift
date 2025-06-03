@@ -1,7 +1,7 @@
-import Observation
 import Dependencies
 import Foundation
 import Networking
+import Observation
 
 @MainActor
 @Observable
@@ -14,13 +14,12 @@ public final class StoryListScreenModel {
     var state: State = .loading
     var isLoadingMore: Bool = false
     var presentedStory: Story?
-    
+
     @ObservationIgnored
     private var currentPage: Int = 0
-    
+
     @ObservationIgnored
     private var viewModels: [UserItemViewModel] = []
-    
 
     enum State: Equatable {
         case data([UserItemViewModel])
@@ -33,7 +32,7 @@ public final class StoryListScreenModel {
         currentPage = 0
         await loadContent()
     }
-    
+
     func loadContent() async {
         isLoadingMore = !viewModels.isEmpty
         defer { isLoadingMore = false }
@@ -51,18 +50,18 @@ public final class StoryListScreenModel {
             viewModels = []
         }
     }
-    
+
     private func mapToViewModel(_ users: [User]) -> [UserItemViewModel] {
         users.compactMap { user in
             guard let imageURL = URL(string: user.profilePictureURL) else {
-                 return nil
+                return nil
             }
-            
+
             return UserItemViewModel(
                 id: user.id,
                 imageURL: imageURL,
                 body: user.name,
-                seen: false, // TODO: (Mihai C): Implement this
+                seen: false,  // TODO: (Mihai C): Implement this
                 onTap: { [weak self] in
                     guard let self else {
                         return
@@ -77,7 +76,7 @@ public final class StoryListScreenModel {
             )
         }
     }
-    
+
     private func onUserTap(userID: Int) async {
         do {
             let story: Story = try await apiService.request(
@@ -100,12 +99,8 @@ struct UserItemViewModel: Identifiable, Equatable {
     let seen: Bool
     let onTap: () async -> Void
     let onAppear: () async -> Void
-    
+
     static func == (lhs: UserItemViewModel, rhs: UserItemViewModel) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.imageURL == rhs.imageURL &&
-        lhs.body == rhs.body &&
-        lhs.seen == rhs.seen
+        lhs.id == rhs.id && lhs.imageURL == rhs.imageURL && lhs.body == rhs.body && lhs.seen == rhs.seen
     }
 }
-

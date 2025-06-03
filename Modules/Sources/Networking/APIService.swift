@@ -17,7 +17,7 @@ public enum APIServiceKey: DependencyKey {
 
 extension DependencyValues {
     public var apiService: APIService {
-      get { self[APIServiceKey.self] }
-      set { self[APIServiceKey.self] = newValue }
+        get { self[APIServiceKey.self] }
+        set { self[APIServiceKey.self] = newValue }
     }
 }

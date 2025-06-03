@@ -37,7 +37,7 @@ linter-swift:
 
 .PHONY: formatter-swift
 formatter-swift:
-	swift format --in-place --parallel --recursive Sources Tests Modules/Sources
+	swift format --in-place --parallel --recursive Main Modules
 
 .PHONY: pretty
 pretty: formatter-swift linter-swift 

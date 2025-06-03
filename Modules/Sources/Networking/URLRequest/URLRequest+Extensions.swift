@@ -24,7 +24,8 @@ extension URLRequest {
     }
 
     public static func addQueryParameters(parameters: [String: Any], to request: inout URLRequest) {
-        guard var urlComponents = URLComponents(url: request.url!, resolvingAgainstBaseURL: false) else {
+        guard var urlComponents = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)
+        else {
             return
         }
         let queryItems = parameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }

@@ -15,15 +15,16 @@ struct StoryViewScreen: View {
 
     let model: StoryViewScreenModel
     let url = URL(
-        string: "https://plus.unsplash.com/premium_photo-1664015982534-5837663d1d73?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        string:
+            "https://plus.unsplash.com/premium_photo-1664015982534-5837663d1d73?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     )!
-    
+
     var body: some View {
         ZStack {
             if dragOffset.height > 0 {
                 Color.black.ignoresSafeArea()
             }
-            
+
             VStack(spacing: 12) {
                 MediaView(url: url)
                 HStack {
@@ -52,12 +53,12 @@ struct StoryViewScreen: View {
                     }
             )
         }
-       
+
     }
-    
+
     struct MediaView: View {
         let url: URL
-        
+
         var body: some View {
             GeometryReader { geometry in
                 ZStack {
@@ -73,10 +74,10 @@ struct StoryViewScreen: View {
             }
         }
     }
-    
+
     struct MesssageInputButtonView: View {
         let action: () -> Void
-        
+
         var body: some View {
             Button(action: action) {
                 Text("Send message...")

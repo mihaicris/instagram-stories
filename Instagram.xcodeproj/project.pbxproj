@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8314642B2DEF3A4B00452F03 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 8314642A2DEF3A4B00452F03 /* Dependencies */; };
 		8398F9F02DED9A020044E249 /* Stories in Frameworks */ = {isa = PBXBuildFile; productRef = 8398F9EF2DED9A020044E249 /* Stories */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8398F9F02DED9A020044E249 /* Stories in Frameworks */,
+				8314642B2DEF3A4B00452F03 /* Dependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +85,7 @@
 			name = Instagram;
 			packageProductDependencies = (
 				8398F9EF2DED9A020044E249 /* Stories */,
+				8314642A2DEF3A4B00452F03 /* Dependencies */,
 			);
 			productName = Instagram;
 			productReference = 83630C352DE8BB5100CB80C9 /* Instagram.app */;
@@ -113,6 +116,7 @@
 			mainGroup = 83630C2C2DE8BB5100CB80C9;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				831464292DEF3A4B00452F03 /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 83630C362DE8BB5100CB80C9 /* Products */;
@@ -350,7 +354,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		831464292DEF3A4B00452F03 /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-dependencies";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		8314642A2DEF3A4B00452F03 /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 831464292DEF3A4B00452F03 /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = Dependencies;
+		};
 		8398F9EF2DED9A020044E249 /* Stories */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Stories;

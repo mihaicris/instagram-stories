@@ -4,24 +4,25 @@ extension User {
     public static func mockData(page: Int) -> [User] {
         struct JsonResponse: Codable {
             let pages: [Page]
-            
+
             struct Page: Codable {
                 let users: [User]
             }
         }
-        
+
         do {
             let decoder = JSONDecoder()
             let data = Data(json.utf8)
             let response = try decoder.decode(JsonResponse.self, from: data)
-            let wrappedIndex = page % response.pages.count // circular access over the 3 pages --> Infinite loop
+            let wrappedIndex = page % response.pages.count  // circular access over the 3 pages --> Infinite loop
             return response.pages[wrappedIndex].users
         } catch {
             return []
         }
     }
-    
-    static var json: String { """
+
+    static var json: String {
+        """
         {
           "pages": [
             {
@@ -68,7 +69,7 @@ extension User {
             }
           ]
         }
-        
+
         """
     }
 }

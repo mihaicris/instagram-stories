@@ -3,16 +3,16 @@ import SwiftUI
 public struct HeartButtonView: View {
     let action: () -> Void
     let unread: Bool
-    
+
     public init(action: @escaping () -> Void, unread: Bool) {
         self.action = action
         self.unread = unread
     }
-        
+
     public var body: some View {
         Button(action: action) {
             Image(systemName: "heart")
-                .font(.system(size: 20,weight: .regular))
+                .font(.system(size: 20, weight: .regular))
         }
         .overlay(alignment: .topTrailing) {
             if unread {

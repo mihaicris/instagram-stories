@@ -10,7 +10,7 @@ extension URLRequest {
         )
         return request
     }
-    
+
     static func getStory(userID: Int) -> URLRequest {
         let url = URL(string: "https://dummy.com/story")!
         let request: URLRequest = URLRequest.makeRequest(
