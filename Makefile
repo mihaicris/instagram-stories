@@ -1,6 +1,9 @@
 SWIFT_VERSION := $(shell swift --version 2>&1 | awk '/Swift version/ {print $$0}' | sed 's/^[^S]*\(Swift version.*\)/\1/')
 XCODE_VERSION := $(shell xcodebuild -version)
-BUILD_DESTINATION := "platform=iOS Simulator,arch=arm64,name=iPhone 16e,OS=18.5"
+DESTINATION := "platform=iOS Simulator,arch=arm64,name=iPhone 16e,OS=18.5"
+PROJECT := Instagram.xcodeproj
+SCHEME := Instagram
+PARAMETERS := -project $(PROJECT) -scheme $(SCHEME) -destination $(DESTINATION)
 
 default: debug
 
@@ -12,26 +15,27 @@ environment:
 
 .PHONY: release
 release: environment
-	@xcodebuild build -project Instagram.xcodeproj -scheme Instagram -configuration Release -destination $(BUILD_DESTINATION) | xcbeautify
+	xcodebuild $(PARAMETERS) -configuration Release build | xcbeautify
 
 .PHONY: debug
 debug: environment
-	@xcodebuild build -project Instagram.xcodeproj -scheme Instagram -configuration Debug -destination $(BUILD_DESTINATION) | xcbeautify
-
-.PHONY: test
-test: environment 
-	@set -o pipefail && xcodebuild test -scheme Instagram -destination "platform=iOS Simulator,name=iPhone 16 Pro" | xcbeautify --renderer github-actions
+	xcodebuild $(PARAMETERS) -configuration Debug build | xcbeautify
 
 .PHONY: spm-update
 spm-update:
-	rm Instagram.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-	@xcodebuild -resolvePackageDependencies -project Instagram.xcodeproj -scheme Instagram | xcbeautify
+	rm -f $(PROJECT)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+	xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
+
+.PHONY: test
+test: environment 
+	@set -o pipefail && xcodebuild test $(PARAMETERS) | xcbeautify --renderer github-actions
 
 .PHONY: clean
 clean:
-	@xcodebuild clean -project Instagram.xcodeproj -scheme Instagram -configuration Debug -destination $(BUILD_DESTINATION) | xcbeautify
+	xcodebuild clean $(PARAMETERS) -configuration Debug  | xcbeautify
 	@rm -rf DerivedData
 
+.PHONY: fresh
 fresh:
 	@echo "Removing git repo untracked content..."
 	@git clean -Xdff
@@ -49,4 +53,4 @@ pretty: formatter-swift linter-swift
 
 .PHONY: unused
 unused:
-	periphery scan --project Instagram.xcodeproj --schemes Instagram --retain-swift-ui-previews --retain-objc-accessible
+	periphery scan --project $(PROJECT) --schemes Instagram --retain-swift-ui-previews --retain-objc-accessible

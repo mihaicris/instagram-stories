@@ -1,10 +1,3 @@
-//
-//  MessagesButtonView.swift
-//  Instagram
-//
-//  Created by Mihai Cristescu on 28.05.2025.
-//
-
 import SwiftUI
 
 public struct MessagesButtonView: View {
