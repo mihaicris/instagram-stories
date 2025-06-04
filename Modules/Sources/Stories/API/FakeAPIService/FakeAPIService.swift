@@ -31,21 +31,23 @@ public struct FakeAPIService: APIService {
     private func fakeGetUsers<T>(_ request: URLRequest) -> T? {
         guard urlPath(for: request) == "/users",
             let value = queryItemValue(for: "page", in: request),
-            let page = Int(value)
+            let page = Int(value),
+            let user = User.mockData(page: page) as? T
         else {
             return nil
         }
-        return User.mockData(page: page) as? T
+        return user
     }
 
     private func fakeGetStory<T>(_ request: URLRequest) -> T? {
         guard urlPath(for: request) == "/story",
             let value = queryItemValue(for: "userID", in: request),
-            let userID = Int(value)
+            let userID = Int(value),
+            let story = Story.mockData(userID: userID) as? T
         else {
             return nil
         }
-        return Story(id: 1, userID: userID, mediaList: [], username: "", seen: false) as? T
+        return story
     }
 
     private func urlPath(for request: URLRequest) -> String? {

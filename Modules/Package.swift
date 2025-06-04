@@ -22,6 +22,9 @@ let package = Package(
                 "Networking",
                 "UIComponents",
             ],
+            resources: [
+                .process("Resources/")
+            ],
             swiftSettings: commonSwiftSettings(languageMode: .v6),
             plugins: commonPlugins()
         ),

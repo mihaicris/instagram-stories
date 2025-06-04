@@ -3,8 +3,7 @@ import Foundation
 struct Story: Codable, Identifiable {
     let id: Int
     let userID: Int
-    let mediaList: [Media]
-    let username: String
+    let content: [Media]
     let seen: Bool
 
     struct Media: Codable, Identifiable {
