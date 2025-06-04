@@ -70,7 +70,7 @@ public final class StoryListScreenModel {
                 },
                 onAppear: { [weak self] in
                     guard let self else { return }
-                    self.currentPage += 1
+                    currentPage += 1
                     await loadContent()
                 }
             )

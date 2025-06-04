@@ -11,7 +11,7 @@ public protocol APIService: Sendable {
 }
 
 extension DependencyValues {
-    private enum APIServiceKey: DependencyKey {
+    public enum APIServiceKey: DependencyKey {
         public static let liveValue: APIService = APIServiceLive()
     }
 

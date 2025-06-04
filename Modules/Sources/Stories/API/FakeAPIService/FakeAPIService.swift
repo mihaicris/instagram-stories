@@ -9,7 +9,7 @@ public struct FakeAPIService: APIService {
         _ request: URLRequest,
         of: T.Type,
         decoder: JSONDecoder
-    ) async throws -> T {
+    ) throws -> T {
         //        try await Task.sleep(nanoseconds: 2_000_000_000) // Simulate network delay
 
         let result: T? =
