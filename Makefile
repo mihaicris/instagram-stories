@@ -19,6 +19,7 @@ PRETTY ?= | xcbeautify --disable-logging
 COLOR := \033[1;32m
 RESET := \033[0m
 
+.PHONY: default
 default: install
 
 .PHONY: environment
@@ -94,4 +95,7 @@ unused:
 .PHONY: derived-data
 derived-data:
 	@open $(DERIVED_DATA)
+
+.PHONY: all
+all: debug release
 
