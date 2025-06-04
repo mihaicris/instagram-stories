@@ -1,5 +1,5 @@
 import Dependencies
-import Stories
+import FeatureStories
 import SwiftUI
 
 @main

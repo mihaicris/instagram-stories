@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8314642B2DEF3A4B00452F03 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 8314642A2DEF3A4B00452F03 /* Dependencies */; };
-		8398F9F02DED9A020044E249 /* Stories in Frameworks */ = {isa = PBXBuildFile; productRef = 8398F9EF2DED9A020044E249 /* Stories */; };
+		83C9B2932DF10BBD001B1661 /* FeatureStories in Frameworks */ = {isa = PBXBuildFile; productRef = 83C9B2922DF10BBD001B1661 /* FeatureStories */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,8 +31,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8398F9F02DED9A020044E249 /* Stories in Frameworks */,
 				8314642B2DEF3A4B00452F03 /* Dependencies in Frameworks */,
+				83C9B2932DF10BBD001B1661 /* FeatureStories in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,8 +89,8 @@
 			);
 			name = Instagram;
 			packageProductDependencies = (
-				8398F9EF2DED9A020044E249 /* Stories */,
 				8314642A2DEF3A4B00452F03 /* Dependencies */,
+				83C9B2922DF10BBD001B1661 /* FeatureStories */,
 			);
 			productName = Instagram;
 			productReference = 83630C352DE8BB5100CB80C9 /* Instagram.app */;
@@ -393,9 +393,9 @@
 			package = 8349FA032DF063060005F55A /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
-		8398F9EF2DED9A020044E249 /* Stories */ = {
+		83C9B2922DF10BBD001B1661 /* FeatureStories */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Stories;
+			productName = FeatureStories;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
