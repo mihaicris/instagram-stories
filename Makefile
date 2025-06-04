@@ -32,7 +32,7 @@ environment:
 build: environment
 	@echo "$(COLOR)Project configuration: $(RESET)$(CONFIGURATION)"
 	@echo "$(COLOR)Destination: $(RESET)$(DESTINATION)"
-	set -o pipefail && xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
+	@set -o pipefail && xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
 
 .PHONY: debug
 debug:

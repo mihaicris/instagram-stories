@@ -12,6 +12,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8349FA062DF0651F0005F55A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		83630C352DE8BB5100CB80C9 /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8398F9F92DED9C340044E249 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Modules; sourceTree = "<group>"; };
 		83C57F6E2DED8EB000483551 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -41,6 +42,7 @@
 		83630C2C2DE8BB5100CB80C9 = {
 			isa = PBXGroup;
 			children = (
+				8349FA062DF0651F0005F55A /* .swiftlint.yml */,
 				8398F9F92DED9C340044E249 /* Modules */,
 				83C57F6E2DED8EB000483551 /* Makefile */,
 				83630C372DE8BB5100CB80C9 /* Main */,
@@ -78,6 +80,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8349FA052DF063130005F55A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				83630C372DE8BB5100CB80C9 /* Main */,
@@ -117,6 +120,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				831464292DEF3A4B00452F03 /* XCRemoteSwiftPackageReference "swift-dependencies" */,
+				8349FA032DF063060005F55A /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 83630C362DE8BB5100CB80C9 /* Products */;
@@ -147,6 +151,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8349FA052DF063130005F55A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 8349FA042DF063130005F55A /* SwiftLintBuildToolPlugin */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		83630C3E2DE8BB5300CB80C9 /* Debug */ = {
@@ -363,6 +374,14 @@
 				minimumVersion = 1.9.0;
 			};
 		};
+		8349FA032DF063060005F55A /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.59.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -370,6 +389,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 831464292DEF3A4B00452F03 /* XCRemoteSwiftPackageReference "swift-dependencies" */;
 			productName = Dependencies;
+		};
+		8349FA042DF063130005F55A /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8349FA032DF063060005F55A /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 		8398F9EF2DED9A020044E249 /* Stories */ = {
 			isa = XCSwiftPackageProductDependency;
