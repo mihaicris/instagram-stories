@@ -49,7 +49,9 @@
 				83D77AB52DE9EC7800629B79 /* Frameworks */,
 				83630C362DE8BB5100CB80C9 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		83630C362DE8BB5100CB80C9 /* Products */ = {
 			isa = PBXGroup;

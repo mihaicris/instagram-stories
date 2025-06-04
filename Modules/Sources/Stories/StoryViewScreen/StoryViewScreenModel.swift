@@ -4,9 +4,9 @@ import Observation
 @MainActor
 @Observable
 final class StoryViewScreenModel {
-    let story: Story
+  let story: Story
 
-    init(story: Story) {
-        self.story = story
-    }
+  init(story: Story) {
+    self.story = story
+  }
 }
