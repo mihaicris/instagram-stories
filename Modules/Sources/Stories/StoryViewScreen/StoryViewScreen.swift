@@ -16,8 +16,12 @@ struct StoryViewScreen: View {
     let model: StoryViewScreenModel
     let url = URL(
         string:
-            "https://plus.unsplash.com/premium_photo-1664015982534-5837663d1d73?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    )!
+            """
+            https://plus.unsplash.com/premium_photo-1664015982534-583766\
+            3d1d73?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M\
+            3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+            """
+    )!  // swiftlint:disable:this force_unwrapping
 
     var body: some View {
         ZStack {

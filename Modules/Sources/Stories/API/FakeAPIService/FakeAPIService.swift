@@ -7,8 +7,8 @@ public struct FakeAPIService: APIService {
 
     public func request<T: Sendable & Decodable>(
         _ request: URLRequest,
-        of: T.Type,
-        decoder: JSONDecoder
+        of _: T.Type,
+        decoder _: JSONDecoder
     ) throws -> T {
         //        try await Task.sleep(nanoseconds: 2_000_000_000) // Simulate network delay
 
@@ -17,16 +17,16 @@ public struct FakeAPIService: APIService {
 
         if let result {
             return result
-        } else {
-            throw NSError(
-                domain: "program_errors",
-                code: 1,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        "🔴 Fake API not implemented for request: \(request.description)"
-                ]
-            )
         }
+
+        throw NSError(
+            domain: "program_errors",
+            code: 1,
+            userInfo: [
+                NSLocalizedDescriptionKey:
+                    "🔴 Fake API not implemented for request: \(request.description)"
+            ]
+        )
     }
 
     private func fakeGetUsers<T>(_ request: URLRequest) -> T? {

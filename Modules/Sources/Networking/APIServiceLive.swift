@@ -16,12 +16,12 @@ final class APIServiceLive: APIService {
 
     func request<T: Sendable & Decodable>(
         _ request: URLRequest,
-        of: T.Type,
+        of type: T.Type,
         decoder: JSONDecoder
     ) async throws -> T {
         let response = await session.request(request)
             .validate()
-            .serializingDecodable(T.self, decoder: decoder)
+            .serializingDecodable(type.self, decoder: decoder)
             .response
 
         switch response.result {

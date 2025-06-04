@@ -24,7 +24,7 @@ extension URLRequest {
     }
 
     public static func addQueryParameters(parameters: [String: Any], to request: inout URLRequest) {
-        guard var urlComponents = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)
+        guard let url = request.url, var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
         else {
             return
         }

@@ -1,6 +1,8 @@
 import Foundation
 import Networking
 
+// swiftlint:disable force_unwrapping
+
 extension URLRequest {
     static func getUsers(page: Int) -> URLRequest {
         let url = URL(string: "https://dummy.com/users")!

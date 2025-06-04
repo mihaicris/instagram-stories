@@ -15,11 +15,9 @@ public final class StoryListScreenModel {
     var isLoadingMore: Bool = false
     var presentedStory: Story?
 
-    @ObservationIgnored
-    private var currentPage: Int = 0
+    @ObservationIgnored private var currentPage: Int = 0
 
-    @ObservationIgnored
-    private var viewModels: [UserItemViewModel] = []
+    @ObservationIgnored private var viewModels: [UserItemViewModel] = []
 
     enum State: Equatable {
         case data([UserItemViewModel])
@@ -61,7 +59,7 @@ public final class StoryListScreenModel {
                 id: user.id,
                 imageURL: imageURL,
                 body: user.name,
-                seen: false,  // TODO: (Mihai C): Implement this
+                seen: false,  // TODO: Implement this
                 onTap: { [weak self] in
                     guard let self else {
                         return
@@ -69,7 +67,9 @@ public final class StoryListScreenModel {
                     await onUserTap(userID: user.id)
                 },
                 onAppear: { [weak self] in
-                    guard let self else { return }
+                    guard let self else {
+                        return
+                    }
                     currentPage += 1
                     await loadContent()
                 }
@@ -86,21 +86,8 @@ public final class StoryListScreenModel {
             )
             print(story)
         } catch {
-            // TODO: Mihai - Implement
+            // TODO: Implement this
             print(error.localizedDescription)
         }
-    }
-}
-
-struct UserItemViewModel: Identifiable, Equatable {
-    let id: Int
-    let imageURL: URL
-    let body: String
-    let seen: Bool
-    let onTap: () async -> Void
-    let onAppear: () async -> Void
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.id == rhs.id && lhs.imageURL == rhs.imageURL && lhs.body == rhs.body && lhs.seen == rhs.seen
     }
 }
