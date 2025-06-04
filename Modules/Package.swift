@@ -1,5 +1,4 @@
 // swift-tools-version: 6.1
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
@@ -11,10 +10,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
-        //        .package(url: "https://github.com/Kolos65/Mockable.git", .upToNextMajor(from: "0.3.0")),
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "8.3.0")),
-        .package(
-            url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.9.0")),
+        .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.9.0")),
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.59.0"),
     ],
     targets: [

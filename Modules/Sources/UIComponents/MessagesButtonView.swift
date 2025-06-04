@@ -15,3 +15,7 @@ public struct MessagesButtonView: View {
         .padding(.horizontal, 2)
     }
 }
+
+#Preview {
+    MessagesButtonView(action: {})
+}

@@ -48,9 +48,7 @@ install: build
 	@xcrun simctl boot $(DEVICE) >/dev/null 2>&1 || true
 	@open -a Simulator
 	@APP_PATH=$$(find $(DERIVED_DATA) -path "*/Build/Products/$(CONFIGURATION)-iphonesimulator/$(PROJECT_NAME).app" -type d | head -n 1); \
-	if [ -z "$$APP_PATH" ]; then \
-		echo "❌ .app not found"; exit 1; \
-	fi; \
+	if [ -z "$$APP_PATH" ]; then echo "❌ .app not found"; exit 1; fi; \
 	BASENAME=$$(basename "$$APP_PATH"); \
 	echo "$(COLOR)Installing $$BASENAME$(RESET)"; \
 	xcrun simctl install booted "$$APP_PATH" >/dev/null; \

@@ -29,3 +29,11 @@ public struct HeartButtonView: View {
         .padding(.horizontal, 2)
     }
 }
+
+#Preview {
+    HeartButtonView(action: {}, unread: true)
+        .padding()
+
+    HeartButtonView(action: {}, unread: false)
+        .padding()
+}
