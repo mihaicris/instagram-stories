@@ -267,3 +267,6 @@ analyzer_rules:
  - typesafe_array_init
  - unused_declaration
  - unused_import
+ 
+indentation_width:
+  indentation_width: 2
