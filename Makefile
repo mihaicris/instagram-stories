@@ -14,6 +14,7 @@ BUNDLE_ID := ro.mihaicris.$(PROJECT_NAME)
 SCHEME := $(PROJECT_NAME)
 PARAMETERS := -project $(PROJECT_FILE) -scheme $(SCHEME) -destination $(DESTINATION)
 DERIVED_DATA := $(shell echo $$HOME)/Library/Developer/Xcode/DerivedData
+PRETTY ?= | xcbeautify --disable-logging
 
 COLOR := \033[1;32m
 RESET := \033[0m
@@ -32,7 +33,7 @@ environment:
 build: environment
 	@echo "$(COLOR)Project configuration: $(RESET)$(CONFIGURATION)"
 	@echo "$(COLOR)Destination: $(RESET)$(DESTINATION)"
-	@set -o pipefail && xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
+	@set -o pipefail && xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build $(PRETTY)
 
 .PHONY: debug
 debug:
@@ -61,13 +62,13 @@ test: environment
 
 .PHONY: clean
 clean: environment
-	@set -o pipefail && xcodebuild $(PARAMETERS) clean | xcbeautify
+	@set -o pipefail && xcodebuild $(PARAMETERS) clean $(PRETTY)
 	@rm -rf DerivedData
 
 .PHONY: spm-update
 spm-update:
 	rm -f $(PROJECT_FILE)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-	@set -o pipefail && xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
+	@set -o pipefail && xcodebuild -resolvePackageDependencies $(PARAMETERS) $(PRETTY)
 
 .PHONY: fresh
 fresh:
