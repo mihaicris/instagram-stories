@@ -1,5 +1,5 @@
-SWIFT_VERSION := $(shell swift --version 2>&1 | awk '/Swift version/ {print $$0}' | sed 's/^[^S]*\(Swift version.*\)/\1/')
-XCODE_VERSION := $(shell xcodebuild -version)
+SWIFT_VERSION := $(shell swift --version 2>&1 | awk '/Swift version/ {print $$0}' | sed 's/^[^S]*\Swift version \(.*\)/\1/')
+XCODE_VERSION := $(shell xcodebuild -version | awk 'NR==1{v=$$2} NR==2{print v, $$0}')
 
 PLATFORM := iOS Simulator
 ARCH := arm64
@@ -23,14 +23,14 @@ default: debug
 .PHONY: environment
 environment:
 	@echo ""
-	@echo "$(COLOR)$(XCODE_VERSION)$(RESET)"
-	@echo "$(COLOR)$(SWIFT_VERSION)$(RESET)"
-	@echo "$(COLOR)macOS $(shell sw_vers -productVersion)$(RESET)"
-	@echo "$(COLOR)Swiftlint $(shell swiftlint version)$(RESET)"
+	@echo "$(COLOR)Xcode: $(RESET)$(XCODE_VERSION)"
+	@echo "$(COLOR)Swift: $(RESET)$(SWIFT_VERSION)"
+	@echo "$(COLOR)macOS: $(RESET)$(shell sw_vers -productVersion)"
+	@echo "$(COLOR)Swiftlint: $(RESET)$(shell swiftlint version)"
 
 .PHONY: build
 build: environment
-	@echo "$(COLOR)Building $(CONFIGURATION)$(RESET)"
+	@echo "$(COLOR)Project configuration: $(RESET)$(CONFIGURATION)"
 	@xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
 
 .PHONY: debug
