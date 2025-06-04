@@ -6,7 +6,7 @@ opt_in_rules: all
 analyzer_rules: all
  
 indentation_width:
-  indentation_width: 2
+  indentation_width: 4
 
 disabled_rules:
   - accessibility_label_for_image
