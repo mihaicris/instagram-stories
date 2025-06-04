@@ -1,7 +1,7 @@
 import Foundation
 
 extension User {
-    public static func mockData(page: Int) -> [User] {
+    static func mockData(page: Int) -> [User] {
         struct JsonResponse: Codable {
             let pages: [Page]
 
