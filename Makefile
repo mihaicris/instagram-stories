@@ -1,29 +1,59 @@
 SWIFT_VERSION := $(shell swift --version 2>&1 | awk '/Swift version/ {print $$0}' | sed 's/^[^S]*\(Swift version.*\)/\1/')
 XCODE_VERSION := $(shell xcodebuild -version)
-DESTINATION := "platform=iOS Simulator,arch=arm64,name=iPhone 16e,OS=18.5"
-PROJECT := Instagram.xcodeproj
-SCHEME := Instagram
-PARAMETERS := -project $(PROJECT) -scheme $(SCHEME) -destination $(DESTINATION)
+
+PLATFORM := iOS Simulator
+ARCH := arm64
+IOS_SDK := 18.5
+DEVICE_NAME := iPhone 16e
+DESTINATION := "platform=$(PLATFORM),arch=$(ARCH),name=$(DEVICE_NAME),OS=$(IOS_SDK)"
+
+CONFIGURATION ?= Debug
+PROJECT_NAME := Instagram
+PROJECT_FILE := $(PROJECT_NAME).xcodeproj
+BUNDLE_ID := ro.mihaicris.$(PROJECT_NAME)
+SCHEME := $(PROJECT_NAME)
+PARAMETERS := -project $(PROJECT_FILE) -scheme $(SCHEME) -destination $(DESTINATION)
 DERIVED_DATA := $(shell echo $$HOME)/Library/Developer/Xcode/DerivedData
+
+COLOR := \033[1;32m
+RESET := \033[0m
 
 default: debug
 
 .PHONY: environment
 environment:
 	@echo ""
-	@echo "→ $(XCODE_VERSION)"
-	@echo "→ $(SWIFT_VERSION)"
-	@echo "→ macOS $(shell sw_vers -productVersion)"
-	@echo "→ Swiftlint $(shell swiftlint version)"
-	@echo ""
+	@echo "$(COLOR)$(XCODE_VERSION)$(RESET)"
+	@echo "$(COLOR)$(SWIFT_VERSION)$(RESET)"
+	@echo "$(COLOR)macOS $(shell sw_vers -productVersion)$(RESET)"
+	@echo "$(COLOR)Swiftlint $(shell swiftlint version)$(RESET)"
 
-.PHONY: release
-release: environment
-	@xcodebuild $(PARAMETERS) -configuration Release build | xcbeautify
+.PHONY: build
+build: environment
+	@echo "$(COLOR)Building $(CONFIGURATION)$(RESET)"
+	@xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
 
 .PHONY: debug
-debug: environment
-	@xcodebuild $(PARAMETERS) -configuration Debug build | xcbeautify
+debug:
+	@$(MAKE) CONFIGURATION=Debug build
+	
+.PHONY: release
+release:
+	@$(MAKE) CONFIGURATION=Release build
+	
+.PHONY: install
+install: build
+	@echo "$(COLOR)Booting simulator$(RESET)"
+	@xcrun simctl boot $(DEVICE_NAME) >/dev/null 2>&1 || true
+	@APP_PATH=$$(find $(DERIVED_DATA) -path "*/Build/Products/$(CONFIGURATION)-iphonesimulator/$(PROJECT_NAME).app" -type d | head -n 1); \
+	if [ -z "$$APP_PATH" ]; then \
+		echo "❌ .app not found"; exit 1; \
+	fi; \
+	BASENAME=$$(basename "$$APP_PATH"); \
+	echo "$(COLOR)Installing $$BASENAME$(RESET)"; \
+	xcrun simctl install booted "$$APP_PATH" >/dev/null; \
+	echo "$(COLOR)Launching $(BUNDLE_ID)$(RESET)"; \
+	xcrun simctl launch booted $(BUNDLE_ID)
 
 .PHONY: test
 test: environment 
@@ -36,7 +66,7 @@ clean:
 
 .PHONY: spm-update
 spm-update:
-	rm -f $(PROJECT)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+	rm -f $(PROJECT_FILE)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 	@xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
 
 .PHONY: fresh
@@ -57,7 +87,7 @@ pretty: formatter-swift linter-swift
 
 .PHONY: unused
 unused:
-	@periphery scan --project $(PROJECT) --schemes $(SCHEME) --retain-swift-ui-previews --retain-objc-accessible
+	@periphery scan --project $(PROJECT_FILE) --schemes $(SCHEME) --retain-swift-ui-previews --retain-objc-accessible
 
 .PHONY: derived-data
 derived-data:
