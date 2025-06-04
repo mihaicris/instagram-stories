@@ -1,13 +1,12 @@
 SWIFT_VERSION := $(shell swift --version 2>&1 | awk '/Swift version/ {print $$0}' | sed 's/^[^S]*\Swift version \(.*\)/\1/')
 XCODE_VERSION := $(shell xcodebuild -version | awk 'NR==1{v=$$2} NR==2{print v, $$0}')
 
+DEVICE ?= "iPhone 16e"
+DEVICE_NO_QUOTES := $(shell echo $(DEVICE) | sed 's/"//g')
 PLATFORM := iOS Simulator
 ARCH := arm64
 IOS_SDK := 18.5
-DEVICE ?= "iPhone 16e"
-DEVICE_NO_QUOTES := $(shell echo $(DEVICE) | sed 's/"//g')
 DESTINATION := "platform=$(PLATFORM),arch=$(ARCH),name=$(DEVICE_NO_QUOTES),OS=$(IOS_SDK)"
-
 CONFIGURATION ?= Debug
 PROJECT_NAME := Instagram
 PROJECT_FILE := $(PROJECT_NAME).xcodeproj
@@ -33,7 +32,7 @@ environment:
 build: environment
 	@echo "$(COLOR)Project configuration: $(RESET)$(CONFIGURATION)"
 	@echo "$(COLOR)Destination: $(RESET)$(DESTINATION)"
-	xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
+	set -o pipefail && xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
 
 .PHONY: debug
 debug:
@@ -64,13 +63,13 @@ test: environment
 
 .PHONY: clean
 clean:
-	@xcodebuild $(PARAMETERS) clean | xcbeautify
+	@set -o pipefail && xcodebuild $(PARAMETERS) clean | xcbeautify
 	@rm -rf DerivedData
 
 .PHONY: spm-update
 spm-update:
 	rm -f $(PROJECT_FILE)/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-	@xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
+	@set -o pipefail && xcodebuild -resolvePackageDependencies $(PARAMETERS) | xcbeautify
 
 .PHONY: fresh
 fresh:
