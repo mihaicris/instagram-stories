@@ -58,7 +58,7 @@ install: build
 
 .PHONY: test
 test: environment 
-	@set -o pipefail && xcodebuild $(PARAMETERS) test | xcbeautify --renderer github-actions
+	@set -o pipefail && xcodebuild $(PARAMETERS) test $(PRETTY)
 
 .PHONY: clean
 clean: environment
