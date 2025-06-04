@@ -2,10 +2,6 @@
 
 included:
  - Sources
- - Tests
- - Project.swift
- - Modules/Sources
- - Modules/Tests
 
 disabled_rules:
 
