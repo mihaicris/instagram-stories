@@ -62,7 +62,7 @@ test: environment
 	@set -o pipefail && xcodebuild $(PARAMETERS) test | xcbeautify --renderer github-actions
 
 .PHONY: clean
-clean:
+clean: environment
 	@set -o pipefail && xcodebuild $(PARAMETERS) clean | xcbeautify
 	@rm -rf DerivedData
 

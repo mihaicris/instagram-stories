@@ -13,7 +13,6 @@
 
 /* Begin PBXFileReference section */
 		8349FA062DF0651F0005F55A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		8349FA072DF0805F0005F55A /* UserItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserItemViewModel.swift; sourceTree = "<group>"; };
 		83630C352DE8BB5100CB80C9 /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8398F9F92DED9C340044E249 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Modules; sourceTree = "<group>"; };
 		83C57F6E2DED8EB000483551 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -49,7 +48,6 @@
 				83630C372DE8BB5100CB80C9 /* Main */,
 				83D77AB52DE9EC7800629B79 /* Frameworks */,
 				83630C362DE8BB5100CB80C9 /* Products */,
-				8349FA072DF0805F0005F55A /* UserItemViewModel.swift */,
 			);
 			sourceTree = "<group>";
 		};
