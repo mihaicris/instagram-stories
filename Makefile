@@ -4,8 +4,9 @@ XCODE_VERSION := $(shell xcodebuild -version | awk 'NR==1{v=$$2} NR==2{print v, 
 PLATFORM := iOS Simulator
 ARCH := arm64
 IOS_SDK := 18.5
-DEVICE_NAME := iPhone 16e
-DESTINATION := "platform=$(PLATFORM),arch=$(ARCH),name=$(DEVICE_NAME),OS=$(IOS_SDK)"
+DEVICE ?= "iPhone 16e"
+DEVICE_NO_QUOTES := $(shell echo $(DEVICE) | sed 's/"//g')
+DESTINATION := "platform=$(PLATFORM),arch=$(ARCH),name=$(DEVICE_NO_QUOTES),OS=$(IOS_SDK)"
 
 CONFIGURATION ?= Debug
 PROJECT_NAME := Instagram
@@ -18,7 +19,7 @@ DERIVED_DATA := $(shell echo $$HOME)/Library/Developer/Xcode/DerivedData
 COLOR := \033[1;32m
 RESET := \033[0m
 
-default: debug
+default: install
 
 .PHONY: environment
 environment:
@@ -31,7 +32,8 @@ environment:
 .PHONY: build
 build: environment
 	@echo "$(COLOR)Project configuration: $(RESET)$(CONFIGURATION)"
-	@xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
+	@echo "$(COLOR)Destination: $(RESET)$(DESTINATION)"
+	xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build | xcbeautify
 
 .PHONY: debug
 debug:
@@ -44,7 +46,8 @@ release:
 .PHONY: install
 install: build
 	@echo "$(COLOR)Booting simulator$(RESET)"
-	@xcrun simctl boot $(DEVICE_NAME) >/dev/null 2>&1 || true
+	@xcrun simctl boot $(DEVICE) >/dev/null 2>&1 || true
+	@open -a Simulator
 	@APP_PATH=$$(find $(DERIVED_DATA) -path "*/Build/Products/$(CONFIGURATION)-iphonesimulator/$(PROJECT_NAME).app" -type d | head -n 1); \
 	if [ -z "$$APP_PATH" ]; then \
 		echo "❌ .app not found"; exit 1; \
