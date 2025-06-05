@@ -35,6 +35,7 @@ environment:
 build: environment
 	@echo "$(COLOR)Project configuration: $(RESET)$(CONFIGURATION)"
 	@echo "$(COLOR)Destination: $(RESET)$(DESTINATION)"
+	@echo ""
 	@set -o pipefail && xcodebuild $(PARAMETERS) -configuration $(CONFIGURATION) build $(PRETTY)
 
 .PHONY: debug
