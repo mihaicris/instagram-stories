@@ -20,7 +20,7 @@ COLOR := \033[1;32m
 RESET := \033[0m
 
 .PHONY: default
-default: install
+default: all
 
 .PHONY: environment
 environment:
