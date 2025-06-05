@@ -10,7 +10,7 @@ public struct FakeAPIService: APIService {
         of _: T.Type,
         decoder _: JSONDecoder
     ) async throws -> T {
-        try await Task.sleep(nanoseconds: 1_000_000_000)  // Simulate network delay
+        try await Task.sleep(nanoseconds: 0_000_000_001)  // Simulate network delay
 
         let result: T? =
             fakeGetUsers(request) ?? fakeGetStory(request)

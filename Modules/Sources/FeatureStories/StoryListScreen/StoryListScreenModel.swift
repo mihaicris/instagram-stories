@@ -84,7 +84,7 @@ public final class StoryListScreenModel {
                 of: Story.self,
                 decoder: .default
             )
-            dump(story)
+            presentedStory = story
         } catch {
             // TODO: Implement this
             print(error.localizedDescription)

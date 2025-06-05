@@ -4,19 +4,19 @@ import SwiftUI
 import UIComponents
 
 public struct StoryListScreen: View {
+    @Bindable var model: StoryListScreenModel
+    
     public init(model: StoryListScreenModel) {
         self.model = model
     }
-
-    @Bindable var model: StoryListScreenModel
 
     public var body: some View {
         switch model.state {
         case .data(let items):
             StoryItemsView(items: items)
                 .environment(\.isLoadingMore, model.isLoadingMore)
-                .fullScreenCover(item: $model.presentedStory) {
-                    StoryViewScreen(model: .init(story: $0))
+                .fullScreenCover(item: $model.presentedStory) { story in
+                    StoryViewScreen(model: .init(story: story))
                 }
 
         case .empty:
