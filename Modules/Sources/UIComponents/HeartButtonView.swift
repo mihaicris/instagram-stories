@@ -12,7 +12,7 @@ public struct HeartButtonView: View {
     public var body: some View {
         Button(action: action) {
             Image(systemName: "heart")
-                .font(.system(size: 20, weight: .regular))
+                .font(.system(size: 22, weight: .regular))
         }
         .overlay(alignment: .topTrailing) {
             if unread {

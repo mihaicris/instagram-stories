@@ -10,7 +10,7 @@ public struct MessagesButtonView: View {
     public var body: some View {
         Button(action: action) {
             Image(systemName: "paperplane")
-                .font(.system(size: 20, weight: .regular))
+                .font(.system(size: 22, weight: .regular))
         }
         .padding(.horizontal, 2)
     }

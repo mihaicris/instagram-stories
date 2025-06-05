@@ -23,6 +23,7 @@ disabled_rules:
   - extension_access_modifier
   - identifier_name
   - missing_docs
+  - multiline_function_chains
   - nesting
   - no_empty_block
   - no_magic_numbers

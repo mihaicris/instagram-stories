@@ -21,16 +21,16 @@ struct StoryViewScreen: View {
                 Color.black.ignoresSafeArea()
             }
 
-            VStack(spacing: 12) {
+            VStack(spacing: 14) {
                 MediaView(url: model.story.content.first!.url)
-                    .padding(4)
-                HStack {
+
+                HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
                     HeartButtonView(action: {}, unread: false)
                     MessagesButtonView(action: {})
                 }
                 .tint(.white)
-                .padding(.horizontal, 8)
+                .padding(.horizontal, 20)
             }
             .background(Color.black)
             .offset(y: dragOffset.height)
@@ -77,13 +77,14 @@ struct StoryViewScreen: View {
         var body: some View {
             Button(action: action) {
                 Text("Send message...")
-                    .font(.system(size: 14))
+                    .font(.system(size: 16)).bold()
                     .foregroundColor(.white)
-                    .padding()
+                    .padding(.vertical, 14)
+                    .padding(.horizontal, 22)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .overlay {
                         Capsule()
-                            .stroke(.white, lineWidth: 0.5)
+                            .stroke(.white, lineWidth: 0.3)
                             .padding(2)
                     }
             }
