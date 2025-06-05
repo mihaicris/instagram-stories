@@ -2,21 +2,6 @@ import Kingfisher
 import SwiftUI
 import UIComponents
 
-struct StoryViewModel {
-    let userProfileImageURL: URL
-    let username: String
-    let userVerified: Bool
-    let activeTime: String
-    let stories: [StoryMoment]
-    let onClose: () -> Void
-    
-    struct StoryMoment {
-        let url: URL
-        let type: String
-        let musicInfo: String?
-    }
-}
-
 // TODO: GESTURI
 // -----------------------------------
 // TAP STANGA
@@ -75,8 +60,8 @@ struct StoryViewScreen: View {
         let segments: Int = 10
         var body: some View {
             VStack(spacing: 6) {
-                HStack(spacing: 3) { // DISTANCE BETWEEN SEGMENTS
-                    ForEach(1 ... segments, id: \.self) { i in
+                HStack(spacing: 3) {  // DISTANCE BETWEEN SEGMENTS
+                    ForEach(1...segments, id: \.self) { i in
                         Capsule().fill(.white)
                             .opacity(0.3)
                             .frame(height: 3)
@@ -94,21 +79,36 @@ struct StoryViewScreen: View {
 
                     VStack(alignment: .leading) {
                         Text("trusca_simona ").bold()
-                        + Text("2h")
+                            + Text("2h")
                             .foregroundStyle(.white.opacity(0.8))
-                        Text("\(Image(systemName: "waveform.badge.microphone")) Kali Uchis ∙")
-                            .bold()
-                        + Text("All I can say")
+                        HStack {
+                            Image(systemName: "waveform")
+                                .symbolEffect(.variableColor.dimInactiveLayers.cumulative.reversing)
+                            Text("Kali Uchis ∙").bold() + Text("All I can say")
+                        }
                     }
                     .font(.system(size: 14))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
+                    
                     Spacer()
+                    
+                    // Story Options
+                    Button(action: {}) {
+                        Image(systemName: "ellipsis")
+                            .imageScale(.medium)
+                            .tint(.white)
+                            .padding(.trailing)
+                    }
+                    
+                    // Story closing
                     Button(action: {}) {
                         Image(systemName: "xmark")
+                            .imageScale(.large)
                             .tint(.white)
                     }
-                }.padding(2)
+                }
+                .padding(2)
             }
             .frame(maxWidth: .infinity)
         }
