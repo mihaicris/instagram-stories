@@ -14,6 +14,21 @@ final class APIServiceLive: APIService {
         return session
     }()
 
+    func request(_ request: URLRequest) async throws {
+        let response = await session.request(request)
+            .validate()
+            .serializingData()
+            .response
+
+        switch response.result {
+        case .success:
+            return
+
+        case let .failure(error):
+            throw error
+        }
+    }
+    
     func request<T: Sendable & Decodable>(
         _ request: URLRequest,
         of type: T.Type,

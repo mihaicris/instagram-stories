@@ -18,49 +18,56 @@ let package = Package(
     targets: [
         .target(
             name: "FeatureStories",
-            dependencies: commonDependencies() + [
+            dependencies: dependencies() + [
                 .product(name: "Kingfisher", package: "Kingfisher"),
                 "Networking",
+                "Persistence",
                 "UIComponents",
             ],
             resources: [
                 .process("Resources/")
             ],
-            swiftSettings: commonSwiftSettings(languageMode: .v6),
-            plugins: commonPlugins()
+            swiftSettings: settings(languageMode: .v6),
+            plugins: plugins()
         ),
         .target(
             name: "Networking",
-            dependencies: commonDependencies() + [
+            dependencies: dependencies() + [
                 .product(name: "Alamofire", package: "Alamofire")
             ],
-            swiftSettings: commonSwiftSettings(languageMode: .v6),
-            plugins: commonPlugins()
+            swiftSettings: settings(languageMode: .v6),
+            plugins: plugins()
+        ),
+        .target(
+            name: "Persistence",
+            dependencies: dependencies(),
+            swiftSettings: settings(languageMode: .v6),
+            plugins: plugins()
         ),
         .target(
             name: "UIComponents",
             dependencies: [],
-            swiftSettings: commonSwiftSettings(languageMode: .v6),
-            plugins: commonPlugins(),
+            swiftSettings: settings(languageMode: .v6),
+            plugins: plugins(),
         ),
     ]
 )
 
-func commonSwiftSettings(languageMode: SwiftLanguageMode) -> [SwiftSetting] {
+func settings(languageMode: SwiftLanguageMode) -> [SwiftSetting] {
     [
         //       .define("MOCKING", .when(configuration: .debug)),
         .swiftLanguageMode(languageMode)
     ]
 }
 
-func commonDependencies() -> [Target.Dependency] {
+func dependencies() -> [Target.Dependency] {
     [
         .product(name: "Dependencies", package: "swift-dependencies")
         //      .product(name: "Mockable", package: "Mockable"),
     ]
 }
 
-func commonPlugins() -> [Target.PluginUsage] {
+func plugins() -> [Target.PluginUsage] {
     [
         .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
     ]

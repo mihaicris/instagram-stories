@@ -3,11 +3,8 @@ import Dependencies
 import Foundation
 
 public protocol APIService: Sendable {
-    func request<T: Sendable & Decodable>(
-        _ request: URLRequest,
-        of: T.Type,
-        decoder: JSONDecoder
-    ) async throws -> T
+    func request(_ request: URLRequest) async throws
+    func request<T: Sendable & Decodable>(_ request: URLRequest, of: T.Type, decoder: JSONDecoder) async throws -> T
 }
 
 extension DependencyValues {
