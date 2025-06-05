@@ -1,13 +1,29 @@
-//
-//  StoryDetailsScreen.swift
-//  Instagram
-//
-//  Created by Mihai Cristescu on 28.05.2025.
-//
-
 import Kingfisher
 import SwiftUI
 import UIComponents
+
+struct StoryViewModel {
+    let userProfileImageURL: URL
+    let username: String
+    let userVerified: Bool
+    let activeTime: String
+    let stories: [StoryMoment]
+    let onClose: () -> Void
+    
+    struct StoryMoment {
+        let url: URL
+        let type: String
+        let musicInfo: String?
+    }
+}
+
+// TODO: GESTURI
+// -----------------------------------
+// TAP STANGA
+// TAP DREAPTA
+// SLIDE DOWN DISMISS IN ACCOUNT IMAGE
+// ZOOM
+// -----------------------------------
 
 struct StoryViewScreen: View {
     @Environment(\.dismiss) var dismiss
@@ -33,6 +49,9 @@ struct StoryViewScreen: View {
                 .padding(.horizontal, 20)
             }
             .background(Color.black)
+            .overlay(alignment: .top) {
+                StoryDetailsView().padding(8)
+            }
             .offset(y: dragOffset.height)
             .gesture(
                 DragGesture()
@@ -49,6 +68,49 @@ struct StoryViewScreen: View {
                         }
                     }
             )
+        }
+    }
+
+    struct StoryDetailsView: View {
+        let segments: Int = 10
+        var body: some View {
+            VStack(spacing: 6) {
+                HStack(spacing: 3) { // DISTANCE BETWEEN SEGMENTS
+                    ForEach(1 ... segments, id: \.self) { i in
+                        Capsule().fill(.white)
+                            .opacity(0.3)
+                            .frame(height: 3)
+                            .frame(maxWidth: .infinity)
+                            .overlay(alignment: .leading) {
+                                if i == 1 {
+                                    Capsule().fill(.white)
+                                }
+                            }
+                    }
+                }
+                HStack(spacing: 8) {
+                    Circle()
+                        .frame(width: 30, height: 30)
+
+                    VStack(alignment: .leading) {
+                        Text("trusca_simona ").bold()
+                        + Text("2h")
+                            .foregroundStyle(.white.opacity(0.8))
+                        Text("\(Image(systemName: "waveform.badge.microphone")) Kali Uchis ∙")
+                            .bold()
+                        + Text("All I can say")
+                    }
+                    .font(.system(size: 14))
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.white)
+                    Spacer()
+                    Button(action: {}) {
+                        Image(systemName: "xmark")
+                            .tint(.white)
+                    }
+                }.padding(2)
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 
@@ -90,4 +152,29 @@ struct StoryViewScreen: View {
             }
         }
     }
+}
+
+// swiftlint:disable force_unwrapping
+#Preview {
+    StoryViewScreen(
+        model: .init(
+            story: .init(
+                id: 1,
+                userID: 1,
+                content: [
+                    .init(
+                        id: 0,
+                        type: "image",
+                        url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                    ),
+                    .init(
+                        id: 1,
+                        type: "image",
+                        url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                    ),
+                ],
+                seen: true
+            )
+        )
+    )
 }
