@@ -56,11 +56,11 @@ public struct StoryListScreen: View {
 
                     HeartButtonView(action: {}, liked: false, unread: true)
                         .tint(.black)
-                        .frame(height: 20)
+                        .frame(height: 18)
 
                     MessagesButtonView(action: {})
                         .tint(.black)
-                        .frame(height: 20)
+                        .frame(height: 18)
                 }
                 .padding(.horizontal)
 
