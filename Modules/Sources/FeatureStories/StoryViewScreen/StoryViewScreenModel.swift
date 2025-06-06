@@ -22,7 +22,7 @@ final class StoryViewScreenModel {
 
     @ObservationIgnored
     private let dto: DTO
-    
+
     @ObservationIgnored
     private let onSeen: () -> Void
 
@@ -63,12 +63,12 @@ final class StoryViewScreenModel {
             // TODO: Error Logging
         }
     }
-    
+
     // TODO: temporarely, call at appropriate time
     func markAsSeen() {
         onSeen()
     }
-    
+
     struct ViewModel {
         let userProfileImageURL: URL
         let username: String

@@ -36,13 +36,15 @@ public final class StoryListScreenModel {
         currentPage = 0
         await loadMoreContent()
     }
-    
+
     func markAsUnseen() {
-        state = .data(viewModels.map {
-            var e = $0
-            e.markAsUnseen()
-            return e
-        })
+        state = .data(
+            viewModels.map {
+                var e = $0
+                e.markAsUnseen()
+                return e
+            }
+        )
     }
 
     func loadMoreContent() async {
@@ -59,7 +61,7 @@ public final class StoryListScreenModel {
             viewModels = []
         }
     }
-    
+
     func refresh(userId: Int) {
         guard
             let index = viewModels.firstIndex(where: { $0.id == userId })

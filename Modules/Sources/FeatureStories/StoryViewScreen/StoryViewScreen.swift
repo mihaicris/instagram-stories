@@ -28,15 +28,14 @@ struct StoryViewScreen: View {
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
                     HeartButtonView(
-                        action: {
-                            Task {
-                                await model.onLike()
-                            }
-                        },
+                        action: { Task { await model.onLike() } },
                         liked: model.liked,
                         unread: false
                     )
+                    .frame(height: 20)
+
                     MessagesButtonView(action: model.markAsSeen)  // temporarely
+                        .frame(height: 20)
                 }
                 .tint(.white)
                 .padding(.horizontal, 20)

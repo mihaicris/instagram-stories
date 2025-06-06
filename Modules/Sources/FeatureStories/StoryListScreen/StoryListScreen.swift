@@ -47,16 +47,18 @@ public struct StoryListScreen: View {
 
         var body: some View {
             VStack {
-                HStack(alignment: .lastTextBaseline) {
+                HStack(alignment: .lastTextBaseline, spacing: 12) {
                     HeadingView(action: {})
 
                     Spacer()
 
                     HeartButtonView(action: {}, liked: false, unread: true)
                         .tint(.black)
+                        .frame(height: 20)
 
                     MessagesButtonView(action: {})
                         .tint(.black)
+                        .frame(height: 20)
                 }
                 .padding(.horizontal)
 

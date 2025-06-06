@@ -9,13 +9,18 @@ public struct MessagesButtonView: View {
 
     public var body: some View {
         Button(action: action) {
-            Image(systemName: "paperplane")
-                .font(.system(size: 22, weight: .regular))
+            GeometryReader { proxy in
+                let width = proxy.size.width
+                Image(systemName: "paperplane")
+                    .resizable()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
-        .padding(.horizontal, 2)
+        .aspectRatio(contentMode: .fit)
     }
 }
 
 #Preview {
     MessagesButtonView(action: {})
+        .frame(height: 50)
 }

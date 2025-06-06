@@ -13,29 +13,59 @@ public struct HeartButtonView: View {
 
     public var body: some View {
         Button(action: action) {
-            Image(systemName: liked ? "heart.fill" : "heart")
-                .font(.system(size: 22, weight: .regular))
-        }
-        .overlay(alignment: .topTrailing) {
-            if unread {
-                Circle()
-                    .frame(width: 9, height: 9)
-                    .foregroundColor(.white)
-                    .overlay {
+            GeometryReader { proxy in
+                let width = proxy.size.width
+                let clipSize = width / 3.0
+                let offset = clipSize / 3.0
+                let ratio: CGFloat = 1.3
+                let maskSize = clipSize * ratio
+                let alignmentFix = (maskSize - clipSize) / 2
+
+                if unread {
+                    ZStack(alignment: .topTrailing) {
+                        heart()
+                            .mask {
+                                ZStack(alignment: .topTrailing) {
+                                    Rectangle()
+                                    Circle()
+                                        .frame(width: clipSize * ratio, height: clipSize * ratio)
+                                        .offset(x: offset, y: -offset)
+                                        .blendMode(.destinationOut)
+                                }
+                            }
+
                         Circle()
-                            .frame(width: 7, height: 7)
-                            .foregroundColor(.red)
+                            .fill(.red)
+                            .frame(width: clipSize, height: clipSize)
+                            .offset(x: offset - alignmentFix, y: -offset + alignmentFix)
                     }
+                } else {
+                    heart()
+                }
             }
+            .aspectRatio(contentMode: .fit)
         }
-        .padding(.horizontal, 2)
+    }
+
+    @ViewBuilder
+    private func heart() -> some View {
+        Image(systemName: liked ? "heart.fill" : "heart")
+            .resizable()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 #Preview {
-    HeartButtonView(action: {}, liked: true, unread: false)
-        .padding()
-
-    HeartButtonView(action: {}, liked: false, unread: true)
-        .padding()
+    let height: CGFloat = 100
+    VStack {
+        Group {
+            HeartButtonView(action: {}, liked: true, unread: false)
+            HeartButtonView(action: {}, liked: true, unread: true)
+            HeartButtonView(action: {}, liked: false, unread: false)
+            HeartButtonView(action: {}, liked: false, unread: true)
+        }
+        .frame(height: height)
+    }
+    .frame(height: height)
+    .tint(.black)
 }
