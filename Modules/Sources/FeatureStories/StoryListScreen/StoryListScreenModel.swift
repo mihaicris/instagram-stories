@@ -32,10 +32,10 @@ public final class StoryListScreenModel {
 
     func onAppear() async {
         currentPage = 0
-        await loadContent()
+        await loadMoreContent()
     }
 
-    func loadContent() async {
+    func loadMoreContent() async {
         isLoadingMore = !storyViewModels.isEmpty
         defer { isLoadingMore = false }
         do {
@@ -99,7 +99,7 @@ public final class StoryListScreenModel {
                 await MainActor.run {
                     self.currentPage += 1
                 }
-                await loadContent()
+                await loadMoreContent()
             }
         )
     }
