@@ -22,7 +22,8 @@ public struct StoryListScreen: View {
                             onSeen: {
                                 model.refresh(userId: dto.user.id)
                             }
-                        ))
+                        )
+                    )
                 }
 
         case .empty:
