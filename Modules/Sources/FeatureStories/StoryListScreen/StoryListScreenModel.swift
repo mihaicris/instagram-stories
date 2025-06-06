@@ -53,7 +53,7 @@ public final class StoryListScreenModel {
             storyViewModels = []
         }
     }
-    
+
     private func makeViewModels(users: [User]) async throws -> [StoryItemViewModel] {
         try await withThrowingTaskGroup(of: StoryItemViewModel?.self, returning: [StoryItemViewModel].self) { taskGroup in
             for user in users {
@@ -61,7 +61,7 @@ public final class StoryListScreenModel {
                     try await self?.makeViewModel(for: user)
                 }
             }
-            
+
             var resultsById: [User.ID: StoryItemViewModel] = [:]
 
             for try await result in taskGroup {
@@ -75,7 +75,7 @@ public final class StoryListScreenModel {
             return sorted
         }
     }
-    
+
     private func makeViewModel(for user: User) async throws -> StoryItemViewModel? {
         guard let imageURL = URL(string: user.profilePictureURL) else {
             return nil
