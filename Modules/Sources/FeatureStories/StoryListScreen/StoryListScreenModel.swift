@@ -2,6 +2,7 @@ import Dependencies
 import Foundation
 import Networking
 import Observation
+import Persistence
 
 @MainActor
 @Observable
@@ -11,16 +12,19 @@ public final class StoryListScreenModel {
     @ObservationIgnored
     @Dependency(\.apiService) private var apiService
 
+    @ObservationIgnored
+    @Dependency(\.persistenceService) private var persistenceService
+
     var state: State = .loading
     var isLoadingMore: Bool = false
-    var presentedStory: Story?
+    var navigationToStory: Story?
 
     @ObservationIgnored private var currentPage: Int = 0
 
-    @ObservationIgnored private var viewModels: [UserItemViewModel] = []
+    @ObservationIgnored private var storyViewModels: [StoryItemViewModel] = []
 
     enum State: Equatable {
-        case data([UserItemViewModel])
+        case data([StoryItemViewModel])
         case empty
         case error(String)
         case loading
@@ -32,7 +36,7 @@ public final class StoryListScreenModel {
     }
 
     func loadContent() async {
-        isLoadingMore = !viewModels.isEmpty
+        isLoadingMore = !storyViewModels.isEmpty
         defer { isLoadingMore = false }
         do {
             let users: [User] = try await apiService.request(
@@ -40,22 +44,23 @@ public final class StoryListScreenModel {
                 of: [User].self,
                 decoder: .default
             )
-            viewModels += mapToViewModel(users)
-            state = .data(viewModels)
+            storyViewModels += mapToViewModel(users)
+            state = .data(storyViewModels)
         } catch {
             state = .error("Stories are not loading right now, try again later...")
             currentPage = 0
-            viewModels = []
+            storyViewModels = []
         }
     }
 
-    private func mapToViewModel(_ users: [User]) -> [UserItemViewModel] {
+    private func mapToViewModel(_ users: [User]) -> [StoryItemViewModel] {
+        
         users.compactMap { user in
             guard let imageURL = URL(string: user.profilePictureURL) else {
                 return nil
             }
 
-            return UserItemViewModel(
+            return StoryItemViewModel(
                 id: user.id,
                 imageURL: imageURL,
                 body: user.name,
@@ -84,10 +89,29 @@ public final class StoryListScreenModel {
                 of: Story.self,
                 decoder: .default
             )
-            presentedStory = story
+            navigationToStory = try await updateStoryPersistence(for: story)
         } catch {
-            // TODO: Implement this
-            print(error.localizedDescription)
+            // TODO: Error logging
         }
+    }
+
+    private func updateStoryPersistence(for story: Story) async throws -> Story {
+        if let persistedStory = try await persistenceService.getPersistedStoryData(userID: story.userID) {
+            return Story(
+                id: story.id,
+                userID: story.userID,
+                content: story.content,
+                seen: true,
+                liked: persistedStory.liked
+            )
+        }
+        try await persistenceService.persistStoryData(StoryPersistedData(userID: story.userID, liked: story.liked))
+        return Story(
+            id: story.id,
+            userID: story.userID,
+            content: story.content,
+            seen: true, // tapping on a story will mark story as seen, and persist
+            liked: story.liked
+        )
     }
 }

@@ -173,7 +173,8 @@ struct StoryViewScreen: View {
                         url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
                     ),
                 ],
-                seen: true
+                seen: true,
+                liked: false
             )
         )
     )

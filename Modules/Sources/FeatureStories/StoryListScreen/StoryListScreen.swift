@@ -15,7 +15,7 @@ public struct StoryListScreen: View {
         case .data(let items):
             StoryItemsView(items: items)
                 .environment(\.isLoadingMore, model.isLoadingMore)
-                .fullScreenCover(item: $model.presentedStory) { story in
+                .fullScreenCover(item: $model.navigationToStory) { story in
                     StoryViewScreen(model: .init(story: story))
                 }
 
@@ -36,7 +36,7 @@ public struct StoryListScreen: View {
     }
 
     struct StoryItemsView: View {
-        let items: [UserItemViewModel]
+        let items: [StoryItemViewModel]
 
         var body: some View {
             VStack {
@@ -80,7 +80,7 @@ public struct StoryListScreen: View {
             @Environment(\.isLoadingMore)
             private var isLoadingMore
 
-            let items: [UserItemViewModel]
+            let items: [StoryItemViewModel]
             private let metric: CGFloat = 90
 
             var body: some View {
@@ -116,7 +116,7 @@ public struct StoryListScreen: View {
             }
 
             struct ItemView: View {
-                let item: UserItemViewModel
+                let item: StoryItemViewModel
                 let metric: CGFloat
 
                 var body: some View {

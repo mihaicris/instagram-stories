@@ -25,7 +25,8 @@
         "id": 3
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 2,
@@ -81,7 +82,8 @@
         "id": 3
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 4,
@@ -127,7 +129,8 @@
         "id": 2
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 6,
@@ -193,7 +196,8 @@
         "id": 4
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 8,
@@ -254,7 +258,8 @@
         "id": 4
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 10,
@@ -315,7 +320,8 @@
         "id": 3
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 12,
@@ -361,7 +367,8 @@
         "id": 2
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 14,
@@ -412,7 +419,8 @@
         "id": 3
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 16,
@@ -473,7 +481,8 @@
         "id": 3
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 18,
@@ -524,7 +533,8 @@
         "id": 3
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 20,
@@ -580,7 +590,8 @@
         "id": 3
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 22,
@@ -646,7 +657,8 @@
         "id": 4
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 24,
@@ -712,7 +724,8 @@
         "id": 4
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 26,
@@ -758,7 +771,8 @@
         "id": 2
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 28,
@@ -824,7 +838,8 @@
         "id": 4
       }
     ],
-    "seen": false
+    "seen": false,
+    "liked": false
   },
   {
     "id": 30,

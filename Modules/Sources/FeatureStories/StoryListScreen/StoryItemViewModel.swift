@@ -1,6 +1,6 @@
 import Foundation
 
-struct UserItemViewModel: Identifiable, Equatable {
+struct StoryItemViewModel: Identifiable, Equatable {
     let id: Int
     let imageURL: URL
     let body: String

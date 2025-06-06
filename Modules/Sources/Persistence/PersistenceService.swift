@@ -2,8 +2,10 @@ import Dependencies
 import Foundation
 
 public protocol PersistenceService: Sendable {
-    func save(value: Data, for key: String) async throws
-    func get(for key: String) async throws -> Data?
+    func persistStoryData(_ data: StoryPersistedData) async throws
+    func clearStoryData(_ data: StoryPersistedData) async throws
+    func getPersistedStoryData(userID: Int) async throws -> StoryPersistedData?
+    
 }
 
 extension DependencyValues {

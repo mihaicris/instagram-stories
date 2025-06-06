@@ -5,6 +5,7 @@ struct Story: Codable, Identifiable {
     let userID: Int
     let content: [Media]
     let seen: Bool
+    let liked: Bool
 
     struct Media: Codable, Identifiable {
         let id: Int

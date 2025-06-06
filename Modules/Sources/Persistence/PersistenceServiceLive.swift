@@ -7,11 +7,18 @@ struct PersistenceServiceLive: PersistenceService {
         UserDefaults(suiteName: "ro.mihaicris.Instagram.PersistenceService") ?? .standard
     }()
 
-    func save(value: Data, for key: String) async throws {
-        suite.set(value, forKey: key)
+    func persistStoryData(_ data: StoryPersistedData) async throws {
+        suite.set(data.liked, forKey: data.userID.description)
     }
-
-    func get(for key: String) async throws -> Data? {
-        suite.data(forKey: key)
+    
+    func clearStoryData(_ data: StoryPersistedData) async throws {
+        suite.set(nil, forKey: data.userID.description)
+    }
+    
+    func getPersistedStoryData(userID: Int) async throws -> StoryPersistedData? {
+        guard let liked = suite.value(forKey: userID.description) as? Bool else {
+            return nil
+        }
+        return StoryPersistedData(userID: userID, liked: liked)
     }
 }
