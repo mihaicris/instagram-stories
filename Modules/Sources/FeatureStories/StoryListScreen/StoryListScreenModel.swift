@@ -44,7 +44,8 @@ public final class StoryListScreenModel {
                 of: [User].self,
                 decoder: .default
             )
-            await storyViewModels += mapToViewModel(users)
+            let new = try await makeViewModels(users: users)
+            storyViewModels += new
             state = .data(storyViewModels)
         } catch {
             state = .error("Stories are not loading right now, try again later...")
@@ -52,37 +53,55 @@ public final class StoryListScreenModel {
             storyViewModels = []
         }
     }
+    
+    private func makeViewModels(users: [User]) async throws -> [StoryItemViewModel] {
+        try await withThrowingTaskGroup(of: StoryItemViewModel?.self, returning: [StoryItemViewModel].self) { taskGroup in
+            for user in users {
+                taskGroup.addTask { [weak self] in
+                    try await self?.makeViewModel(for: user)
+                }
+            }
+            
+            var resultsById: [User.ID: StoryItemViewModel] = [:]
 
-    private func mapToViewModel(_ users: [User]) async -> [StoryItemViewModel] {
-        //        users.compactMap { user in
-        //            guard let imageURL = URL(string: user.profilePictureURL) else {
-        //                return nil
-        //            }
-        //
-        //            let persistedData = try await persistenceService.getPersistedStoryData(userID: user.id)
-        //            let seen = persistenceService != nil
-        //
-        //            return StoryItemViewModel(
-        //                id: user.id,
-        //                imageURL: imageURL,
-        //                body: user.name,
-        //                seen: seen,
-        //                onTap: { [weak self] in
-        //                    guard let self else {
-        //                        return
-        //                    }
-        //                    await onUserTap(userID: user.id)
-        //                },
-        //                onAppear: { [weak self] in
-        //                    guard let self else {
-        //                        return
-        //                    }
-        //                    currentPage += 1
-        //                    await loadContent()
-        //                }
-        //            )
-        []
+            for try await result in taskGroup {
+                if let vm = result {
+                    resultsById[vm.id] = vm
+                }
+            }
 
+            let sorted = users.compactMap { resultsById[$0.id] }
+
+            return sorted
+        }
+    }
+    
+    private func makeViewModel(for user: User) async throws -> StoryItemViewModel? {
+        guard let imageURL = URL(string: user.profilePictureURL) else {
+            return nil
+        }
+        let persistedData = try await persistenceService.getPersistedStoryData(userID: user.id)
+        return StoryItemViewModel(
+            id: user.id,
+            imageURL: imageURL,
+            body: user.name,
+            seen: persistedData != nil,
+            onTap: { [weak self] in
+                guard let self else {
+                    return
+                }
+                await onUserTap(userID: user.id)
+            },
+            onAppear: { [weak self] in
+                guard let self else {
+                    return
+                }
+                await MainActor.run {
+                    self.currentPage += 1
+                }
+                await loadContent()
+            }
+        )
     }
 
     private func onUserTap(userID: Int) async {
@@ -116,42 +135,5 @@ public final class StoryListScreenModel {
             seen: true,  // tapping on a story will mark story as seen, and persist
             liked: story.liked
         )
-    }
-
-    private func getMediaContent(users: [User]) async throws -> [StoryItemViewModel] {
-        await withThrowingTaskGroup(of: StoryItemViewModel?.self, returning: [StoryItemViewModel].self) { taskGroup in
-            for user in users {
-                taskGroup.addTask { [weak self] in
-                    guard let self else {
-                        return nil
-                    }
-
-                    guard let imageURL = URL(string: user.profilePictureURL) else {
-                        return nil
-                    }
-                    
-                    let persistedData = try await persistenceService.getPersistedStoryData(userID: user.id)
-                    return StoryItemViewModel(
-                        id: user.id,
-                        imageURL: imageURL,
-                        body: user.name,
-                        seen: persistedData != nil,
-                        onTap: {
-                        },
-                        onAppear: {
-                        }
-                    )
-                }
-            }
-            var results: [StoryItemViewModel] = []
-            while let optionalResult = try? await taskGroup.next(), let result = optionalResult {
-                results.append(result)
-            }
-            let sorted = users.compactMap { user in
-                results.first(where: { $0.id == user.id })
-            }
-
-            return sorted
-        }
     }
 }
