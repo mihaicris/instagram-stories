@@ -36,6 +36,14 @@ public final class StoryListScreenModel {
         currentPage = 0
         await loadMoreContent()
     }
+    
+    func markAsUnseen() {
+        state = .data(viewModels.map {
+            var e = $0
+            e.markAsUnseen()
+            return e
+        })
+    }
 
     func loadMoreContent() async {
         isLoadingMore = !viewModels.isEmpty

@@ -11,6 +11,11 @@ struct StoryItemViewModel: Identifiable, Equatable, Sendable {
     mutating func markAsSeen() {
         seen = true
     }
+    
+    mutating func markAsUnseen() {
+        seen = false
+    }
+    
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id && lhs.imageURL == rhs.imageURL && lhs.username == rhs.username && lhs.seen == rhs.seen
     }

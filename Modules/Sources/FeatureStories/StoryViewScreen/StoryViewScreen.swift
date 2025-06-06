@@ -52,7 +52,7 @@ struct StoryViewScreen: View {
                 )
                 .padding(8)
             }
-            .offset(y: dragOffset.height)
+//            .offset(y: dragOffset.height)
             .gesture(
                 DragGesture()
                     .onChanged { value in

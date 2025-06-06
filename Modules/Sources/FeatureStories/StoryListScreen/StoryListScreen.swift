@@ -16,12 +16,13 @@ public struct StoryListScreen: View {
             StoryItemsView(items: items)
                 .environment(\.isLoadingMore, model.isLoadingMore)
                 .fullScreenCover(item: $model.navigationToStory) { dto in
-                    StoryViewScreen(model: StoryViewScreenModel(
-                        dto: dto,
-                        onSeen: {
-                            model.refresh(userId: dto.user.id)
-                        }
-                    ))
+                    StoryViewScreen(
+                        model: StoryViewScreenModel(
+                            dto: dto,
+                            onSeen: {
+                                model.refresh(userId: dto.user.id)
+                            }
+                        ))
                 }
 
         case .empty:
@@ -131,7 +132,7 @@ public struct StoryListScreen: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(width: metric, height: metric)
                             .clipShape(Circle())
-                            .padding(metric * 0.04)
+                            .padding(metric * 0.05)
                             .overlay {
                                 StoryStatusView(seen: item.seen, metric: metric)
                             }
@@ -149,14 +150,23 @@ public struct StoryListScreen: View {
                 let metric: CGFloat
 
                 var body: some View {
-                    Circle()
-                        .stroke(
-                            LinearGradient(
-                                colors: seen ? [.black.opacity(0.2)] : [.red, .yellow],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ), lineWidth: metric * 0.03
-                        )
+                    Circle().stroke(gradient(seen), lineWidth: metric * 0.035)
+                }
+
+                private func gradient(_ seen: Bool) -> LinearGradient {
+                    LinearGradient(
+                        colors: seen
+                            ? [.black.opacity(0.15)]
+                            : [
+                                Color.yellow,
+                                Color(red: 0.984, green: 0.745, blue: 0.164),  // Yellow-Orange
+                                Color(red: 0.992, green: 0.380, blue: 0.243),  // Orange-Red
+                                Color(red: 0.867, green: 0.174, blue: 0.482),  // Magenta-Pink
+                                Color.pink,
+                            ],
+                        startPoint: .bottomLeading,
+                        endPoint: .topTrailing
+                    )
                 }
             }
         }
