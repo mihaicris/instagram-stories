@@ -9,11 +9,9 @@ public struct MessagesButtonView: View {
 
     public var body: some View {
         Button(action: action) {
-            GeometryReader { proxy in
-                Image(systemName: "paperplane")
-                    .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
+            Image(systemName: "paperplane")
+                .resizable()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .aspectRatio(contentMode: .fit)
     }

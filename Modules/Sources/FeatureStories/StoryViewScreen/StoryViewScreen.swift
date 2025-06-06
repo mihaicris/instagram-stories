@@ -39,7 +39,7 @@ struct StoryViewScreen: View {
                             await model.markAsSeen()
                         }
                     })  // TODO: fix tempory custom action
-                        .frame(height: 20)
+                    .frame(height: 20)
                 }
                 .tint(.white)
                 .padding(.horizontal, 20)
