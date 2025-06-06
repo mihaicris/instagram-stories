@@ -41,4 +41,4 @@ disabled_rules:
   - trailing_comma
   - trailing_whitespace
   - type_contents_order
-
+  - vertical_whitespace

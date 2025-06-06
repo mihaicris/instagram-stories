@@ -85,6 +85,7 @@ struct StoryViewScreen: View {
                             }
                     }
                 }
+
                 HStack(spacing: 8) {
                     KFImage(userProfileURL)
                         .resizable()
