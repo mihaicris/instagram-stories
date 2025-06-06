@@ -152,7 +152,7 @@ public struct StoryListScreen: View {
                     Circle()
                         .stroke(
                             LinearGradient(
-                                colors: seen ? [.gray] : [.red, .yellow],
+                                colors: seen ? [.black.opacity(0.2)] : [.red, .yellow],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             ), lineWidth: metric * 0.03
