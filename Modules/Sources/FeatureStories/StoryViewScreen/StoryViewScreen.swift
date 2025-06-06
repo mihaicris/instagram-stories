@@ -27,7 +27,15 @@ struct StoryViewScreen: View {
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
-                    HeartButtonView(action: {}, unread: false)
+                    HeartButtonView(
+                        action: {
+                            Task {
+                                await model.onLike()
+                            }
+                        },
+                        liked: model.liked,
+                        unread: false
+                    )
                     MessagesButtonView(action: {})
                 }
                 .tint(.white)

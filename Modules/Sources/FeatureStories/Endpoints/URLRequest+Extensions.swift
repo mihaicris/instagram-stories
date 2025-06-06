@@ -32,7 +32,7 @@ extension URLRequest {
     }
 
     static func updateStoryLikeStatus(storyID: Int, liked: Bool) -> URLRequest {
-        let url = URL(string: "https://dummy.com/story\(storyID)")!
+        let url = URL(string: "https://dummy.com/story/\(storyID)")!
         struct Payload: Encodable {
             let liked: Bool
         }

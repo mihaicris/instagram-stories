@@ -2,16 +2,18 @@ import SwiftUI
 
 public struct HeartButtonView: View {
     let action: () -> Void
+    let liked: Bool
     let unread: Bool
 
-    public init(action: @escaping () -> Void, unread: Bool) {
+    public init(action: @escaping () -> Void, liked: Bool, unread: Bool) {
         self.action = action
+        self.liked = liked
         self.unread = unread
     }
 
     public var body: some View {
         Button(action: action) {
-            Image(systemName: "heart")
+            Image(systemName: liked ? "heart.fill" : "heart")
                 .font(.system(size: 22, weight: .regular))
         }
         .overlay(alignment: .topTrailing) {
@@ -31,9 +33,9 @@ public struct HeartButtonView: View {
 }
 
 #Preview {
-    HeartButtonView(action: {}, unread: true)
+    HeartButtonView(action: {}, liked: true, unread: false)
         .padding()
 
-    HeartButtonView(action: {}, unread: false)
+    HeartButtonView(action: {}, liked: false, unread: true)
         .padding()
 }

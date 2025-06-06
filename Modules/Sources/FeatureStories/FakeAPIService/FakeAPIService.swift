@@ -65,7 +65,7 @@ public struct FakeAPIService: APIService {
     }
 
     private func fakeUpdateStoryLikeStatus(_ request: URLRequest) throws {
-        guard urlPath(for: request) == "/story/"
+        guard (urlPath(for: request) ?? "").contains("/story/")
         else {
             throw NSError.notImplemented(request)
         }

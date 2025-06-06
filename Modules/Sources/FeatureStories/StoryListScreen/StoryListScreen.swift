@@ -45,7 +45,7 @@ public struct StoryListScreen: View {
 
                     Spacer()
 
-                    HeartButtonView(action: {}, unread: true)
+                    HeartButtonView(action: {}, liked: false, unread: true)
                         .tint(.black)
 
                     MessagesButtonView(action: {})
