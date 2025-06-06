@@ -8,10 +8,10 @@ import Persistence
 @Observable
 public final class StoryListScreenModel {
     public init() {}
-    
+
     var state: State = .loading
     var isLoadingMore: Bool = false
-    var navigationToStory: Story?
+    var navigationToStory: StoryViewScreenModel.DTO?
 
     @ObservationIgnored
     @Dependency(\.apiService) private var apiService
@@ -24,7 +24,7 @@ public final class StoryListScreenModel {
 
     @ObservationIgnored
     private var viewModels: [StoryItemViewModel] = []
-    
+
     enum State: Equatable {
         case data([StoryItemViewModel])
         case empty
@@ -89,7 +89,7 @@ public final class StoryListScreenModel {
                 guard let self else {
                     return
                 }
-                await onUserTap(userId: user.id)
+                await onUserTap(user)
             },
             onAppear: { [weak self] in
                 guard let self else {
@@ -103,14 +103,15 @@ public final class StoryListScreenModel {
         )
     }
 
-    private func onUserTap(userId: Int) async {
+    private func onUserTap(_ user: User) async {
         do {
-            let story: Story = try await apiService.request(
-                .getStory(userId: userId),
+            var story: Story = try await apiService.request(
+                .getStory(userId: user.id),
                 of: Story.self,
                 decoder: .default
             )
-            navigationToStory = try await updateStoryPersistence(for: story)
+            story = try await updateStoryPersistence(for: story)
+            navigationToStory = StoryViewScreenModel.DTO(story: story, user: user)
         } catch {
             // TODO: Error logging
         }

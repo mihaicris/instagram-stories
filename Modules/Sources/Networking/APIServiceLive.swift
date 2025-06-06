@@ -28,7 +28,7 @@ final class APIServiceLive: APIService {
             throw error
         }
     }
-    
+
     func request<T: Sendable & Decodable>(
         _ request: URLRequest,
         of type: T.Type,

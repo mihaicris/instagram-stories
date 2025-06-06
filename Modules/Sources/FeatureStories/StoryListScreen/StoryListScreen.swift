@@ -5,7 +5,7 @@ import UIComponents
 
 public struct StoryListScreen: View {
     @Bindable var model: StoryListScreenModel
-    
+
     public init(model: StoryListScreenModel) {
         self.model = model
     }
@@ -15,8 +15,8 @@ public struct StoryListScreen: View {
         case .data(let items):
             StoryItemsView(items: items)
                 .environment(\.isLoadingMore, model.isLoadingMore)
-                .fullScreenCover(item: $model.navigationToStory) { story in
-                    StoryViewScreen(model: .init(story: story))
+                .fullScreenCover(item: $model.navigationToStory) { dto in
+                    StoryViewScreen(model: StoryViewScreenModel(dto: dto))
                 }
 
         case .empty:
@@ -128,9 +128,7 @@ public struct StoryListScreen: View {
                             .clipShape(Circle())
                             .padding(metric * 0.04)
                             .overlay {
-                                if !item.seen {
-                                    UnreadStoryMarkerView(lineWidth: metric * 0.03)
-                                }
+                                StoryStatusView(seen: item.seen, metric: metric)
                             }
 
                         Text(item.body)
@@ -141,17 +139,18 @@ public struct StoryListScreen: View {
                 }
             }
 
-            struct UnreadStoryMarkerView: View {
-                let lineWidth: CGFloat
+            struct StoryStatusView: View {
+                let seen: Bool
+                let metric: CGFloat
 
                 var body: some View {
                     Circle()
                         .stroke(
                             LinearGradient(
-                                colors: [.red, .yellow],
+                                colors: seen ? [.gray] : [.red, .yellow],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
-                            ), lineWidth: lineWidth
+                            ), lineWidth: metric * 0.03
                         )
                 }
             }

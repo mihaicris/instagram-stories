@@ -23,7 +23,7 @@ struct StoryViewScreen: View {
             }
 
             VStack(spacing: 14) {
-                MediaView(url: model.story.content.first!.url)
+                MediaView(url: model.segments.first!.url)
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
@@ -35,7 +35,14 @@ struct StoryViewScreen: View {
             }
             .background(Color.black)
             .overlay(alignment: .top) {
-                StoryDetailsView().padding(8)
+                StoryDetailsView(
+                    userProfileURL: model.userProfileImageURL,
+                    username: model.username,
+                    activeTime: model.activeTime,
+                    segments: model.segments.count,
+                    musicInfo: model.segments.first?.musicInfo
+                )
+                .padding(8)
             }
             .offset(y: dragOffset.height)
             .gesture(
@@ -57,10 +64,15 @@ struct StoryViewScreen: View {
     }
 
     struct StoryDetailsView: View {
-        let segments: Int = 10
+        let userProfileURL: URL
+        let username: String
+        let activeTime: String
+        let segments: Int
+        let musicInfo: String?
+
         var body: some View {
             VStack(spacing: 6) {
-                HStack(spacing: 3) {  // DISTANCE BETWEEN SEGMENTS
+                HStack(spacing: 3) {
                     ForEach(1...segments, id: \.self) { i in
                         Capsule().fill(.white)
                             .opacity(0.3)
@@ -74,25 +86,30 @@ struct StoryViewScreen: View {
                     }
                 }
                 HStack(spacing: 8) {
-                    Circle()
-                        .frame(width: 30, height: 30)
+                    KFImage(userProfileURL)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 32, height: 32)
+                        .clipShape(Circle())
 
                     VStack(alignment: .leading) {
-                        Text("trusca_simona ").bold()
-                            + Text("2h")
+                        Text("\(username) ").bold()
+                            + Text(activeTime)
                             .foregroundStyle(.white.opacity(0.8))
-                        HStack {
-                            Image(systemName: "waveform")
-                                .symbolEffect(.variableColor.dimInactiveLayers.cumulative.reversing)
-                            Text("Kali Uchis ∙").bold() + Text("All I can say")
+                        if let musicInfo {
+                            HStack {
+                                Image(systemName: "waveform")
+                                    .symbolEffect(.variableColor.dimInactiveLayers.cumulative.reversing)
+                                Text("Kali Uchis ∙").bold() + Text(musicInfo)
+                            }
                         }
                     }
                     .font(.system(size: 14))
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
-                    
+
                     Spacer()
-                    
+
                     // Story Options
                     Button(action: {}) {
                         Image(systemName: "ellipsis")
@@ -100,7 +117,7 @@ struct StoryViewScreen: View {
                             .tint(.white)
                             .padding(.trailing)
                     }
-                    
+
                     // Story closing
                     Button(action: {}) {
                         Image(systemName: "xmark")
@@ -108,7 +125,7 @@ struct StoryViewScreen: View {
                             .tint(.white)
                     }
                 }
-                .padding(2)
+                .padding(.leading, 2)
             }
             .frame(maxWidth: .infinity)
         }
@@ -157,24 +174,31 @@ struct StoryViewScreen: View {
 // swiftlint:disable force_unwrapping
 #Preview {
     StoryViewScreen(
-        model: .init(
-            story: .init(
-                id: 1,
-                userId: 1,
-                content: [
-                    .init(
-                        id: 0,
-                        type: "image",
-                        url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
-                    ),
-                    .init(
-                        id: 1,
-                        type: "image",
-                        url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
-                    ),
-                ],
-                seen: true,
-                liked: false
+        model: StoryViewScreenModel(
+            dto: StoryViewScreenModel.DTO(
+                story: .init(
+                    id: 1,
+                    userId: 1,
+                    content: [
+                        .init(
+                            id: 0,
+                            type: "image",
+                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                        ),
+                        .init(
+                            id: 1,
+                            type: "image",
+                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                        ),
+                    ],
+                    seen: true,
+                    liked: false
+                ),
+                user: .init(
+                    id: 1,
+                    name: "Seraph",
+                    profilePictureURL: "https://i.pravatar.cc/300?u=11"
+                )
             )
         )
     )

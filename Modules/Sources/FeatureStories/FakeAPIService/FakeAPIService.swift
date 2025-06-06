@@ -11,7 +11,7 @@ public struct FakeAPIService: APIService {
             throw NSError.notImplemented(request)
         }
     }
-    
+
     public func request<T: Sendable & Decodable>(
         _ request: URLRequest,
         of _: T.Type,
@@ -63,14 +63,14 @@ public struct FakeAPIService: APIService {
         }
         return story
     }
-    
+
     private func fakeUpdateStoryLikeStatus(_ request: URLRequest) throws {
         guard urlPath(for: request) == "/story/"
         else {
             throw NSError.notImplemented(request)
         }
     }
-    
+
     private func urlPath(for request: URLRequest) -> String? {
         guard let url = request.url,
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false)

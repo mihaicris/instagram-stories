@@ -3,7 +3,7 @@
 public struct StoryPersistedData: Sendable {
     public let userId: Int
     public let liked: Bool
-    
+
     public init(userId: Int, liked: Bool) {
         self.userId = userId
         self.liked = liked

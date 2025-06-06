@@ -12,7 +12,7 @@ extension URLRequest {
         )
         return request
     }
-    
+
     static func getUsers(page: Int) -> URLRequest {
         let url = URL(string: "https://dummy.com/users")!
         let request = URLRequest.makeRequest(
@@ -30,13 +30,13 @@ extension URLRequest {
         )
         return request
     }
-    
+
     static func updateStoryLikeStatus(storyID: Int, liked: Bool) -> URLRequest {
         let url = URL(string: "https://dummy.com/story\(storyID)")!
         struct Payload: Encodable {
             let liked: Bool
         }
-        
+
         let request = URLRequest.makeRequest(
             url: url,
             method: .post(payload: Payload(liked: liked))

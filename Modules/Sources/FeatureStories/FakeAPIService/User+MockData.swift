@@ -8,7 +8,7 @@ extension User {
             let users: [User]
         }
     }
-    
+
     static func mockData(page: Int) -> [User] {
         do {
             guard let url = Bundle.module.url(forResource: "users", withExtension: "json") else {
@@ -23,7 +23,7 @@ extension User {
             return []
         }
     }
-    
+
     static func mockUser(id: Int) -> User? {
         guard let url = Bundle.module.url(forResource: "users", withExtension: "json") else {
             return nil

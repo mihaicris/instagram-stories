@@ -10,11 +10,11 @@ struct PersistenceServiceLive: PersistenceService {
     func persistStoryData(_ data: StoryPersistedData) async throws {
         suite.set(data.liked, forKey: data.userId.description)
     }
-    
+
     func clearStoryData(_ data: StoryPersistedData) async throws {
         suite.set(nil, forKey: data.userId.description)
     }
-    
+
     func getPersistedStoryData(userId: Int) async throws -> StoryPersistedData? {
         guard let liked = suite.value(forKey: userId.description) as? Bool else {
             return nil

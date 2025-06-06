@@ -5,7 +5,6 @@ public protocol PersistenceService: Sendable {
     func persistStoryData(_ data: StoryPersistedData) async throws
     func clearStoryData(_ data: StoryPersistedData) async throws
     func getPersistedStoryData(userId: Int) async throws -> StoryPersistedData?
-    
 }
 
 extension DependencyValues {
