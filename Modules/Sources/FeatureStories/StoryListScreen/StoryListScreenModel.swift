@@ -15,13 +15,15 @@ public final class StoryListScreenModel {
     @ObservationIgnored
     @Dependency(\.persistenceService) private var persistenceService
 
+    @ObservationIgnored
+    private var currentPage: Int = 0
+
+    @ObservationIgnored
+    private var storyViewModels: [StoryItemViewModel] = []
+    
     var state: State = .loading
     var isLoadingMore: Bool = false
     var navigationToStory: Story?
-
-    @ObservationIgnored private var currentPage: Int = 0
-
-    @ObservationIgnored private var storyViewModels: [StoryItemViewModel] = []
 
     enum State: Equatable {
         case data([StoryItemViewModel])
