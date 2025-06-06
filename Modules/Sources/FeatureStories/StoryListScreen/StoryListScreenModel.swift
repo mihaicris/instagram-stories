@@ -51,6 +51,16 @@ public final class StoryListScreenModel {
             viewModels = []
         }
     }
+    
+    func refresh(userId: Int) {
+        guard
+            let index = viewModels.firstIndex(where: { $0.id == userId })
+        else {
+            return
+        }
+        viewModels[index].markAsSeen()
+        state = .data(viewModels)
+    }
 
     private func makeViewModels(users: [User]) async throws -> [StoryItemViewModel] {
         try await withThrowingTaskGroup(of: StoryItemViewModel?.self, returning: [StoryItemViewModel].self) { taskGroup in
@@ -83,7 +93,7 @@ public final class StoryListScreenModel {
         return StoryItemViewModel(
             id: user.id,
             imageURL: imageURL,
-            body: user.name,
+            username: user.name,
             seen: persistedData != nil,
             onTap: { [weak self] in
                 guard let self else {

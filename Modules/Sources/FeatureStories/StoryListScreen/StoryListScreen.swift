@@ -16,7 +16,12 @@ public struct StoryListScreen: View {
             StoryItemsView(items: items)
                 .environment(\.isLoadingMore, model.isLoadingMore)
                 .fullScreenCover(item: $model.navigationToStory) { dto in
-                    StoryViewScreen(model: StoryViewScreenModel(dto: dto))
+                    StoryViewScreen(model: StoryViewScreenModel(
+                        dto: dto,
+                        onSeen: {
+                            model.refresh(userId: dto.user.id)
+                        }
+                    ))
                 }
 
         case .empty:
@@ -131,7 +136,7 @@ public struct StoryListScreen: View {
                                 StoryStatusView(seen: item.seen, metric: metric)
                             }
 
-                        Text(item.body)
+                        Text(item.username)
                             .font(.caption)
                             .truncationMode(.tail)
                     }

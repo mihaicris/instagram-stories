@@ -36,7 +36,7 @@ struct StoryViewScreen: View {
                         liked: model.liked,
                         unread: false
                     )
-                    MessagesButtonView(action: {})
+                    MessagesButtonView(action: model.markAsSeen) // temporarely
                 }
                 .tint(.white)
                 .padding(.horizontal, 20)
@@ -208,7 +208,8 @@ struct StoryViewScreen: View {
                     name: "Seraph",
                     profilePictureURL: "https://i.pravatar.cc/300?u=11"
                 )
-            )
+            ),
+            onSeen: {}
         )
     )
 }

@@ -22,6 +22,9 @@ final class StoryViewScreenModel {
 
     @ObservationIgnored
     private let dto: DTO
+    
+    @ObservationIgnored
+    private let onSeen: () -> Void
 
     var liked: Bool = false
 
@@ -31,9 +34,10 @@ final class StoryViewScreenModel {
     let activeTime: String
     let segments: [Segment]
 
-    init(dto: DTO) {
+    init(dto: DTO, onSeen: @escaping () -> Void) {
         self.dto = dto
-        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? URL(string: "https://i.pravatar.cc/300?u=11")!  // TODO: default
+        self.onSeen = onSeen
+        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? URL(string: "https://i.pravatar.cc/300?u=11")!
         self.username = dto.user.name
         self.userVerified = Bool.random()
         self.activeTime = "\((1...8).randomElement() ?? 1)h"
@@ -59,7 +63,12 @@ final class StoryViewScreenModel {
             // TODO: Error Logging
         }
     }
-
+    
+    // TODO: temporarely, call at appropriate time
+    func markAsSeen() {
+        onSeen()
+    }
+    
     struct ViewModel {
         let userProfileImageURL: URL
         let username: String
