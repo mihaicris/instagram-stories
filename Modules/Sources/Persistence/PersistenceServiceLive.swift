@@ -8,17 +8,17 @@ struct PersistenceServiceLive: PersistenceService {
     }()
 
     func persistStoryData(_ data: StoryPersistedData) async throws {
-        suite.set(data.liked, forKey: data.userID.description)
+        suite.set(data.liked, forKey: data.userId.description)
     }
     
     func clearStoryData(_ data: StoryPersistedData) async throws {
-        suite.set(nil, forKey: data.userID.description)
+        suite.set(nil, forKey: data.userId.description)
     }
     
-    func getPersistedStoryData(userID: Int) async throws -> StoryPersistedData? {
-        guard let liked = suite.value(forKey: userID.description) as? Bool else {
+    func getPersistedStoryData(userId: Int) async throws -> StoryPersistedData? {
+        guard let liked = suite.value(forKey: userId.description) as? Bool else {
             return nil
         }
-        return StoryPersistedData(userID: userID, liked: liked)
+        return StoryPersistedData(userId: userId, liked: liked)
     }
 }

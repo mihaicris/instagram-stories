@@ -4,7 +4,7 @@ import Foundation
 public protocol PersistenceService: Sendable {
     func persistStoryData(_ data: StoryPersistedData) async throws
     func clearStoryData(_ data: StoryPersistedData) async throws
-    func getPersistedStoryData(userID: Int) async throws -> StoryPersistedData?
+    func getPersistedStoryData(userId: Int) async throws -> StoryPersistedData?
     
 }
 

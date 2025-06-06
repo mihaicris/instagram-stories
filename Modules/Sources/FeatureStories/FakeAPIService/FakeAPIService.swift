@@ -55,9 +55,9 @@ public struct FakeAPIService: APIService {
 
     private func fakeGetStory<T>(_ request: URLRequest) -> T? {
         guard urlPath(for: request) == "/story",
-            let value = queryItemValue(for: "userID", in: request),
-            let userID = Int(value),
-            let story = Story.mockData(userID: userID) as? T
+            let value = queryItemValue(for: "userId", in: request),
+            let userId = Int(value),
+            let story = Story.mockData(userId: userId) as? T
         else {
             return nil
         }

@@ -2,7 +2,7 @@ import Foundation
 
 struct Story: Codable, Identifiable {
     let id: Int
-    let userID: Int
+    let userId: Int
     let content: [Media]
     let seen: Bool
     let liked: Bool

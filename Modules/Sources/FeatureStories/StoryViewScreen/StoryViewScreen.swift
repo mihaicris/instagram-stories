@@ -160,7 +160,7 @@ struct StoryViewScreen: View {
         model: .init(
             story: .init(
                 id: 1,
-                userID: 1,
+                userId: 1,
                 content: [
                     .init(
                         id: 0,

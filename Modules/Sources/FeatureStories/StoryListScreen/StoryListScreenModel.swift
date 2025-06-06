@@ -8,6 +8,10 @@ import Persistence
 @Observable
 public final class StoryListScreenModel {
     public init() {}
+    
+    var state: State = .loading
+    var isLoadingMore: Bool = false
+    var navigationToStory: Story?
 
     @ObservationIgnored
     @Dependency(\.apiService) private var apiService
@@ -19,12 +23,8 @@ public final class StoryListScreenModel {
     private var currentPage: Int = 0
 
     @ObservationIgnored
-    private var storyViewModels: [StoryItemViewModel] = []
+    private var viewModels: [StoryItemViewModel] = []
     
-    var state: State = .loading
-    var isLoadingMore: Bool = false
-    var navigationToStory: Story?
-
     enum State: Equatable {
         case data([StoryItemViewModel])
         case empty
@@ -38,21 +38,17 @@ public final class StoryListScreenModel {
     }
 
     func loadMoreContent() async {
-        isLoadingMore = !storyViewModels.isEmpty
+        isLoadingMore = !viewModels.isEmpty
         defer { isLoadingMore = false }
         do {
-            let users: [User] = try await apiService.request(
-                .getUsers(page: currentPage),
-                of: [User].self,
-                decoder: .default
-            )
-            let new = try await makeViewModels(users: users)
-            storyViewModels += new
-            state = .data(storyViewModels)
+            let users: [User] = try await apiService.request(.getUsers(page: currentPage), of: [User].self, decoder: .default)
+            let newViewModels = try await makeViewModels(users: users)
+            viewModels += newViewModels
+            state = .data(viewModels)
         } catch {
             state = .error("Stories are not loading right now, try again later...")
             currentPage = 0
-            storyViewModels = []
+            viewModels = []
         }
     }
 
@@ -72,6 +68,7 @@ public final class StoryListScreenModel {
                 }
             }
 
+            // I make the random results in the same order as the users list
             let sorted = users.compactMap { resultsById[$0.id] }
 
             return sorted
@@ -82,7 +79,7 @@ public final class StoryListScreenModel {
         guard let imageURL = URL(string: user.profilePictureURL) else {
             return nil
         }
-        let persistedData = try await persistenceService.getPersistedStoryData(userID: user.id)
+        let persistedData = try await persistenceService.getPersistedStoryData(userId: user.id)
         return StoryItemViewModel(
             id: user.id,
             imageURL: imageURL,
@@ -92,7 +89,7 @@ public final class StoryListScreenModel {
                 guard let self else {
                     return
                 }
-                await onUserTap(userID: user.id)
+                await onUserTap(userId: user.id)
             },
             onAppear: { [weak self] in
                 guard let self else {
@@ -106,10 +103,10 @@ public final class StoryListScreenModel {
         )
     }
 
-    private func onUserTap(userID: Int) async {
+    private func onUserTap(userId: Int) async {
         do {
             let story: Story = try await apiService.request(
-                .getStory(userID: userID),
+                .getStory(userId: userId),
                 of: Story.self,
                 decoder: .default
             )
@@ -120,19 +117,19 @@ public final class StoryListScreenModel {
     }
 
     private func updateStoryPersistence(for story: Story) async throws -> Story {
-        if let persistedStory = try await persistenceService.getPersistedStoryData(userID: story.userID) {
+        if let persistedStory = try await persistenceService.getPersistedStoryData(userId: story.userId) {
             return Story(
                 id: story.id,
-                userID: story.userID,
+                userId: story.userId,
                 content: story.content,
                 seen: true,
                 liked: persistedStory.liked
             )
         }
-        try await persistenceService.persistStoryData(StoryPersistedData(userID: story.userID, liked: story.liked))
+        try await persistenceService.persistStoryData(StoryPersistedData(userId: story.userId, liked: story.liked))
         return Story(
             id: story.id,
-            userID: story.userID,
+            userId: story.userId,
             content: story.content,
             seen: true,  // tapping on a story will mark story as seen, and persist
             liked: story.liked

@@ -35,12 +35,12 @@ final class StoryViewScreenModel {
     func onLike() async {
         liked.toggle()
         do {
-            let data = StoryPersistedData(userID: story.userID, liked: liked)
+            let data = StoryPersistedData(userId: story.userId, liked: liked)
             try await apiService.request(.updateStoryLikeStatus(storyID: story.id, liked: liked))
             try await persistenceService.persistStoryData(data)
         } catch {
             liked.toggle() // rollback state
-            let data = StoryPersistedData(userID: story.userID, liked: liked)
+            let data = StoryPersistedData(userId: story.userId, liked: liked)
             try? await persistenceService.persistStoryData(data)
             // TODO: Error Logging
         }

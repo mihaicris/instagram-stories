@@ -22,11 +22,11 @@ extension URLRequest {
         return request
     }
 
-    static func getStory(userID: Int) -> URLRequest {
+    static func getStory(userId: Int) -> URLRequest {
         let url = URL(string: "https://dummy.com/story")!
         let request = URLRequest.makeRequest(
             url: url,
-            method: .get(queryParameters: ["userID": userID])
+            method: .get(queryParameters: ["userId": userId])
         )
         return request
     }
