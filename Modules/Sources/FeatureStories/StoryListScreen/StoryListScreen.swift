@@ -13,18 +13,20 @@ public struct StoryListScreen: View {
     public var body: some View {
         switch model.state {
         case .data(let items):
-            StoryItemsView(items: items)
-                .environment(\.isLoadingMore, model.isLoadingMore)
-                .fullScreenCover(item: $model.navigationToStory) { dto in
-                    StoryViewScreen(
-                        model: StoryViewScreenModel(
-                            dto: dto,
-                            onSeen: {
-                                model.refresh(userId: dto.user.id)
+            ZStack {
+                StoryItemsView(items: items)
+                    .environment(\.isLoadingMore, model.isLoadingMore)
+
+                Color.clear
+                    .fullScreenCover(item: $model.navigationToStory) { dto in
+                        StoryViewScreen(model: StoryViewScreenModel(dto: dto))
+                            .onDisappear {
+                                Task {
+                                    await model.refresh(user: dto.user)
+                                }
                             }
-                        )
-                    )
-                }
+                    }
+            }
 
         case .empty:
             Text("Empty Stance / in progress")

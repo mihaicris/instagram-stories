@@ -62,13 +62,14 @@ public final class StoryListScreenModel {
         }
     }
 
-    func refresh(userId: Int) {
+    func refresh(user: User) async {
         guard
-            let index = viewModels.firstIndex(where: { $0.id == userId })
+            let index = viewModels.firstIndex(where: { $0.id == user.id }),
+            let viewModel = try? await makeViewModel(for: user)
         else {
             return
         }
-        viewModels[index].markAsSeen()
+        viewModels[index] = viewModel
         state = .data(viewModels)
     }
 

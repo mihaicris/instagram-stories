@@ -34,7 +34,11 @@ struct StoryViewScreen: View {
                     )
                     .frame(height: 20)
 
-                    MessagesButtonView(action: model.markAsSeen)  // temporarely
+                    MessagesButtonView(action: {
+                        Task {
+                            await model.markAsSeen()
+                        }
+                    })  // TODO: fix tempory custom action
                         .frame(height: 20)
                 }
                 .tint(.white)
@@ -207,8 +211,7 @@ struct StoryViewScreen: View {
                     name: "Seraph",
                     profilePictureURL: "https://i.pravatar.cc/300?u=11"
                 )
-            ),
-            onSeen: {}
+            )
         )
     )
 }

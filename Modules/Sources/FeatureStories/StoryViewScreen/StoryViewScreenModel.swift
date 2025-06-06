@@ -23,9 +23,6 @@ final class StoryViewScreenModel {
     @ObservationIgnored
     private let dto: DTO
 
-    @ObservationIgnored
-    private let onSeen: () -> Void
-
     var liked: Bool = false
 
     let userProfileImageURL: URL
@@ -34,9 +31,8 @@ final class StoryViewScreenModel {
     let activeTime: String
     let segments: [Segment]
 
-    init(dto: DTO, onSeen: @escaping () -> Void) {
+    init(dto: DTO) {
         self.dto = dto
-        self.onSeen = onSeen
         self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? URL(string: "https://i.pravatar.cc/300?u=11")!
         self.username = dto.user.name
         self.userVerified = Bool.random()
@@ -51,8 +47,8 @@ final class StoryViewScreenModel {
     }
 
     func onLike() async {
-        liked.toggle()
         do {
+            liked.toggle()
             let data = StoryPersistedData(userId: dto.story.userId, liked: liked)
             try await apiService.request(.updateStoryLikeStatus(storyID: dto.story.id, liked: liked))
             try await persistenceService.persistStoryData(data)
@@ -60,13 +56,17 @@ final class StoryViewScreenModel {
             liked.toggle()  // rollback state
             let data = StoryPersistedData(userId: dto.story.userId, liked: liked)
             try? await persistenceService.persistStoryData(data)
-            // TODO: Error Logging
+            // TODO: Logging
         }
     }
 
-    // TODO: temporarely, call at appropriate time
-    func markAsSeen() {
-        onSeen()
+    func markAsSeen() async {
+        do {
+            let data = StoryPersistedData(userId: dto.story.userId, liked: liked)
+            try await persistenceService.persistStoryData(data)
+        } catch {
+            // TODO: Logging
+        }
     }
 
     struct ViewModel {

@@ -10,7 +10,6 @@ public struct MessagesButtonView: View {
     public var body: some View {
         Button(action: action) {
             GeometryReader { proxy in
-                let width = proxy.size.width
                 Image(systemName: "paperplane")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
