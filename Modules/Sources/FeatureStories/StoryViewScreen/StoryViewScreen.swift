@@ -36,7 +36,7 @@ struct StoryViewScreen: View {
                         liked: model.liked,
                         unread: false
                     )
-                    MessagesButtonView(action: model.markAsSeen) // temporarely
+                    MessagesButtonView(action: model.markAsSeen)  // temporarely
                 }
                 .tint(.white)
                 .padding(.horizontal, 20)
@@ -52,7 +52,7 @@ struct StoryViewScreen: View {
                 )
                 .padding(8)
             }
-//            .offset(y: dragOffset.height)
+            //            .offset(y: dragOffset.height)
             .gesture(
                 DragGesture()
                     .onChanged { value in
