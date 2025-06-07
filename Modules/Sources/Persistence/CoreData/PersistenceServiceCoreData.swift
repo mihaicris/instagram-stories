@@ -15,8 +15,9 @@ public final class PersistenceServiceCoreData {
     public init() {
         let model = NSManagedObjectModel()
 
+        // 
         let entity = NSEntityDescription()
-        entity.name = "StoryEntry"
+        entity.name = Entities.StoryEntry.rawValue
         entity.managedObjectClassName = NSStringFromClass(StoryEntry.self)
 
         let userIdAttribute = NSAttributeDescription()
@@ -38,10 +39,7 @@ public final class PersistenceServiceCoreData {
 
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
-        let documentsDirectory = FileManager.default.urls(
-            for: .documentDirectory,
-            in: .userDomainMask
-        ).first!
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let storeURL = documentsDirectory.appendingPathComponent("StoryData.sqlite")
 
         do {
@@ -88,7 +86,8 @@ extension PersistenceServiceCoreData: PersistenceService {
                         // Update existing entry
                         entry = existingEntry
                     } else {
-                        entry = NSEntityDescription.insertNewObject(forEntityName: "StoryEntry", into: self.context) as! StoryEntry
+                        entry = NSEntityDescription
+                            .insertNewObject(forEntityName: Entities.StoryEntry.rawValue, into: self.context) as! StoryEntry
                         entry.userId = Int32(data.userId)
                     }
 
