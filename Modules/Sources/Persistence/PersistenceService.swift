@@ -9,7 +9,7 @@ public protocol PersistenceService: Sendable {
 
 extension DependencyValues {
     public enum PersistenceServiceKey: DependencyKey {
-        public static let liveValue: PersistenceService = PersistenceServiceLive()
+        public static let liveValue: PersistenceService = PersistenceServiceUserDefaults()
     }
 
     public var persistenceService: PersistenceService {
