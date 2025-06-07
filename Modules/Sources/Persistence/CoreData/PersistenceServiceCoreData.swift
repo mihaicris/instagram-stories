@@ -13,15 +13,12 @@ public final class PersistenceServiceCoreData {
     }
 
     public init() {
-        // Create the managed object model
         let model = NSManagedObjectModel()
 
-        // Create entity description
         let entity = NSEntityDescription()
         entity.name = "StoryEntry"
         entity.managedObjectClassName = NSStringFromClass(StoryEntry.self)
 
-        // Create attributes
         let userIdAttribute = NSAttributeDescription()
         userIdAttribute.name = "userId"
         userIdAttribute.attributeType = .integer32AttributeType
@@ -33,18 +30,14 @@ public final class PersistenceServiceCoreData {
         likedAttribute.isOptional = false
         likedAttribute.defaultValue = false
 
-        // Add attributes to entity
         entity.properties = [userIdAttribute, likedAttribute]
 
-        // Add entity to model
         model.entities = [entity]
 
         self.managedObjectModel = model
 
-        // Create the persistent store coordinator
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
-        // Get documents directory URL
         let documentsDirectory = FileManager.default.urls(
             for: .documentDirectory,
             in: .userDomainMask
@@ -67,13 +60,11 @@ public final class PersistenceServiceCoreData {
 
         self.persistentStoreCoordinator = coordinator
 
-        // Create the managed object context
         let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.persistentStoreCoordinator = persistentStoreCoordinator
         self.managedObjectContext = context
     }
 
-    // MARK: - Core Data Saving Support
     private func saveContext() throws {
         if context.hasChanges {
             try context.save()
@@ -97,7 +88,6 @@ extension PersistenceServiceCoreData: PersistenceService {
                         // Update existing entry
                         entry = existingEntry
                     } else {
-                        // Create new entry
                         entry = NSEntityDescription.insertNewObject(forEntityName: "StoryEntry", into: self.context) as! StoryEntry
                         entry.userId = Int32(data.userId)
                     }
