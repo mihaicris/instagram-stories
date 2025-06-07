@@ -78,7 +78,7 @@ extension PersistenceServiceCoreData: PersistenceService {
             context.perform {
                 do {
                     // Check if entry already exists
-                    let fetchRequest: NSFetchRequest<StoryEntry> = StoryEntry.fetchRequest()
+                    let fetchRequest = StoryEntry.fetchRequest()
                     fetchRequest.predicate = NSPredicate(format: "userId == %d", data.userId)
 
                     let existingEntries = try self.context.fetch(fetchRequest)
@@ -107,7 +107,7 @@ extension PersistenceServiceCoreData: PersistenceService {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
-                    let fetchRequest: NSFetchRequest<StoryEntry> = StoryEntry.fetchRequest()
+                    let fetchRequest = StoryEntry.fetchRequest()
                     fetchRequest.predicate = NSPredicate(format: "userId == %d", data.userId)
 
                     let entries = try self.context.fetch(fetchRequest)
@@ -129,7 +129,7 @@ extension PersistenceServiceCoreData: PersistenceService {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
-                    let fetchRequest: NSFetchRequest<StoryEntry> = StoryEntry.fetchRequest()
+                    let fetchRequest = StoryEntry.fetchRequest()
                     fetchRequest.predicate = NSPredicate(format: "userId == %d", userId)
                     fetchRequest.fetchLimit = 1
 
