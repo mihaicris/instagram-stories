@@ -190,6 +190,6 @@ extension EnvironmentValues {
 }
 
 #Preview {
-    prepareDependencies { $0.apiService = FakeAPIService() }
+    prepareDependencies { $0.apiService = APIServiceProvidingLocalData() }
     return StoryListScreen(model: StoryListScreenModel())
 }

@@ -53,7 +53,7 @@ public struct HeartButtonView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .font(.system(size: 24, weight: .medium)) // font size is ignored
+            .font(.system(size: 24, weight: .medium))  // font size is ignored
     }
 }
 

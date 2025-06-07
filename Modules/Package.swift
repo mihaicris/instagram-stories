@@ -8,6 +8,8 @@ let package = Package(
     products: [
         .library(name: "FeatureStories", targets: ["FeatureStories"]),
         .library(name: "UIComponents", targets: ["UIComponents"]),
+        .library(name: "Networking", targets: ["Networking"]),
+        .library(name: "Persistence", targets: ["Persistence"]),
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),

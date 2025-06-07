@@ -2,7 +2,7 @@ import Dependencies
 import Foundation
 import Networking
 
-public struct FakeAPIService: APIService {
+public struct APIServiceProvidingLocalData: APIService {
     public init() {}
 
     public func request(_ request: URLRequest) throws {

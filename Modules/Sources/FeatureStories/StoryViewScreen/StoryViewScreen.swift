@@ -27,7 +27,7 @@ struct StoryViewScreen: View {
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
-                    
+
                     HeartButtonView(
                         action: { Task { await model.onLike() } },
                         liked: model.liked,
@@ -44,7 +44,7 @@ struct StoryViewScreen: View {
                     .tint(.white)
                     .frame(height: 18)
                 }
-                
+
                 .padding(.horizontal, 20)
             }
             .background(Color.black)
@@ -79,7 +79,7 @@ struct StoryViewScreen: View {
 
     struct StoryDetailsView: View {
         @Environment(\.dismiss) private var dismiss
-        
+
         let userProfileURL: URL
         let username: String
         let activeTime: String

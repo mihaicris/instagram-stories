@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		830C1E472DF4520F0095741E /* Persistence in Frameworks */ = {isa = PBXBuildFile; productRef = 830C1E462DF4520F0095741E /* Persistence */; };
 		8314642B2DEF3A4B00452F03 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 8314642A2DEF3A4B00452F03 /* Dependencies */; };
 		83C9B2932DF10BBD001B1661 /* FeatureStories in Frameworks */ = {isa = PBXBuildFile; productRef = 83C9B2922DF10BBD001B1661 /* FeatureStories */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				830C1E472DF4520F0095741E /* Persistence in Frameworks */,
 				8314642B2DEF3A4B00452F03 /* Dependencies in Frameworks */,
 				83C9B2932DF10BBD001B1661 /* FeatureStories in Frameworks */,
 			);
@@ -91,6 +93,7 @@
 			packageProductDependencies = (
 				8314642A2DEF3A4B00452F03 /* Dependencies */,
 				83C9B2922DF10BBD001B1661 /* FeatureStories */,
+				830C1E462DF4520F0095741E /* Persistence */,
 			);
 			productName = Instagram;
 			productReference = 83630C352DE8BB5100CB80C9 /* Instagram.app */;
@@ -383,6 +386,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		830C1E462DF4520F0095741E /* Persistence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Persistence;
+		};
 		8314642A2DEF3A4B00452F03 /* Dependencies */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 831464292DEF3A4B00452F03 /* XCRemoteSwiftPackageReference "swift-dependencies" */;
