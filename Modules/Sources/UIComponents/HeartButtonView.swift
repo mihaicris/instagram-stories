@@ -51,21 +51,22 @@ public struct HeartButtonView: View {
     private func heart() -> some View {
         Image(systemName: liked ? "heart.fill" : "heart")
             .resizable()
+            .aspectRatio(contentMode: .fit)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .font(.system(size: 24, weight: .medium)) // font size is ignored
     }
 }
 
 #Preview {
-    let height: CGFloat = 100
-    VStack {
+    let height: CGFloat = 60
+    VStack(spacing: height) {
         Group {
             HeartButtonView(action: {}, liked: true, unread: false)
             HeartButtonView(action: {}, liked: true, unread: true)
             HeartButtonView(action: {}, liked: false, unread: false)
             HeartButtonView(action: {}, liked: false, unread: true)
         }
-        .frame(height: height)
-    }
-    .frame(height: height)
-    .tint(.black)
+        .tint(.black)
+        .frame(maxHeight: .infinity)
+    }.padding(height)
 }

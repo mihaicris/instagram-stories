@@ -27,21 +27,24 @@ struct StoryViewScreen: View {
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
+                    
                     HeartButtonView(
                         action: { Task { await model.onLike() } },
                         liked: model.liked,
                         unread: false
                     )
-                    .frame(height: 20)
+                    .tint(model.liked ? .red : .white)
+                    .frame(height: 18)
 
                     MessagesButtonView(action: {
                         Task {
                             await model.markAsSeen()
                         }
                     })  // TODO: fix tempory custom action
-                    .frame(height: 20)
+                    .tint(.white)
+                    .frame(height: 18)
                 }
-                .tint(.white)
+                
                 .padding(.horizontal, 20)
             }
             .background(Color.black)
@@ -75,6 +78,8 @@ struct StoryViewScreen: View {
     }
 
     struct StoryDetailsView: View {
+        @Environment(\.dismiss) private var dismiss
+        
         let userProfileURL: URL
         let username: String
         let activeTime: String
@@ -131,7 +136,7 @@ struct StoryViewScreen: View {
                     }
 
                     // Story closing
-                    Button(action: {}) {
+                    Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
                             .imageScale(.large)
                             .tint(.white)

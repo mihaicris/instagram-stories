@@ -49,7 +49,7 @@ public struct StoryListScreen: View {
 
         var body: some View {
             VStack {
-                HStack(alignment: .lastTextBaseline, spacing: 12) {
+                HStack(alignment: .lastTextBaseline, spacing: 16) {
                     HeadingView(action: {})
 
                     Spacer()
