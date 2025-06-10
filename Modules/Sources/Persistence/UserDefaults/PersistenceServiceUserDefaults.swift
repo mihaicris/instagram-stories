@@ -3,7 +3,7 @@ import Foundation
 // swiftlint:disable async_without_await
 
 struct PersistenceServiceUserDefaults: PersistenceService {
-    nonisolated(unsafe) let suite: UserDefaults = {
+    nonisolated(unsafe) private let suite: UserDefaults = {
         UserDefaults(suiteName: "ro.mihaicris.Instagram.PersistenceService") ?? .standard
     }()
 
