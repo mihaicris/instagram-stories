@@ -15,7 +15,7 @@ public final class PersistenceServiceCoreData {
     public init() {
         let model = NSManagedObjectModel()
 
-        // 
+        //
         let entity = NSEntityDescription()
         entity.name = Entities.StoryEntry.rawValue
         entity.managedObjectClassName = NSStringFromClass(StoryEntry.self)
@@ -32,6 +32,7 @@ public final class PersistenceServiceCoreData {
         likedAttribute.defaultValue = false
 
         entity.properties = [userIdAttribute, likedAttribute]
+        entity.uniquenessConstraints = [["userId"]]
 
         model.entities = [entity]
 
