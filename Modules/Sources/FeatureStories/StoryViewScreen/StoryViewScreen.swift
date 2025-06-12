@@ -2,11 +2,12 @@ import Kingfisher
 import SwiftUI
 import UIComponents
 
-// TODO: GESTURI
+// GESTURI
 // -----------------------------------
-// USER DETAILS IN STORY
-// SLIDE DOWN DISMISS IN ACCOUNT IMAGE
-// ZOOM
+// TODO: USER DETAILS IN STORY
+// TODO: MOVE MOVE TIMERS IN VIEWMODEL
+// TODO: SLIDE DOWN DISMISS IN ACCOUNT IMAGE
+// TODO: ZOOM
 // -----------------------------------
 
 struct StoryViewScreen: View {
@@ -228,7 +229,9 @@ struct StoryViewScreen: View {
                             let halfWidth = geometry.size.width / 2
 
                             if location.x > halfWidth {
-                                currentSegmentIndex += (currentSegmentIndex < segments.count - 1 ? 1 : 0)
+                                if currentSegmentIndex < segments.count - 1 {
+                                    currentSegmentIndex += 1
+                                }
                             } else {
                                 currentSegmentIndex -= (currentSegmentIndex > 0 ? 1 : 0)
                             }
