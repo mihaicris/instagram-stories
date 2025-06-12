@@ -98,7 +98,7 @@ public final class StoryListScreenModel {
             id: user.id,
             imageURL: imageURL,
             username: user.name,
-            seen: persistedData != nil,
+            seen: persistedData?.seen ?? false,
             onTap: { [weak self] in
                 guard let self else {
                     return
@@ -133,7 +133,7 @@ public final class StoryListScreenModel {
                 id: story.id,
                 userId: story.userId,
                 content: story.content,
-                seen: true,
+                seen: story.seen,
                 liked: persistedStory.liked
             )
         }

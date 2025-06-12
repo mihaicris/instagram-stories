@@ -39,7 +39,6 @@ struct VideoPlayerView: View {
                     guard let duration = player.currentItem?.duration.seconds,
                         duration > 0
                     else {
-                        //                        progress = 0
                         return
                     }
                     progress = time.seconds / duration

@@ -42,6 +42,7 @@ final class StoryViewScreenModel {
             Segment(id: media.id, url: media.url, type: media.type, musicInfo: "Melody")
         })
         self.liked = dto.story.liked
+        self.seen = dto.story.seen
     }
 
     func onClose() {
