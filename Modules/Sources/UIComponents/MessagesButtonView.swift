@@ -18,6 +18,12 @@ public struct MessagesButtonView: View {
 }
 
 #Preview {
-    MessagesButtonView(action: {})
-        .frame(height: 50)
+    let height: CGFloat = 100
+    VStack(spacing: height) {
+        Group {
+            MessagesButtonView(action: {})
+        }
+        .tint(.black)
+        .frame(maxHeight: .infinity)
+    }.padding(height)
 }
