@@ -1,7 +1,9 @@
 {
-    "pages": [
+    "pages":
+    [
         {
-            "users": [
+            "users":
+            [
                 {
                     "id": 1,
                     "name": "Neo",
@@ -55,7 +57,8 @@
             ]
         },
         {
-            "users": [
+            "users":
+            [
                 {
                     "id": 11,
                     "name": "Seraph",
@@ -109,7 +112,8 @@
             ]
         },
         {
-            "users": [
+            "users":
+            [
                 {
                     "id": 21,
                     "name": "Kid",
