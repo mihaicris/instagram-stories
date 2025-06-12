@@ -9,6 +9,7 @@ struct InstagramApp: App {
         prepareDependencies {
             $0.apiService = APIServiceProvidingLocalData()
             $0.persistenceService = PersistenceServiceCoreData()
+            // $0.persistenceService = PersistenceServiceUserDefaults()
         }
     }
 

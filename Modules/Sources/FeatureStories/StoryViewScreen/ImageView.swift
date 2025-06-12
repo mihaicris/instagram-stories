@@ -9,7 +9,7 @@ struct ImageView: View {
     @State private var startTime: Date?
 
     private let duration: TimeInterval = 5.0
-    private let interval: TimeInterval = 0.01
+    private let interval: TimeInterval = 0.1
 
     init(url: URL, progress: Binding<Double>) {
         self.url = url
@@ -38,11 +38,13 @@ struct ImageView: View {
             }
             let elapsed = Date().timeIntervalSince(startTime)
             Task { @MainActor in
-                if elapsed >= duration {
-                    progress = 1
-                    stopProgressTimer()
-                } else {
-                    progress = elapsed / duration
+                withAnimation {
+                    if elapsed >= duration {
+                        progress = 1
+                        stopProgressTimer()
+                    } else {
+                        progress = elapsed / duration
+                    }
                 }
             }
         }

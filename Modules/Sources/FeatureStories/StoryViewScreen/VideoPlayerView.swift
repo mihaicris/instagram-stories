@@ -4,7 +4,7 @@ import SwiftUI
 struct VideoPlayerView: View {
     let url: URL
     @Binding var progress: Double
-    
+
     @State private var player: AVPlayer
     @State private var endReached = false
     @State private var timeObserverToken: Any?
@@ -26,26 +26,28 @@ struct VideoPlayerView: View {
                 player.pause()
                 removeObservers()
             }
-//            .overlay {
-//                Text("\(Int(progress * 100))%")
-//                    .font(.system(size: 20, weight: .bold, design: .rounded))
-//                    .foregroundStyle(.white)
-//            }
+        //            .overlay {
+        //                Text("\(Int(progress * 100))%")
+        //                    .font(.system(size: 20, weight: .bold, design: .rounded))
+        //                    .foregroundStyle(.white)
+        //            }
     }
 
     private func addObservers() {
         addEndObserver()
 
-        let interval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [player] time in
             Task { @MainActor in
-                guard let duration = player.currentItem?.duration.seconds,
-                    duration > 0
-                else {
-                    progress = 0
-                    return
+                withAnimation {
+                    guard let duration = player.currentItem?.duration.seconds,
+                        duration > 0
+                    else {
+                        progress = 0
+                        return
+                    }
+                    progress = time.seconds / duration
                 }
-                progress = time.seconds / duration
             }
         }
     }

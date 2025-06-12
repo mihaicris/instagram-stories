@@ -28,18 +28,21 @@ struct StoryViewScreen: View {
                     currentSegment: $currentSegment,
                     segmentProgress: $segmentProgress
                 )
-                .onChange(of: segmentProgress, { _, newValue in
-                    if newValue == 1 {
-                        if currentSegment < model.segments.count - 1 {
-                            currentSegment += 1
-                        } else {
-                            Task {
-                                await model.markAsSeen()
-                                dismiss()
+                .onChange(
+                    of: segmentProgress,
+                    { _, newValue in
+                        if newValue == 1 {
+                            if currentSegment < model.segments.count - 1 {
+                                currentSegment += 1
+                            } else {
+                                Task {
+                                    await model.markAsSeen()
+                                    dismiss()
+                                }
                             }
                         }
                     }
-                })
+                )
                 .overlay(alignment: .bottomTrailing) {
                     Text("\(currentSegment + 1)/\(model.segments.count)")
                         .font(.caption)
@@ -182,8 +185,6 @@ struct StoryViewScreen: View {
             .frame(maxWidth: .infinity)
         }
     }
-
-
 
     struct MediaView: View {
         let segments: [StoryViewScreenModel.Segment]
