@@ -1,11 +1,10 @@
+import AVKit
 import Kingfisher
 import SwiftUI
 import UIComponents
 
 // TODO: GESTURI
 // -----------------------------------
-// TAP STANGA
-// TAP DREAPTA
 // SLIDE DOWN DISMISS IN ACCOUNT IMAGE
 // ZOOM
 // -----------------------------------
@@ -13,6 +12,7 @@ import UIComponents
 struct StoryViewScreen: View {
     @Environment(\.dismiss) var dismiss
     @State private var dragOffset = CGSize.zero
+    @State private var currentSegment: Int = 0
 
     let model: StoryViewScreenModel
 
@@ -23,26 +23,39 @@ struct StoryViewScreen: View {
             }
 
             VStack(spacing: 14) {
-                MediaView(url: model.segments.first!.url)
+                MediaView(segments: model.segments, currentSegment: $currentSegment)
+                    .overlay(alignment: .topTrailing) {
+                        Text("\(currentSegment + 1)/\(model.segments.count)")
+                            .font(.caption)
+                            .bold()
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 14)
+                            .background(.white)
+                            .overlay { Capsule().stroke(lineWidth: 0.3) }
+                            .clipShape(Capsule())
+                            .shadow(radius: 1.2)
+                            .padding(16)
+                            .padding(.top, 36)
+                    }
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
 
                     HeartButtonView(
-                        action: { Task { await model.onLike() } },
+                        action: {
+                            Task {
+                                await model.onLike()
+                            }
+                        },
                         liked: model.liked,
                         unread: false
                     )
                     .tint(model.liked ? .red : .white)
                     .frame(height: 18)
 
-                    MessagesButtonView(action: {
-                        Task {
-                            await model.markAsSeen()
-                        }
-                    })  // TODO: fix tempory custom action
-                    .tint(.white)
-                    .frame(height: 18)
+                    MessagesButtonView(action: {})
+                        .tint(.white)
+                        .frame(height: 18)
                 }
 
                 .padding(.horizontal, 20)
@@ -73,6 +86,10 @@ struct StoryViewScreen: View {
                             dragOffset = .zero
                         }
                     }
+            )
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded {}
             )
         }
     }
@@ -148,21 +165,77 @@ struct StoryViewScreen: View {
         }
     }
 
-    struct MediaView: View {
+    struct VideoPlayerView: View {
         let url: URL
+        @State private var player: AVPlayer
+
+        init(url: URL) {
+            self.url = url
+            self._player = State(initialValue: AVPlayer(url: url))
+        }
+
+        var body: some View {
+            VideoPlayer(player: player)
+                .onAppear {
+                    player.play()
+                }
+                .onDisappear {
+                    player.pause()
+                }
+        }
+    }
+
+    struct ImageView: View {
+        let url: URL
+
+        var body: some View {
+            KFImage(url)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        }
+    }
+
+    struct MediaView: View {
+        let segments: [StoryViewScreenModel.Segment]
+        @Binding var currentSegment: Int
 
         var body: some View {
             GeometryReader { geometry in
                 ZStack {
-                    KFImage(url)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(
-                            width: geometry.size.width,
-                            height: geometry.size.height
-                        )
+                    switch segments[currentSegment].type {
+                    case "image":
+                        ImageView(url: segments[currentSegment].url)
+                            .frame(
+                                width: geometry.size.width,
+                                height: geometry.size.height
+                            )
+
+                    case "video":
+                        VideoPlayerView(url: segments[currentSegment].url)
+                            .frame(
+                                width: geometry.size.width,
+                                height: geometry.size.height
+                            )
+
+                    default:
+                        EmptyView()
+                    }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .contentShape(RoundedRectangle(cornerRadius: 10))
+                .gesture(
+                    DragGesture(minimumDistance: 0)
+                        .onEnded { value in
+                            let location = value.location
+                            let halfWidth = geometry.size.width / 2
+
+                            if location.x > halfWidth {
+                                currentSegment += (currentSegment < segments.count - 1 ? 1 : 0)
+                            } else {
+                                currentSegment -= (currentSegment > 0 ? 1 : 0)
+                            }
+                        }
+                )
             }
         }
     }

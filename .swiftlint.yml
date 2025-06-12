@@ -12,6 +12,7 @@ line_length:
   warning: 141
 
 disabled_rules:
+  - accessibility_trait_for_button
   - accessibility_label_for_image
   - anonymous_argument_in_multiline_closure
   - attributes
