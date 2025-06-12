@@ -257,6 +257,7 @@ struct StoryViewScreen: View {
 }
 
 // swiftlint:disable force_unwrapping
+// swiftlint:disable line_length
 #Preview {
     StoryViewScreen(
         model: StoryViewScreenModel(

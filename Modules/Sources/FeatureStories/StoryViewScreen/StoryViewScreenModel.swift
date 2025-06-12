@@ -24,6 +24,7 @@ final class StoryViewScreenModel {
     private let dto: DTO
 
     var liked: Bool = false
+    var seen: Bool = false
 
     let userProfileImageURL: URL
     let username: String
@@ -33,7 +34,7 @@ final class StoryViewScreenModel {
 
     init(dto: DTO) {
         self.dto = dto
-        self.userProfileImageURL = URL(string: dto.user.profilePictureURL)!
+        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? URL.temporaryDirectory
         self.username = dto.user.name
         self.userVerified = Bool.random()
         self.activeTime = "\((1...8).randomElement() ?? 1)h"
@@ -49,23 +50,23 @@ final class StoryViewScreenModel {
     func onLike() async {
         do {
             liked.toggle()
-            let data = StoryPersistedData(userId: dto.story.userId, liked: liked)
+            let data = StoryData(userId: dto.story.userId, liked: liked, seen: seen)
             try await apiService.request(.updateStoryLikeStatus(storyID: dto.story.id, liked: liked))
             try await persistenceService.persistStoryData(data)
         } catch {
             liked.toggle()  // rollback state
-            let data = StoryPersistedData(userId: dto.story.userId, liked: liked)
+            let data = StoryData(userId: dto.story.userId, liked: liked, seen: seen)
             try? await persistenceService.persistStoryData(data)
-            // TODO: Logging
+            logger.error("Couldn't like/unlike the story: \(error.localizedDescription, privacy: .public)")
         }
     }
 
     func markAsSeen() async {
         do {
-            let data = StoryPersistedData(userId: dto.story.userId, liked: liked)
+            let data = StoryData(userId: dto.story.userId, liked: liked, seen: true)
             try await persistenceService.persistStoryData(data)
         } catch {
-            // TODO: Logging
+            logger.error("Couldn't mark story as unseen: \(error.localizedDescription, privacy: .public)")
         }
     }
 

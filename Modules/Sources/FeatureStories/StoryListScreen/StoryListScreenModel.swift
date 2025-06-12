@@ -38,6 +38,7 @@ public final class StoryListScreenModel {
     }
 
     func loadMoreContent() async {
+        logger.info("Loading page \(self.currentPage, privacy: .public)")
         isLoadingMore = !viewModels.isEmpty
         defer { isLoadingMore = false }
         do {
@@ -62,6 +63,8 @@ public final class StoryListScreenModel {
         viewModels[index] = viewModel
         state = .data(viewModels)
     }
+    
+    // MARK: - Private
 
     private func makeViewModels(users: [User]) async throws -> [StoryItemViewModel] {
         try await withThrowingTaskGroup(of: StoryItemViewModel?.self, returning: [StoryItemViewModel].self) { taskGroup in
@@ -116,15 +119,11 @@ public final class StoryListScreenModel {
 
     private func onUserTap(_ user: User) async {
         do {
-            var story: Story = try await apiService.request(
-                .getStory(userId: user.id),
-                of: Story.self,
-                decoder: .default
-            )
+            var story: Story = try await apiService.request(.getStory(userId: user.id), of: Story.self, decoder: .default)
             story = try await updateStoryPersistence(for: story)
             navigationToStory = StoryViewScreenModel.DTO(story: story, user: user)
         } catch {
-            // TODO: Error logging
+            logger.error("Couldn't get user story: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -138,12 +137,13 @@ public final class StoryListScreenModel {
                 liked: persistedStory.liked
             )
         }
-        try await persistenceService.persistStoryData(StoryPersistedData(userId: story.userId, liked: story.liked))
+        let data = StoryData(userId: story.userId, liked: story.liked, seen: story.seen)
+        try await persistenceService.persistStoryData(data)
         return Story(
             id: story.id,
             userId: story.userId,
             content: story.content,
-            seen: true,  // tapping on a story will mark story as seen, and persist
+            seen: story.seen,
             liked: story.liked
         )
     }

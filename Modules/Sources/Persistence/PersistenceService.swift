@@ -2,9 +2,9 @@ import Dependencies
 import Foundation
 
 public protocol PersistenceService: Sendable {
-    func persistStoryData(_ data: StoryPersistedData) async throws
-    func clearStoryData(_ data: StoryPersistedData) async throws
-    func getPersistedStoryData(userId: Int) async throws -> StoryPersistedData?
+    func persistStoryData(_ data: StoryData) async throws
+    func clearStoryData(_ data: StoryData) async throws
+    func getPersistedStoryData(userId: Int) async throws -> StoryData?
 }
 
 extension DependencyValues {

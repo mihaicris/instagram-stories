@@ -30,8 +30,14 @@ public final class PersistenceServiceCoreData {
         likedAttribute.attributeType = .booleanAttributeType
         likedAttribute.isOptional = false
         likedAttribute.defaultValue = false
+        
+        let seenAttribute = NSAttributeDescription()
+        seenAttribute.name = "seen"
+        seenAttribute.attributeType = .booleanAttributeType
+        seenAttribute.isOptional = false
+        seenAttribute.defaultValue = false
 
-        entity.properties = [userIdAttribute, likedAttribute]
+        entity.properties = [userIdAttribute, likedAttribute, seenAttribute]
         entity.uniquenessConstraints = [["userId"]]
 
         model.entities = [entity]
@@ -72,7 +78,7 @@ public final class PersistenceServiceCoreData {
 }
 
 extension PersistenceServiceCoreData: PersistenceService {
-    public func persistStoryData(_ data: StoryPersistedData) async throws {
+    public func persistStoryData(_ data: StoryData) async throws {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
@@ -96,6 +102,7 @@ extension PersistenceServiceCoreData: PersistenceService {
                     }
 
                     entry.liked = data.liked
+                    entry.seen = data.seen
 
                     try self.saveContext()
                     continuation.resume()
@@ -106,7 +113,7 @@ extension PersistenceServiceCoreData: PersistenceService {
         }
     }
 
-    public func clearStoryData(_ data: StoryPersistedData) async throws {
+    public func clearStoryData(_ data: StoryData) async throws {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
@@ -128,7 +135,7 @@ extension PersistenceServiceCoreData: PersistenceService {
         }
     }
 
-    public func getPersistedStoryData(userId: Int) async throws -> StoryPersistedData? {
+    public func getPersistedStoryData(userId: Int) async throws -> StoryData? {
         try await withCheckedThrowingContinuation { continuation in
             context.perform {
                 do {
@@ -139,10 +146,7 @@ extension PersistenceServiceCoreData: PersistenceService {
                     let entries = try self.context.fetch(fetchRequest)
 
                     if let entry = entries.first {
-                        let data = StoryPersistedData(
-                            userId: Int(entry.userId),
-                            liked: entry.liked
-                        )
+                        let data = StoryData(userId: Int(entry.userId), liked: entry.liked, seen: entry.seen)
                         continuation.resume(returning: data)
                     } else {
                         continuation.resume(returning: nil)
