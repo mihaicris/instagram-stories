@@ -1,4 +1,3 @@
-import AVKit
 import Kingfisher
 import SwiftUI
 import UIComponents
@@ -57,7 +56,6 @@ struct StoryViewScreen: View {
                         .tint(.white)
                         .frame(height: 18)
                 }
-
                 .padding(.horizontal, 20)
             }
             .background(Color.black)
@@ -165,25 +163,6 @@ struct StoryViewScreen: View {
         }
     }
 
-    struct VideoPlayerView: View {
-        let url: URL
-        @State private var player: AVPlayer
-
-        init(url: URL) {
-            self.url = url
-            self._player = State(initialValue: AVPlayer(url: url))
-        }
-
-        var body: some View {
-            VideoPlayer(player: player)
-                .onAppear {
-                    player.play()
-                }
-                .onDisappear {
-                    player.pause()
-                }
-        }
-    }
 
     struct ImageView: View {
         let url: URL

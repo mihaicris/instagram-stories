@@ -33,7 +33,7 @@ final class StoryViewScreenModel {
 
     init(dto: DTO) {
         self.dto = dto
-        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? URL(string: "https://i.pravatar.cc/300?u=11")!
+        self.userProfileImageURL = URL(string: dto.user.profilePictureURL)!
         self.username = dto.user.name
         self.userVerified = Bool.random()
         self.activeTime = "\((1...8).randomElement() ?? 1)h"
