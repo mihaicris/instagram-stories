@@ -4,6 +4,7 @@ import UIComponents
 
 // TODO: GESTURI
 // -----------------------------------
+// USER DETAILS IN STORY
 // SLIDE DOWN DISMISS IN ACCOUNT IMAGE
 // ZOOM
 // -----------------------------------
@@ -43,24 +44,26 @@ struct StoryViewScreen: View {
                         }
                     }
                 )
+                #if false
                 .overlay(alignment: .bottomTrailing) {
                     VStack(spacing: 0) {
                         Text("\(Int(segmentProgress * 100))%")
-                            .font(.system(size: 12, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
 
                         Text("\(currentSegment + 1)/\(model.segments.count)")
-                            .font(.caption)
-                            .bold()
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 14)
-                            .background(.white)
-                            .overlay { Capsule().stroke(lineWidth: 0.3) }
-                            .clipShape(Capsule())
-                            .shadow(radius: 1.2)
-                            .padding(6)
+                        .font(.caption)
+                        .bold()
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 14)
+                        .background(.white)
+                        .overlay { Capsule().stroke(lineWidth: 0.3) }
+                        .clipShape(Capsule())
+                        .shadow(radius: 1.2)
+                        .padding(6)
                     }
                 }
+                #endif
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
@@ -108,7 +111,7 @@ struct StoryViewScreen: View {
                         userProfileURL: model.userProfileImageURL,
                         username: model.username,
                         activeTime: model.activeTime,
-                        musicInfo: model.segments.first?.musicInfo
+                        musicInfo: model.segments[currentSegment].musicInfo
                     )
                 }
                 .padding(8)
@@ -145,12 +148,13 @@ struct StoryViewScreen: View {
         let musicInfo: String?
 
         var body: some View {
-            HStack(spacing: 8) {
+            HStack(spacing: 0) {
                 KFImage(userProfileURL)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 32, height: 32)
                     .clipShape(Circle())
+                    .padding(.trailing, 8)
 
                 VStack(alignment: .leading) {
                     Text("\(username) ").bold()
@@ -175,8 +179,9 @@ struct StoryViewScreen: View {
                     Image(systemName: "ellipsis")
                         .imageScale(.medium)
                         .tint(.white)
-                        .padding(.trailing)
                 }
+                .padding(12)
+                .contentShape(Circle())
 
                 // Story closing
                 Button(action: { dismiss() }) {
@@ -184,6 +189,8 @@ struct StoryViewScreen: View {
                         .imageScale(.large)
                         .tint(.white)
                 }
+                .padding(4)
+                .contentShape(Circle())
             }
             .padding(.leading, 2)
             .frame(maxWidth: .infinity)
