@@ -17,7 +17,7 @@ public final class PersistenceServiceCoreData {
 
         //
         let entity = NSEntityDescription()
-        entity.name = Entities.StoryEntry.rawValue
+        entity.name = StoryEntry.entityName
         entity.managedObjectClassName = NSStringFromClass(StoryEntry.self)
 
         let userIdAttribute = NSAttributeDescription()
@@ -87,8 +87,10 @@ extension PersistenceServiceCoreData: PersistenceService {
                         // Update existing entry
                         entry = existingEntry
                     } else {
-                        entry = NSEntityDescription
-                            .insertNewObject(forEntityName: Entities.StoryEntry.rawValue, into: self.context) as! StoryEntry
+                        entry = NSEntityDescription.insertNewObject(
+                            forEntityName: StoryEntry.entityName,
+                            into: self.context
+                        ) as! StoryEntry
                         entry.userId = Int32(data.userId)
                     }
 
