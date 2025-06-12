@@ -87,10 +87,11 @@ extension PersistenceServiceCoreData: PersistenceService {
                         // Update existing entry
                         entry = existingEntry
                     } else {
-                        entry = NSEntityDescription.insertNewObject(
-                            forEntityName: StoryEntry.entityName,
-                            into: self.context
-                        ) as! StoryEntry
+                        entry =
+                            NSEntityDescription.insertNewObject(
+                                forEntityName: StoryEntry.entityName,
+                                into: self.context
+                            ) as! StoryEntry
                         entry.userId = Int32(data.userId)
                     }
 
