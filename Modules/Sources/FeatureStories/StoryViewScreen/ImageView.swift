@@ -8,7 +8,7 @@ struct ImageView: View {
     @State private var timer: Timer?
     @State private var startTime: Date?
 
-    private let duration: TimeInterval = 5.0
+    private let duration: TimeInterval = 3.0
     private let interval: TimeInterval = 0.1
 
     init(url: URL, progress: Binding<Double>) {

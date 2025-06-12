@@ -12,8 +12,8 @@ import UIComponents
 struct StoryViewScreen: View {
     @Environment(\.dismiss) var dismiss
     @State private var dragOffset = CGSize.zero
-    @State private var currentSegment: Int = 0
-    @State private var segmentProgress: Double = 0.0
+    @State private var currentSegmentIndex: Int = 0
+    @State private var currentSegmentProgress: Double = 0.0
 
     let model: StoryViewScreenModel
 
@@ -26,15 +26,15 @@ struct StoryViewScreen: View {
             VStack(spacing: 14) {
                 MediaView(
                     segments: model.segments,
-                    currentSegment: $currentSegment,
-                    segmentProgress: $segmentProgress
+                    currentSegmentIndex: $currentSegmentIndex,
+                    currentSegmentProgress: $currentSegmentProgress
                 )
                 .onChange(
-                    of: segmentProgress,
+                    of: currentSegmentProgress,
                     { _, newValue in
                         if newValue == 1 {
-                            if currentSegment < model.segments.count - 1 {
-                                currentSegment += 1
+                            if currentSegmentIndex < model.segments.count - 1 {
+                                currentSegmentIndex += 1
                             } else {
                                 Task {
                                     await model.markAsSeen()
@@ -47,11 +47,11 @@ struct StoryViewScreen: View {
                 #if false
                 .overlay(alignment: .bottomTrailing) {
                     VStack(spacing: 0) {
-                        Text("\(Int(segmentProgress * 100))%")
+                        Text("\(Int(currentSegmentProgress * 100))%")
                         .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
 
-                        Text("\(currentSegment + 1)/\(model.segments.count)")
+                        Text("\(currentSegmentIndex + 1)/\(model.segments.count)")
                         .font(.caption)
                         .bold()
                         .padding(.vertical, 6)
@@ -97,7 +97,7 @@ struct StoryViewScreen: View {
                                 .frame(maxWidth: .infinity)
                                 .overlay(alignment: .leading) {
                                     GeometryReader { proxy in
-                                        let progress = i < currentSegment ? 1 : (i == currentSegment ? segmentProgress : 0)
+                                        let progress = i < currentSegmentIndex ? 1 : (i == currentSegmentIndex ? currentSegmentProgress : 0)
                                         Capsule()
                                             .fill(.white)
                                             .frame(width: proxy.size.width * progress)
@@ -111,7 +111,7 @@ struct StoryViewScreen: View {
                         userProfileURL: model.userProfileImageURL,
                         username: model.username,
                         activeTime: model.activeTime,
-                        musicInfo: model.segments[currentSegment].musicInfo
+                        musicInfo: model.segments[currentSegmentIndex].musicInfo
                     )
                 }
                 .padding(8)
@@ -199,20 +199,20 @@ struct StoryViewScreen: View {
 
     struct MediaView: View {
         let segments: [StoryViewScreenModel.Segment]
-        @Binding var currentSegment: Int
-        @Binding var segmentProgress: Double
+        @Binding var currentSegmentIndex: Int
+        @Binding var currentSegmentProgress: Double
 
         var body: some View {
             GeometryReader { geometry in
                 ZStack {
-                    switch segments[currentSegment].type {
+                    switch segments[currentSegmentIndex].type {
                     case "image":
-                        ImageView(url: segments[currentSegment].url, progress: $segmentProgress)
-                            .id(segments[currentSegment].id)
+                        ImageView(url: segments[currentSegmentIndex].url, progress: $currentSegmentProgress)
+                            .id(segments[currentSegmentIndex].id)
 
                     case "video":
-                        VideoPlayerView(url: segments[currentSegment].url, progress: $segmentProgress)
-                            .id(segments[currentSegment].id)
+                        VideoPlayerView(url: segments[currentSegmentIndex].url, progress: $currentSegmentProgress)
+                            .id(segments[currentSegmentIndex].id)
 
                     default:
                         EmptyView()
@@ -228,14 +228,14 @@ struct StoryViewScreen: View {
                             let halfWidth = geometry.size.width / 2
 
                             if location.x > halfWidth {
-                                currentSegment += (currentSegment < segments.count - 1 ? 1 : 0)
+                                currentSegmentIndex += (currentSegmentIndex < segments.count - 1 ? 1 : 0)
                             } else {
-                                currentSegment -= (currentSegment > 0 ? 1 : 0)
+                                currentSegmentIndex -= (currentSegmentIndex > 0 ? 1 : 0)
                             }
                         }
                 )
-                .onChange(of: currentSegment) { _, _ in
-                    segmentProgress = 0.0
+                .onChange(of: currentSegmentIndex) { _, _ in
+                    currentSegmentProgress = 0.0
                 }
             }
         }
