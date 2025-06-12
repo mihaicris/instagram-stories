@@ -23,7 +23,7 @@ struct StoryViewScreen: View {
 
             VStack(spacing: 14) {
                 MediaView(segments: model.segments, currentSegment: $currentSegment)
-                    .overlay(alignment: .topTrailing) {
+                    .overlay(alignment: .bottomTrailing) {
                         Text("\(currentSegment + 1)/\(model.segments.count)")
                             .font(.caption)
                             .bold()
@@ -33,8 +33,7 @@ struct StoryViewScreen: View {
                             .overlay { Capsule().stroke(lineWidth: 0.3) }
                             .clipShape(Capsule())
                             .shadow(radius: 1.2)
-                            .padding(16)
-                            .padding(.top, 36)
+                            .padding(6)
                     }
 
                 HStack(spacing: 12) {
@@ -60,13 +59,15 @@ struct StoryViewScreen: View {
             }
             .background(Color.black)
             .overlay(alignment: .top) {
-                StoryDetailsView(
-                    userProfileURL: model.userProfileImageURL,
-                    username: model.username,
-                    activeTime: model.activeTime,
-                    segments: model.segments.count,
-                    musicInfo: model.segments.first?.musicInfo
-                )
+                VStack {
+                    StoryDetailsView(
+                        userProfileURL: model.userProfileImageURL,
+                        username: model.username,
+                        activeTime: model.activeTime,
+                        segments: model.segments.count,
+                        musicInfo: model.segments.first?.musicInfo
+                    )
+                }
                 .padding(8)
             }
             //            .offset(y: dragOffset.height)
