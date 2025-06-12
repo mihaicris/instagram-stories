@@ -128,23 +128,15 @@ public final class StoryListScreenModel {
     }
 
     private func updateStoryPersistence(for story: Story) async throws -> Story {
-        if let persistedStory = try await persistenceService.getPersistedStoryData(userId: story.userId) {
+        if let data = try await persistenceService.getPersistedStoryData(userId: story.userId) {
             return Story(
                 id: story.id,
                 userId: story.userId,
                 content: story.content,
-                seen: story.seen,
-                liked: persistedStory.liked
+                seen: data.seen,
+                liked: data.liked
             )
         }
-        let data = StoryData(userId: story.userId, liked: story.liked, seen: story.seen)
-        try await persistenceService.persistStoryData(data)
-        return Story(
-            id: story.id,
-            userId: story.userId,
-            content: story.content,
-            seen: story.seen,
-            liked: story.liked
-        )
+        return story
     }
 }
