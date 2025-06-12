@@ -163,7 +163,6 @@ struct StoryViewScreen: View {
         }
     }
 
-
     struct ImageView: View {
         let url: URL
 
@@ -184,22 +183,15 @@ struct StoryViewScreen: View {
                     switch segments[currentSegment].type {
                     case "image":
                         ImageView(url: segments[currentSegment].url)
-                            .frame(
-                                width: geometry.size.width,
-                                height: geometry.size.height
-                            )
 
                     case "video":
                         VideoPlayerView(url: segments[currentSegment].url)
-                            .frame(
-                                width: geometry.size.width,
-                                height: geometry.size.height
-                            )
 
                     default:
                         EmptyView()
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .contentShape(RoundedRectangle(cornerRadius: 10))
                 .gesture(
