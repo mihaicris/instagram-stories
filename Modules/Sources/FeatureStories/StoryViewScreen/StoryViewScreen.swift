@@ -93,13 +93,12 @@ struct StoryViewScreen: View {
                                 .frame(height: 3)
                                 .frame(maxWidth: .infinity)
                                 .overlay(alignment: .leading) {
-                                    if i == currentSegment {
-                                        GeometryReader { proxy in
-                                            Capsule()
-                                                .fill(.white)
-                                                .frame(width: proxy.size.width * segmentProgress)
-                                                .frame(maxHeight: .infinity)
-                                        }
+                                    GeometryReader { proxy in
+                                        let progress = i < currentSegment ? 1 : (i == currentSegment ? segmentProgress : 0)
+                                        Capsule()
+                                            .fill(.white)
+                                            .frame(width: proxy.size.width * progress)
+                                            .frame(maxHeight: .infinity)
                                     }
                                 }
                         }

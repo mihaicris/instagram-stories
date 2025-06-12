@@ -30,7 +30,7 @@ public final class PersistenceServiceCoreData {
         likedAttribute.attributeType = .booleanAttributeType
         likedAttribute.isOptional = false
         likedAttribute.defaultValue = false
-        
+
         let seenAttribute = NSAttributeDescription()
         seenAttribute.name = "seen"
         seenAttribute.attributeType = .booleanAttributeType

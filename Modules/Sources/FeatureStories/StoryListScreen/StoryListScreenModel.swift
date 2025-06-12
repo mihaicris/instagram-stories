@@ -63,7 +63,7 @@ public final class StoryListScreenModel {
         viewModels[index] = viewModel
         state = .data(viewModels)
     }
-    
+
     // MARK: - Private
 
     private func makeViewModels(users: [User]) async throws -> [StoryItemViewModel] {

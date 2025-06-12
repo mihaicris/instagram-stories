@@ -5,7 +5,7 @@ import Foundation
 public struct PersistenceServiceUserDefaults: PersistenceService {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    
+
     public init() {}
 
     nonisolated(unsafe) private let suite: UserDefaults = {
