@@ -44,18 +44,23 @@ struct StoryViewScreen: View {
                     }
                 )
                 .overlay(alignment: .bottomTrailing) {
-                    Text("\(currentSegment + 1)/\(model.segments.count)")
-                        .font(.caption)
-                        .bold()
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 14)
-                        .background(.white)
-                        .overlay { Capsule().stroke(lineWidth: 0.3) }
-                        .clipShape(Capsule())
-                        .shadow(radius: 1.2)
-                        .padding(6)
+                    VStack(spacing: 0) {
+                        Text("\(Int(segmentProgress * 100))%")
+                            .font(.system(size: 12, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+
+                        Text("\(currentSegment + 1)/\(model.segments.count)")
+                            .font(.caption)
+                            .bold()
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 14)
+                            .background(.white)
+                            .overlay { Capsule().stroke(lineWidth: 0.3) }
+                            .clipShape(Capsule())
+                            .shadow(radius: 1.2)
+                            .padding(6)
+                    }
                 }
-                .transition(.opacity)
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
@@ -197,9 +202,11 @@ struct StoryViewScreen: View {
                     switch segments[currentSegment].type {
                     case "image":
                         ImageView(url: segments[currentSegment].url, progress: $segmentProgress)
+                            .id(segments[currentSegment].id)
 
                     case "video":
                         VideoPlayerView(url: segments[currentSegment].url, progress: $segmentProgress)
+                            .id(segments[currentSegment].id)
 
                     default:
                         EmptyView()
@@ -261,7 +268,10 @@ struct StoryViewScreen: View {
                         .init(
                             id: 0,
                             type: "image",
-                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                            url: URL(
+                                string:
+                                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                            )!
                         ),
                         .init(
                             id: 1,

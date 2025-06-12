@@ -19,6 +19,7 @@ struct VideoPlayerView: View {
     var body: some View {
         CustomVideoPlayerView(player: player)
             .onAppear {
+                progress = 0
                 player.play()
                 addObservers()
             }
@@ -26,11 +27,6 @@ struct VideoPlayerView: View {
                 player.pause()
                 removeObservers()
             }
-        //            .overlay {
-        //                Text("\(Int(progress * 100))%")
-        //                    .font(.system(size: 20, weight: .bold, design: .rounded))
-        //                    .foregroundStyle(.white)
-        //            }
     }
 
     private func addObservers() {
@@ -43,7 +39,7 @@ struct VideoPlayerView: View {
                     guard let duration = player.currentItem?.duration.seconds,
                         duration > 0
                     else {
-                        progress = 0
+                        //                        progress = 0
                         return
                     }
                     progress = time.seconds / duration

@@ -29,7 +29,6 @@ struct ImageView: View {
     }
 
     private func startProgressTimer() {
-        progress = 0
         startTime = Date()
 
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [startTime] _ in
@@ -40,8 +39,8 @@ struct ImageView: View {
             Task { @MainActor in
                 withAnimation {
                     if elapsed >= duration {
-                        progress = 1
                         stopProgressTimer()
+                        progress = 1
                     } else {
                         progress = elapsed / duration
                     }

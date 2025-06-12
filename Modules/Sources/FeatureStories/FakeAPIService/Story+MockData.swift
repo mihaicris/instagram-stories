@@ -9,7 +9,7 @@ extension Story {
             let decoder = JSONDecoder()
             let data = try Data(contentsOf: url)
             let stories = try decoder.decode([Story].self, from: data)
-            return stories.first { $0.userId == userId }
+            return stories.first { $0.userId == (userId % (stories.count + 1)) }  // circular access over the stories
         } catch {
             return nil
         }

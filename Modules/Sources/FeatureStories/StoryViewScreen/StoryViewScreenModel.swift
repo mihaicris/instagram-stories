@@ -38,7 +38,7 @@ final class StoryViewScreenModel {
         self.userVerified = Bool.random()
         self.activeTime = "\((1...8).randomElement() ?? 1)h"
         self.segments = dto.story.content.map({ media in
-            Segment(url: media.url, type: media.type, musicInfo: "Melody")
+            Segment(id: media.id, url: media.url, type: media.type, musicInfo: "Melody")
         })
         self.liked = dto.story.liked
     }
@@ -78,7 +78,8 @@ final class StoryViewScreenModel {
         let liked: Bool
     }
 
-    struct Segment {
+    struct Segment: Identifiable {
+        let id: Int
         let url: URL
         let type: String
         let musicInfo: String?

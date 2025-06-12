@@ -37,16 +37,6 @@ public final class StoryListScreenModel {
         await loadMoreContent()
     }
 
-    func markAsUnseen() {
-        state = .data(
-            viewModels.map {
-                var e = $0
-                e.markAsUnseen()
-                return e
-            }
-        )
-    }
-
     func loadMoreContent() async {
         isLoadingMore = !viewModels.isEmpty
         defer { isLoadingMore = false }
