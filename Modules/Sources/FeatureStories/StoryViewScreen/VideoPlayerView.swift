@@ -3,14 +3,16 @@ import SwiftUI
 
 struct VideoPlayerView: View {
     let url: URL
+    @Binding var progress: Double
+    
     @State private var player: AVPlayer
     @State private var endReached = false
-    @State private var progress: Double = 0.0
     @State private var timeObserverToken: Any?
     @State private var endTimeObserver: Any?
 
-    init(url: URL) {
+    init(url: URL, progress: Binding<Double>) {
         self.url = url
+        self._progress = progress
         self._player = State(initialValue: AVPlayer(url: url))
     }
 
@@ -24,17 +26,17 @@ struct VideoPlayerView: View {
                 player.pause()
                 removeObservers()
             }
-            .overlay {
-                Text("\(Int(progress * 100))%")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-            }
+//            .overlay {
+//                Text("\(Int(progress * 100))%")
+//                    .font(.system(size: 20, weight: .bold, design: .rounded))
+//                    .foregroundStyle(.white)
+//            }
     }
 
     private func addObservers() {
         addEndObserver()
 
-        let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        let interval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [player] time in
             Task { @MainActor in
                 guard let duration = player.currentItem?.duration.seconds,

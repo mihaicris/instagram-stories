@@ -12,7 +12,7 @@ struct StoryViewScreen: View {
     @Environment(\.dismiss) var dismiss
     @State private var dragOffset = CGSize.zero
     @State private var currentSegment: Int = 0
-    @State private var segmentProgress: CGFloat = 0.0
+    @State private var segmentProgress: Double = 0.0
 
     let model: StoryViewScreenModel
 
@@ -23,19 +23,23 @@ struct StoryViewScreen: View {
             }
 
             VStack(spacing: 14) {
-                MediaView(segments: model.segments, currentSegment: $currentSegment)
-                    .overlay(alignment: .bottomTrailing) {
-                        Text("\(currentSegment + 1)/\(model.segments.count)")
-                            .font(.caption)
-                            .bold()
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 14)
-                            .background(.white)
-                            .overlay { Capsule().stroke(lineWidth: 0.3) }
-                            .clipShape(Capsule())
-                            .shadow(radius: 1.2)
-                            .padding(6)
-                    }
+                MediaView(
+                    segments: model.segments,
+                    currentSegment: $currentSegment,
+                    segmentProgress: $segmentProgress
+                )
+                .overlay(alignment: .bottomTrailing) {
+                    Text("\(currentSegment + 1)/\(model.segments.count)")
+                        .font(.caption)
+                        .bold()
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 14)
+                        .background(.white)
+                        .overlay { Capsule().stroke(lineWidth: 0.3) }
+                        .clipShape(Capsule())
+                        .shadow(radius: 1.2)
+                        .padding(6)
+                }
 
                 HStack(spacing: 12) {
                     MesssageInputButtonView(action: {})
@@ -69,12 +73,17 @@ struct StoryViewScreen: View {
                                 .frame(maxWidth: .infinity)
                                 .overlay(alignment: .leading) {
                                     if i == currentSegment {
-                                        Capsule().fill(.white)
+                                        GeometryReader { proxy in
+                                            Capsule()
+                                                .fill(.white)
+                                                .frame(width: proxy.size.width * segmentProgress)
+                                                .frame(maxHeight: .infinity)
+                                        }
                                     }
                                 }
                         }
                     }
-                    
+
                     StoryDetailsView(
                         userProfileURL: model.userProfileImageURL,
                         username: model.username,
@@ -161,29 +170,22 @@ struct StoryViewScreen: View {
         }
     }
 
-    struct ImageView: View {
-        let url: URL
 
-        var body: some View {
-            KFImage(url)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-        }
-    }
 
     struct MediaView: View {
         let segments: [StoryViewScreenModel.Segment]
         @Binding var currentSegment: Int
+        @Binding var segmentProgress: Double
 
         var body: some View {
             GeometryReader { geometry in
                 ZStack {
                     switch segments[currentSegment].type {
                     case "image":
-                        ImageView(url: segments[currentSegment].url)
+                        ImageView(url: segments[currentSegment].url, progress: $segmentProgress)
 
                     case "video":
-                        VideoPlayerView(url: segments[currentSegment].url)
+                        VideoPlayerView(url: segments[currentSegment].url, progress: $segmentProgress)
 
                     default:
                         EmptyView()
@@ -205,6 +207,9 @@ struct StoryViewScreen: View {
                             }
                         }
                 )
+                .onChange(of: currentSegment) { _, _ in
+                    segmentProgress = 0.0
+                }
             }
         }
     }
