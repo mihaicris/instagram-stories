@@ -69,7 +69,7 @@ struct StoryViewScreen: View {
                                 }
                             }
                     }
-                }  // .animation(.linear, value: model.progressBars)
+                }
 
                 StoryDetailsView(
                     userProfileURL: model.userProfileImageURL,

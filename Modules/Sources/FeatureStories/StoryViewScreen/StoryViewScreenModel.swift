@@ -30,7 +30,7 @@ final class StoryViewScreenModel {
     @ObservationIgnored private var startTime = Date()
     @ObservationIgnored private var progressTask: Task<Void, Never>?
     @ObservationIgnored private let duration: TimeInterval = 3.0
-    @ObservationIgnored private let interval: TimeInterval = 0.1
+    @ObservationIgnored private let interval: TimeInterval = 0.05
     @ObservationIgnored private var timeObserverToken: Any?
     @ObservationIgnored private var endTimeObserver: Any?
 
@@ -71,7 +71,11 @@ final class StoryViewScreenModel {
                 gotoNextSegment()
             }
         } else {
-            goToPreviousSegment()
+            if isFirstSegment {
+                shouldDismiss = true
+            } else {
+                goToPreviousSegment()
+            }
         }
     }
 
@@ -250,7 +254,11 @@ final class StoryViewScreenModel {
         }
         endTimeObserver = nil
     }
-    
+
+    private var isFirstSegment: Bool {
+        currentSegmentIndex == 0
+    }
+
     private var isLastSegment: Bool {
         currentSegmentIndex == segmentsCount - 1
     }
