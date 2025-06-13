@@ -62,13 +62,11 @@ final class StoryViewScreenModel {
         shouldDismiss = true
     }
 
-    func onRegionTap(x: CGFloat, width: CGFloat) {
+    func onRegionTap(x: CGFloat, width: CGFloat) async {
         if x > width / 2 {
-            if currentSegmentIndex == segmentsCount - 1 {
-                Task {
-                    await markAsSeen()
-                    shouldDismiss = true
-                }
+            if isLastSegment {
+                await markAsSeen()
+                shouldDismiss = true
             } else {
                 gotoNextSegment()
             }
@@ -251,5 +249,9 @@ final class StoryViewScreenModel {
             timeObserverToken = nil
         }
         endTimeObserver = nil
+    }
+    
+    private var isLastSegment: Bool {
+        currentSegmentIndex == segmentsCount - 1
     }
 }

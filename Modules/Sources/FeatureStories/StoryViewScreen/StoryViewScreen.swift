@@ -12,10 +12,15 @@ struct StoryViewScreen: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            MediaView(segment: model.currentSegment) {
-                model.onRegionTap(x: $0, width: $1)
-            }
-
+            MediaView(
+                segment: model.currentSegment,
+                onTap: { x, width in
+                    Task {
+                        await model.onRegionTap(x: x, width: width)
+                    }
+                }
+            )
+            
             HStack(spacing: 12) {
                 MesssageInputButtonView(action: {})
 
