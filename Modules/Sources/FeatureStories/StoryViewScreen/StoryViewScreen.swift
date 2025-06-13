@@ -5,10 +5,11 @@ import Persistence
 import SwiftUI
 import UIComponents
 
-// GESTURI
+//
 // -----------------------------------
-// TODO: SLIDE DOWN DISMISS IN ACCOUNT IMAGE
-// TODO: ZOOM
+// TODO: GESTURI SLIDE DOWN DISMISS IN ACCOUNT IMAGE
+// TODO: GESTURI ZOOM
+// TODO: MEMORY LEAKS
 // -----------------------------------
 
 struct StoryViewScreen: View {
