@@ -68,21 +68,20 @@ final class StoryViewScreenModel {
     }
 
     func onClose() {
-        stopTimer()
-        shouldDismiss = true
+        closeScreen()
     }
 
     func onRegionTap(x: CGFloat, width: CGFloat) async {
         if x > width / 2 {
             if isLastSegment {
                 await markAsSeen()
-                shouldDismiss = true
+                closeScreen()
             } else {
                 gotoNextSegment()
             }
         } else {
             if isFirstSegment {
-                shouldDismiss = true
+                closeScreen()
             } else {
                 goToPreviousSegment()
             }
@@ -158,7 +157,7 @@ final class StoryViewScreenModel {
             } else {
                 Task {
                     await markAsSeen()
-                    shouldDismiss = true
+                    closeScreen()
                 }
             }
         }
@@ -272,5 +271,31 @@ final class StoryViewScreenModel {
 
     private var isLastSegment: Bool {
         currentSegmentIndex == segmentsCount - 1
+    }
+    
+    private func closeScreen() {
+        prepareForDeinit()
+        shouldDismiss = true
+    }
+    
+    private func prepareForDeinit() {
+        stopTimer()
+        segments.forEach { segment in
+            if case .video(let player) = segment.type {
+                player.pause()
+                if let asset = player.currentItem?.asset {
+                    asset.cancelLoading()
+                }
+                if let token = playerTimeObserverToken {
+                    player.removeTimeObserver(token)
+                }
+                player.replaceCurrentItem(with: nil)
+            }
+        }
+        if case .video(let player) = currentSegment.type {
+            player.pause()
+            player.replaceCurrentItem(with: nil)
+        }
+        segments = []
     }
 }
