@@ -11,6 +11,8 @@ struct Story: Codable, Identifiable {
         let id: Int
         let type: String
         let url: URL
+        let band: String?
+        let song: String?
 
         enum `Type`: String, Codable {
             case image

@@ -75,10 +75,9 @@ struct StoryViewScreen: View {
                     userProfileURL: model.userProfileImageURL,
                     username: model.username,
                     activeTime: model.activeTime,
-                    musicInfo: model.currentSegment.musicInfo,
-                    onClose: {
-                        model.onClose()
-                    }
+                    band: model.currentSegment.band,
+                    song: model.currentSegment.song,
+                    onClose: model.onClose
                 )
             }
             .padding(8)
@@ -119,7 +118,8 @@ struct StoryViewScreen: View {
         let userProfileURL: URL
         let username: String
         let activeTime: String
-        let musicInfo: String?
+        let band: String?
+        let song: String?
         let onClose: () -> Void
 
         var body: some View {
@@ -135,11 +135,11 @@ struct StoryViewScreen: View {
                     Text("\(username) ").bold()
                         + Text(activeTime)
                         .foregroundStyle(.white.opacity(0.8))
-                    if let musicInfo {
+                    if let band, let song {
                         HStack {
                             Image(systemName: "waveform")
                                 .symbolEffect(.variableColor.dimInactiveLayers.cumulative.reversing)
-                            Text("Kali Uchis ∙").bold() + Text(musicInfo)
+                            Text(band).bold() + Text(" ∙ ") + Text(song)
                         }
                     }
                 }
@@ -211,12 +211,16 @@ struct StoryViewScreen: View {
                         .init(
                             id: 0,
                             type: "video",
-                            url: URL(string: "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4")!
+                            url: URL(string: "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4")!,
+                            band: "Elthon John",
+                            song: "Sacrifice"
                         ),
                         .init(
                             id: 1,
                             type: "image",
-                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!,
+                            band: nil,
+                            song: nil 
                         ),
                     ],
                     seen: false,

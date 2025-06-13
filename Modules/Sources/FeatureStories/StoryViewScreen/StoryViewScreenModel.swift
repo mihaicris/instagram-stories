@@ -24,15 +24,13 @@ final class StoryViewScreenModel {
     @ObservationIgnored private var segments: [Segment] = []
     @ObservationIgnored private let dto: DTO
     @ObservationIgnored private var segmentsCount: Int
-
     @ObservationIgnored private var currentSegmentIndex: Int = 0
-
     @ObservationIgnored private var startTime = Date()
     @ObservationIgnored private var progressTask: Task<Void, Never>?
-    @ObservationIgnored private let duration: TimeInterval = 3.0
-    @ObservationIgnored private let interval: TimeInterval = 0.05
-    @ObservationIgnored private var timeObserverToken: Any?
-    @ObservationIgnored private var endTimeObserver: Any?
+    @ObservationIgnored private let defaultTimerDuration: TimeInterval = 3.0
+    @ObservationIgnored private let intervalBetweenProgressUpdates: TimeInterval = 0.05
+    @ObservationIgnored private var playerTimeObserverToken: Any?
+    @ObservationIgnored private var playerEndTimeObserver: Any?
 
     init(dto: DTO) {
         self.dto = dto
@@ -44,13 +42,23 @@ final class StoryViewScreenModel {
         self.segments = dto.story.content.map { media in
             switch media.type {
             case "image":
-                return .init(id: media.id, type: .image(media.url), musicInfo: "Melody")
+                return .init(
+                    id: media.id,
+                    type: .image(media.url),
+                    band: media.band,
+                    song: media.song
+                )
 
             case "video":
-                return .init(id: media.id, type: .video(AVPlayer(url: media.url)), musicInfo: "Melody")
+                return .init(
+                    id: media.id,
+                    type: .video(AVPlayer(url: media.url)),
+                    band: media.band,
+                    song: media.song
+                )
 
             default:
-                return .init(id: 0, type: .image(.temporaryDirectory), musicInfo: nil)
+                return .init(id: 0, type: .image(.temporaryDirectory), band: nil, song: nil)
             }
         }
         self.currentSegment = self.segments.first!  // swiftlint:disable:this force_unwrapping
@@ -120,7 +128,8 @@ final class StoryViewScreenModel {
     struct Segment: Identifiable {
         let id: Int
         let type: MediaType
-        let musicInfo: String?
+        let band: String?
+        let song: String?
 
         enum MediaType {
             case image(URL)
@@ -191,7 +200,7 @@ final class StoryViewScreenModel {
     private func startDefaultProgressTimer() {
         startTime = Date()
 
-        progressTask = Task { [weak self, duration] in
+        progressTask = Task { [weak self, defaultTimerDuration] in
             guard let self else {
                 return
             }
@@ -205,14 +214,14 @@ final class StoryViewScreenModel {
                     guard let self else {
                         return
                     }
-                    updateProgressForCurrentSegment(elapsed >= duration ? 1.0 : elapsed / duration)
+                    updateProgressForCurrentSegment(elapsed >= defaultTimerDuration ? 1.0 : elapsed / defaultTimerDuration)
                 }
 
-                if elapsed >= duration {
+                if elapsed >= defaultTimerDuration {
                     stopDefaultProgressTimer()
                 }
 
-                try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+                try? await Task.sleep(nanoseconds: UInt64(intervalBetweenProgressUpdates * 1_000_000_000))
             }
         }
     }
@@ -223,7 +232,7 @@ final class StoryViewScreenModel {
     }
 
     private func startMovieProgressTimer(player: AVPlayer) {
-        endTimeObserver = NotificationCenter.default.addObserver(
+        playerEndTimeObserver = NotificationCenter.default.addObserver(
             forName: .AVPlayerItemDidPlayToEndTime,
             object: player.currentItem,
             queue: .main
@@ -233,8 +242,8 @@ final class StoryViewScreenModel {
             }
         }
 
-        let interval = CMTime(seconds: interval, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-        timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [player] time in
+        let interval = CMTime(seconds: intervalBetweenProgressUpdates, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        playerTimeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [player] time in
             Task { @MainActor [weak self] in
                 guard let self, let duration = player.currentItem?.duration.seconds, duration > 0 else {
                     return
@@ -248,11 +257,11 @@ final class StoryViewScreenModel {
         player.pause()
         player.seek(to: .zero)
         NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
-        if let token = timeObserverToken {
+        if let token = playerTimeObserverToken {
             player.removeTimeObserver(token)
-            timeObserverToken = nil
+            playerTimeObserverToken = nil
         }
-        endTimeObserver = nil
+        playerEndTimeObserver = nil
     }
 
     private var isFirstSegment: Bool {

@@ -1,26 +1,36 @@
+Sure, here is the updated JSON file with `band` and `song` keys added to each content element:
+
+```json
 [
     {
-        "content":
-        [
+        "content": [
             {
                 "id": 0,
                 "type": "video",
-                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4"
+                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4",
+                "band": "Queen",
+                "song": "Bohemian Rhapsody"
             },
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "John Lennon",
+                "song": "Imagine"
             },
             {
                 "id": 2,
                 "type": "video",
-                "url": "https://videos.pexels.com/video-files/5532771/5532771-uhd_1440_2732_25fps.mp4"
+                "url": "https://videos.pexels.com/video-files/5532771/5532771-uhd_1440_2732_25fps.mp4",
+                "band": "Guns N' Roses",
+                "song": "Sweet Child O' Mine"
             },
             {
                 "id": 3,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/1684880/pexels-photo-1684880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/1684880/pexels-photo-1684880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Eagles",
+                "song": "Hotel California"
             }
         ],
         "id": 1,
@@ -29,22 +39,27 @@
         "userId": 1
     },
     {
-        "content":
-        [
+        "content": [
             {
                 "id": 0,
                 "type": "video",
-                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4"
+                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4",
+                "band": "Led Zeppelin",
+                "song": "Stairway to Heaven"
             },
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Nirvana",
+                "song": "Smells Like Teen Spirit"
             },
             {
                 "id": 2,
                 "type": "video",
-                "url": "https://videos.pexels.com/video-files/5532771/5532771-uhd_1440_2732_25fps.mp4"
+                "url": "https://videos.pexels.com/video-files/5532771/5532771-uhd_1440_2732_25fps.mp4",
+                "band": "Bob Dylan",
+                "song": "Like a Rolling Stone"
             }
         ],
         "id": 2,
@@ -53,17 +68,20 @@
         "userId": 2
     },
     {
-        "content":
-        [
+        "content": [
             {
                 "id": 0,
                 "type": "video",
-                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4"
+                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4",
+                "band": "The Beatles",
+                "song": "Hey Jude"
             },
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Jimi Hendrix",
+                "song": "Purple Haze"
             }
         ],
         "id": 3,
@@ -72,12 +90,13 @@
         "userId": 3
     },
     {
-        "content":
-        [
+        "content": [
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Michael Jackson",
+                "song": "Billie Jean"
             }
         ],
         "id": 4,
@@ -86,12 +105,13 @@
         "userId": 4
     },
     {
-        "content":
-        [
+        "content": [
             {
                 "id": 0,
                 "type": "video",
-                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4"
+                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4",
+                "band": "The Beatles",
+                "song": "Yesterday"
             }
         ],
         "id": 5,
@@ -100,67 +120,90 @@
         "userId": 5
     },
     {
-        "content":
-        [
+        "content": [
             {
                 "id": 0,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "The Weeknd",
+                "song": "Blinding Lights"
             },
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Ed Sheeran",
+                "song": "Shape of You"
             },
             {
                 "id": 2,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Mark Ronson ft. Bruno Mars",
+                "song": "Uptown Funk"
             },
             {
                 "id": 3,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Lil Nas X",
+                "song": "Old Town Road"
             },
             {
                 "id": 4,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Tones and I",
+                "song": "Dance Monkey"
             },
             {
                 "id": 5,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Lewis Capaldi",
+                "song": "Someone You Loved"
             },
             {
                 "id": 6,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Billie Eilish",
+                "song": "Bad Guy"
             },
             {
                 "id": 7,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Post Malone & Swae Lee",
+                "song": "Sunflower"
             },
             {
                 "id": 8,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Travis Scott",
+                "song": "Sicko Mode"
             },
             {
                 "id": 9,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Ariana Grande",
+                "song": "Thank U, Next"
             },
             {
                 "id": 10,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Ed Sheeran",
+                "song": "Perfect"
             },
             {
                 "id": 11,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "band": "Dua Lipa",
+                "song": "Levitating"
             }
         ],
         "id": 6,
@@ -169,3 +212,4 @@
         "userId": 6
     }
 ]
+```
