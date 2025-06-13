@@ -5,6 +5,12 @@ import Persistence
 import SwiftUI
 import UIComponents
 
+// GESTURI
+// -----------------------------------
+// TODO: SLIDE DOWN DISMISS IN ACCOUNT IMAGE
+// TODO: ZOOM
+// -----------------------------------
+
 struct StoryViewScreen: View {
     @Environment(\.dismiss) var dismiss
 
@@ -220,7 +226,7 @@ struct StoryViewScreen: View {
                             type: "image",
                             url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!,
                             band: nil,
-                            song: nil 
+                            song: nil
                         ),
                     ],
                     seen: false,
