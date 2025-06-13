@@ -20,7 +20,7 @@ public struct StoryListScreen: View {
 
                 Color.clear
                     .fullScreenCover(item: $model.navigationToStory) { dto in
-                        StoryViewScreen(model: StoryViewScreenModel(dto: dto))
+                        StoryViewScreen(model: .init(dto: dto))
                             .onDisappear {
                                 Task {
                                     await model.refresh(user: dto.user)

@@ -57,9 +57,21 @@ final class StoryViewScreenModel {
         self.progressBars = [Double](repeating: 0.0, count: self.segmentsCount)
     }
 
+    func onClose() {
+        stopTimer()
+        shouldDismiss = true
+    }
+
     func onRegionTap(x: CGFloat, width: CGFloat) {
         if x > width / 2 {
-            gotoNextSegment()
+            if currentSegmentIndex == segmentsCount - 1 {
+                Task {
+                    await markAsSeen()
+                    shouldDismiss = true
+                }
+            } else {
+                gotoNextSegment()
+            }
         } else {
             goToPreviousSegment()
         }
@@ -146,6 +158,7 @@ final class StoryViewScreenModel {
 
         case .video(let player):
             startMovieProgressTimer(player: player)
+            player.play()
         }
     }
 
@@ -176,13 +189,20 @@ final class StoryViewScreenModel {
     private func startDefaultProgressTimer() {
         startTime = Date()
 
-        progressTask = Task {
+        progressTask = Task { [weak self, duration] in
+            guard let self else {
+                return
+            }
+
             let startTime = Date()
 
             while !Task.isCancelled {
                 let elapsed = startTime.timeIntervalSinceNow * -1
 
-                await MainActor.run {
+                await MainActor.run { [weak self] in
+                    guard let self else {
+                        return
+                    }
                     updateProgressForCurrentSegment(elapsed >= duration ? 1.0 : elapsed / duration)
                 }
 
@@ -205,7 +225,7 @@ final class StoryViewScreenModel {
             forName: .AVPlayerItemDidPlayToEndTime,
             object: player.currentItem,
             queue: .main
-        ) { _ in
+        ) { [weak self] _ in
             Task { @MainActor [weak self] in
                 self?.stopMovieProgressTimer(player: player)
             }
@@ -220,7 +240,6 @@ final class StoryViewScreenModel {
                 updateProgressForCurrentSegment(time.seconds / duration)
             }
         }
-        player.play()
     }
 
     private func stopMovieProgressTimer(player: AVPlayer) {
@@ -231,5 +250,6 @@ final class StoryViewScreenModel {
             player.removeTimeObserver(token)
             timeObserverToken = nil
         }
+        endTimeObserver = nil
     }
 }

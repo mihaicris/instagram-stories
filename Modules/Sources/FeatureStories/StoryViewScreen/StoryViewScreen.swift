@@ -33,8 +33,18 @@ struct StoryViewScreen: View {
             }
             .padding(.horizontal, 20)
         }
-        .onAppear { model.onAppear() }
-        .onChange(of: model.shouldDismiss, { if $1 { dismiss() } })
+        .onAppear {
+            model.onAppear()
+        }
+        .onDisappear {
+            model.onDissapear()
+        }
+        .onChange(
+            of: model.shouldDismiss,
+            { _, newValue in
+                if newValue { dismiss() }
+            }
+        )
         .background(Color.black)
         .overlay(alignment: .top) {
             VStack(spacing: 6) {
@@ -60,7 +70,10 @@ struct StoryViewScreen: View {
                     userProfileURL: model.userProfileImageURL,
                     username: model.username,
                     activeTime: model.activeTime,
-                    musicInfo: model.currentSegment.musicInfo
+                    musicInfo: model.currentSegment.musicInfo,
+                    onClose: {
+                        model.onClose()
+                    }
                 )
             }
             .padding(8)
@@ -98,12 +111,11 @@ struct StoryViewScreen: View {
     }
 
     struct StoryDetailsView: View {
-        @Environment(\.dismiss) private var dismiss
-
         let userProfileURL: URL
         let username: String
         let activeTime: String
         let musicInfo: String?
+        let onClose: () -> Void
 
         var body: some View {
             HStack(spacing: 0) {
@@ -142,7 +154,7 @@ struct StoryViewScreen: View {
                 .contentShape(Circle())
 
                 // Story closing
-                Button(action: { dismiss() }) {
+                Button(action: { onClose() }) {
                     Image(systemName: "xmark")
                         .imageScale(.large)
                         .tint(.white)
@@ -177,7 +189,7 @@ struct StoryViewScreen: View {
 }
 
 // swiftlint:disable force_unwrapping
-// swiftlint:disable line_length
+
 #Preview {
     prepareDependencies {
         $0.apiService = APIServiceProvidingLocalData()
@@ -195,12 +207,12 @@ struct StoryViewScreen: View {
                             id: 0,
                             type: "video",
                             url: URL(string: "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4")!
-                        )
-                        //                        .init(
-                        //                            id: 1,
-                        //                            type: "image",
-                        //                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
-                        //                        )
+                        ),
+                        .init(
+                            id: 1,
+                            type: "image",
+                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                        ),
                     ],
                     seen: false,
                     liked: false
