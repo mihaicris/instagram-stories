@@ -27,7 +27,7 @@ struct StoryViewScreen: View {
                     }
                 }
             )
-            
+
             HStack(spacing: 12) {
                 MesssageInputButtonView(action: {})
 
