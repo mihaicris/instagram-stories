@@ -6,10 +6,11 @@ import SwiftUI
 @main
 struct InstagramApp: App {
     init() {
-        prepareDependencies {
-            $0.apiService = APIServiceProvidingLocalData()
-            $0.persistenceService = PersistenceServiceCoreData()
-            // $0.persistenceService = PersistenceServiceUserDefaults()
+        if !isRunningPreviews {
+            prepareDependencies {
+                $0.apiService = APIServiceProvidingLocalData()
+                $0.persistenceService = PersistenceServiceCoreData()
+            }
         }
     }
 
@@ -17,5 +18,9 @@ struct InstagramApp: App {
         WindowGroup {
             StoryListScreen(model: .init())
         }
+    }
+
+    private var isRunningPreviews: Bool {
+        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }

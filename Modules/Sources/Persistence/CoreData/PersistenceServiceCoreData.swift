@@ -95,7 +95,7 @@ extension PersistenceServiceCoreData: PersistenceService {
                             NSEntityDescription.insertNewObject(
                                 forEntityName: StoryEntry.entityName,
                                 into: self.context
-                            ) as! StoryEntry // swiftlint:disable:this force_cast
+                            ) as! StoryEntry  // swiftlint:disable:this force_cast
                         entry.userId = Int32(data.userId)
                     }
 

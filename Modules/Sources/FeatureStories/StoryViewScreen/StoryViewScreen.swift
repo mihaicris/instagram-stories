@@ -110,7 +110,7 @@ struct StoryViewScreen: View {
                 )
             }
             .padding(8)
-        }       
+        }
     }
 
     struct StoryDetailsView: View {

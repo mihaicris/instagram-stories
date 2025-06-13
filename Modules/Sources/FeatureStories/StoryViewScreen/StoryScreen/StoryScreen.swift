@@ -1,3 +1,4 @@
+import AVFoundation
 import Dependencies
 import Kingfisher
 import Persistence
@@ -12,7 +13,7 @@ struct StoryScreen: View {
     var body: some View {
         VStack(spacing: 14) {
             MediaView(segment: model.currentSegment) {
-                model.onContentTap(x: $0, width: $1)
+                model.onRegionTap(x: $0, width: $1)
             }
 
             HStack(spacing: 12) {
@@ -32,6 +33,8 @@ struct StoryScreen: View {
             }
             .padding(.horizontal, 20)
         }
+        .onAppear { model.onAppear() }
+        .onChange(of: model.shouldDismiss, { if $1 { dismiss() } })
         .background(Color.black)
         .overlay(alignment: .top) {
             VStack(spacing: 6) {
@@ -51,14 +54,14 @@ struct StoryScreen: View {
                                 }
                             }
                     }
-                }
+                } // .animation(.linear, value: model.progressBars)
 
-                //                StoryDetailsView(
-                //                    userProfileURL: model.userProfileImageURL,
-                //                    username: model.username,
-                //                    activeTime: model.activeTime,
-                //                    musicInfo: model.segments[currentSegmentIndex].musicInfo
-                //                )
+                StoryDetailsView(
+                    userProfileURL: model.userProfileImageURL,
+                    username: model.username,
+                    activeTime: model.activeTime,
+                    musicInfo: model.currentSegment.musicInfo
+                )
             }
             .padding(8)
         }
@@ -72,17 +75,13 @@ struct StoryScreen: View {
             GeometryReader { geometry in
                 ZStack {
                     switch segment.type {
-                    case "image":
-                        KFImage(segment.url)
+                    case let .image(url):
+                        KFImage(url)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
 
-                    //                    case "video":
-                    //                        VideoPlayerView(url: segment.url, progress: $currentSegmentProgress)
-                    //                            .id(segment.id)
-
-                    default:
-                        EmptyView()
+                    case let .video(player):
+                        VideoPlayerNewView(player: player)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -95,6 +94,64 @@ struct StoryScreen: View {
                         }
                 )
             }
+        }
+    }
+    
+    struct StoryDetailsView: View {
+        @Environment(\.dismiss) private var dismiss
+
+        let userProfileURL: URL
+        let username: String
+        let activeTime: String
+        let musicInfo: String?
+
+        var body: some View {
+            HStack(spacing: 0) {
+                KFImage(userProfileURL)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 32, height: 32)
+                    .clipShape(Circle())
+                    .padding(.trailing, 8)
+
+                VStack(alignment: .leading) {
+                    Text("\(username) ").bold()
+                        + Text(activeTime)
+                        .foregroundStyle(.white.opacity(0.8))
+                    if let musicInfo {
+                        HStack {
+                            Image(systemName: "waveform")
+                                .symbolEffect(.variableColor.dimInactiveLayers.cumulative.reversing)
+                            Text("Kali Uchis ∙").bold() + Text(musicInfo)
+                        }
+                    }
+                }
+                .font(.system(size: 14))
+                .multilineTextAlignment(.leading)
+                .foregroundStyle(.white)
+
+                Spacer()
+
+                // Story Options
+                Button(action: {}) {
+                    Image(systemName: "ellipsis")
+                        .imageScale(.medium)
+                        .tint(.white)
+                }
+                .padding(12)
+                .contentShape(Circle())
+
+                // Story closing
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark")
+                        .imageScale(.large)
+                        .tint(.white)
+                }
+                .padding(4)
+                .contentShape(Circle())
+            }
+            .padding(.leading, 2)
+            .frame(maxWidth: .infinity)
         }
     }
 
@@ -134,16 +191,16 @@ struct StoryScreen: View {
                     id: 1,
                     userId: 1,
                     content: [
-                        //                        .init(
-                        //                            id: 0,
-                        //                            type: "video",
-                        //                            url: URL(string: "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4")!
-                        //                        ),
                         .init(
-                            id: 1,
-                            type: "image",
-                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                            id: 0,
+                            type: "video",
+                            url: URL(string: "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4")!
                         )
+                        //                        .init(
+                        //                            id: 1,
+                        //                            type: "image",
+                        //                            url: URL(string: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d")!
+                        //                        )
                     ],
                     seen: false,
                     liked: false
