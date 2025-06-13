@@ -1,6 +1,3 @@
-Sure, here is the updated JSON file with `band` and `song` keys added to each content element:
-
-```json
 [
     {
         "content": [
@@ -14,7 +11,8 @@ Sure, here is the updated JSON file with `band` and `song` keys added to each co
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "John Lennon",
                 "song": "Imagine"
             },
@@ -28,7 +26,8 @@ Sure, here is the updated JSON file with `band` and `song` keys added to each co
             {
                 "id": 3,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/1684880/pexels-photo-1684880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/1684880/pexels-photo-1684880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Eagles",
                 "song": "Hotel California"
             }
@@ -50,7 +49,8 @@ Sure, here is the updated JSON file with `band` and `song` keys added to each co
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Nirvana",
                 "song": "Smells Like Teen Spirit"
             },
@@ -79,7 +79,8 @@ Sure, here is the updated JSON file with `band` and `song` keys added to each co
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Jimi Hendrix",
                 "song": "Purple Haze"
             }
@@ -94,7 +95,8 @@ Sure, here is the updated JSON file with `band` and `song` keys added to each co
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Michael Jackson",
                 "song": "Billie Jean"
             }
@@ -124,84 +126,96 @@ Sure, here is the updated JSON file with `band` and `song` keys added to each co
             {
                 "id": 0,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "The Weeknd",
                 "song": "Blinding Lights"
             },
             {
                 "id": 1,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Ed Sheeran",
                 "song": "Shape of You"
             },
             {
                 "id": 2,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Mark Ronson ft. Bruno Mars",
                 "song": "Uptown Funk"
             },
             {
                 "id": 3,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Lil Nas X",
                 "song": "Old Town Road"
             },
             {
                 "id": 4,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Tones and I",
                 "song": "Dance Monkey"
             },
             {
                 "id": 5,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Lewis Capaldi",
                 "song": "Someone You Loved"
             },
             {
                 "id": 6,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Billie Eilish",
                 "song": "Bad Guy"
             },
             {
                 "id": 7,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Post Malone & Swae Lee",
                 "song": "Sunflower"
             },
             {
                 "id": 8,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Travis Scott",
                 "song": "Sicko Mode"
             },
             {
                 "id": 9,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Ariana Grande",
                 "song": "Thank U, Next"
             },
             {
                 "id": 10,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Ed Sheeran",
                 "song": "Perfect"
             },
             {
                 "id": 11,
                 "type": "image",
-                "url": "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "url":
+                    "https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Dua Lipa",
                 "song": "Levitating"
             }
@@ -212,4 +226,3 @@ Sure, here is the updated JSON file with `band` and `song` keys added to each co
         "userId": 6
     }
 ]
-```
