@@ -1,5 +1,6 @@
 import Dependencies
 import Kingfisher
+import Persistence
 import SwiftUI
 import UIComponents
 
@@ -49,18 +50,18 @@ public struct StoryListScreen: View {
 
         var body: some View {
             VStack {
-                HStack(alignment: .lastTextBaseline, spacing: 16) {
+                HStack(alignment: .lastTextBaseline, spacing: 20) {
                     HeadingView(action: {})
 
                     Spacer()
 
                     HeartButtonView(action: {}, liked: false, unread: true)
                         .tint(.black)
-                        .frame(height: 18)
+                        .frame(height: 22)
 
                     MessagesButtonView(action: {})
                         .tint(.black)
-                        .frame(height: 18)
+                        .frame(height: 22)
                 }
                 .padding(.horizontal)
 
@@ -92,7 +93,7 @@ public struct StoryListScreen: View {
             private var isLoadingMore
 
             let items: [StoryItemViewModel]
-            private let metric: CGFloat = 90
+            private let metric: CGFloat = 78
 
             var body: some View {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -190,6 +191,9 @@ extension EnvironmentValues {
 }
 
 #Preview {
-    prepareDependencies { $0.apiService = APIServiceProvidingLocalData() }
+    prepareDependencies {
+        $0.apiService = APIServiceProvidingLocalData()
+        $0.persistenceService = PersistenceServiceUserDefaults()
+    }
     return StoryListScreen(model: StoryListScreenModel())
 }

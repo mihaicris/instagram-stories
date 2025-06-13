@@ -15,8 +15,8 @@ public struct HeartButtonView: View {
         Button(action: action) {
             GeometryReader { proxy in
                 let width = proxy.size.width
-                let clipSize = width / 3.0
-                let offset = clipSize / 3.0
+                let clipSize = width / 2.8
+                let offset = clipSize / 4.0
                 let ratio: CGFloat = 1.3
                 let maskSize = clipSize * ratio
                 let alignmentFix = (maskSize - clipSize) / 2
