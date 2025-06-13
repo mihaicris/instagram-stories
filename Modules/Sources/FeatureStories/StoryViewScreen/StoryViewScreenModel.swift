@@ -35,7 +35,7 @@ final class StoryViewScreenModel {
     init(dto: DTO) {
         self.dto = dto
         self.liked = dto.story.liked
-        self.liked = dto.story.seen
+        self.seen = dto.story.seen
         self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? URL.temporaryDirectory
         self.username = dto.user.name
         self.userVerified = Bool.random()
