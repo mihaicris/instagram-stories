@@ -1,15 +1,11 @@
 import AVFoundation
 import SwiftUI
 
-struct VideoPlayerNewView: View {
+struct VideoPlayerView: View {
     let player: AVPlayer
 
-    @State private var endReached = false
-    @State private var timeObserverToken: Any?
-    @State private var endTimeObserver: Any?
-
     var body: some View {
-        CustomVideoPlayerView(player: player)
+        CustomVideoPlayerView(player: player)  // Nested for expand to margins of container
     }
 
     private struct CustomVideoPlayerView: UIViewRepresentable {

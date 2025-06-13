@@ -6,7 +6,7 @@ import Persistence
 
 @MainActor
 @Observable
-final class StoryScreenModel {
+final class StoryViewScreenModel {
     var currentSegment: Segment
 
     var progressBars: [Double] = []
@@ -68,7 +68,7 @@ final class StoryScreenModel {
     func onAppear() {
         startTimer()
     }
-    
+
     func onDissapear() {
         stopTimer()
     }

@@ -5,10 +5,10 @@ import Persistence
 import SwiftUI
 import UIComponents
 
-struct StoryScreen: View {
+struct StoryViewScreen: View {
     @Environment(\.dismiss) var dismiss
 
-    let model: StoryScreenModel
+    let model: StoryViewScreenModel
 
     var body: some View {
         VStack(spacing: 14) {
@@ -54,7 +54,7 @@ struct StoryScreen: View {
                                 }
                             }
                     }
-                } // .animation(.linear, value: model.progressBars)
+                }  // .animation(.linear, value: model.progressBars)
 
                 StoryDetailsView(
                     userProfileURL: model.userProfileImageURL,
@@ -68,7 +68,7 @@ struct StoryScreen: View {
     }
 
     struct MediaView: View {
-        let segment: StoryScreenModel.Segment
+        let segment: StoryViewScreenModel.Segment
         let onTap: (_ x: CGFloat, _ width: CGFloat) -> Void
 
         var body: some View {
@@ -81,7 +81,7 @@ struct StoryScreen: View {
                             .aspectRatio(contentMode: .fill)
 
                     case let .video(player):
-                        VideoPlayerNewView(player: player)
+                        VideoPlayerView(player: player)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -96,7 +96,7 @@ struct StoryScreen: View {
             }
         }
     }
-    
+
     struct StoryDetailsView: View {
         @Environment(\.dismiss) private var dismiss
 
@@ -184,9 +184,9 @@ struct StoryScreen: View {
         $0.persistenceService = PersistenceServiceUserDefaults()
     }
 
-    return StoryScreen(
-        model: StoryScreenModel(
-            dto: StoryScreenModel.DTO(
+    return StoryViewScreen(
+        model: StoryViewScreenModel(
+            dto: StoryViewScreenModel.DTO(
                 story: .init(
                     id: 1,
                     userId: 1,

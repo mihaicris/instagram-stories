@@ -11,7 +11,7 @@ public final class StoryListScreenModel {
 
     var state: State = .loading
     var isLoadingMore: Bool = false
-    var navigationToStory: StoryScreenModel.DTO?
+    var navigationToStory: StoryViewScreenModel.DTO?
 
     @ObservationIgnored
     @Dependency(\.apiService) private var apiService
@@ -121,7 +121,7 @@ public final class StoryListScreenModel {
         do {
             var story: Story = try await apiService.request(.getStory(userId: user.id), of: Story.self, decoder: .default)
             story = try await updateStoryPersistence(for: story)
-            navigationToStory = StoryScreenModel.DTO(story: story, user: user)
+            navigationToStory = StoryViewScreenModel.DTO(story: story, user: user)
         } catch {
             logger.error("Couldn't get user story: \(error.localizedDescription, privacy: .public)")
         }
