@@ -1,8 +1,5 @@
 import CoreData
 
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
-
 public final class PersistenceServiceCoreData {
     private let persistentStoreCoordinator: NSPersistentStoreCoordinator
     nonisolated(unsafe) private let managedObjectModel: NSManagedObjectModel
@@ -46,6 +43,7 @@ public final class PersistenceServiceCoreData {
 
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
+        // swiftlint:disable:next force_unwrapping
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let storeURL = documentsDirectory.appendingPathComponent("StoryData.sqlite")
 
@@ -97,7 +95,7 @@ extension PersistenceServiceCoreData: PersistenceService {
                             NSEntityDescription.insertNewObject(
                                 forEntityName: StoryEntry.entityName,
                                 into: self.context
-                            ) as! StoryEntry
+                            ) as! StoryEntry // swiftlint:disable:this force_cast
                         entry.userId = Int32(data.userId)
                     }
 

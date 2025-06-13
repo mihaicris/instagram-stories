@@ -73,11 +73,11 @@ struct StoryViewScreen: View {
                     unread: false
                 )
                 .tint(model.liked ? .red : .white)
-                .frame(height: 18)
+                .frame(height: 20)
 
                 MessagesButtonView(action: {})
                     .tint(.white)
-                    .frame(height: 18)
+                    .frame(height: 20)
             }
             .padding(.horizontal, 20)
         }
