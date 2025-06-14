@@ -10,7 +10,7 @@ public final class TestViewModel {
     struct Content: Identifiable {
         let player: AVPlayer
         let id: Int
-        let observer: PlayerObserver  // <-- attach observer to content to keep it alive
+        let observer: PlayerObserver
     }
 
     var content: Content?
@@ -19,8 +19,8 @@ public final class TestViewModel {
     @ObservationIgnored
     var currentIndex: Int = 0
 
-    private let storyPlayerPool = StoryPlayerPool()
-    let preloadDistance = 1
+    private let storyPlayerPool = StoryPlayerPool(maxCount: 3)
+    private let preloadDistance = 1
 
     let urls: [URL] = [
         URL(string: "https://videos.pexels.com/video-files/32488204/13853910_1080_1920_25fps.mp4")!,
@@ -71,9 +71,14 @@ public final class TestViewModel {
 
     private func preload() async {
         for offset in 1...preloadDistance {
+            let previousIndex = currentIndex - offset
+            if urls.indices.contains(previousIndex) {
+                _ = await storyPlayerPool.add(segmentID: previousIndex, url: urls[previousIndex])
+            }
             let nextIndex = currentIndex + offset
-            guard urls.indices.contains(nextIndex) else { continue }
-            _ = await storyPlayerPool.add(segmentID: nextIndex, url: urls[nextIndex])
+            if urls.indices.contains(nextIndex) {
+                _ = await storyPlayerPool.add(segmentID: nextIndex, url: urls[nextIndex])
+            }
         }
     }
 }

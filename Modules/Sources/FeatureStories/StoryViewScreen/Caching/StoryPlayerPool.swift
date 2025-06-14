@@ -8,8 +8,12 @@ actor StoryPlayerPool {
     }
 
     private var pool: [PoolItem] = []
-    private let maxCount = 3
+    private let maxCount: Int
     private var currentSegmentID: Int?
+    
+    init(maxCount: Int) {
+        self.maxCount = maxCount
+    }
 
     func add(segmentID: Int, url: URL) -> AVPlayer {
         currentSegmentID = segmentID

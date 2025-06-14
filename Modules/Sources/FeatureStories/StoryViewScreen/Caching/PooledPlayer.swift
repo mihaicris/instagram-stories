@@ -8,6 +8,10 @@ public final class PooledPlayer {
         self.playerItem = AVPlayerItem(url: url)
         self.player = AVPlayer(playerItem: playerItem)
     }
+    
+    deinit {
+        stopAndCleanup()
+    }
 
     public func prepareForReuse() {
         player.pause()
