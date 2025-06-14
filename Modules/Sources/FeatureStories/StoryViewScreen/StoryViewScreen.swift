@@ -1,15 +1,10 @@
-import AVFoundation
-import Dependencies
 import Kingfisher
-import Persistence
 import SwiftUI
 import UIComponents
 
-//
 // -----------------------------------
 // TODO: GESTURI SLIDE DOWN DISMISS IN ACCOUNT IMAGE
 // TODO: GESTURI ZOOM
-// TODO: MEMORY LEAKS
 // -----------------------------------
 
 struct StoryViewScreen: View {
@@ -68,7 +63,8 @@ struct StoryViewScreen: View {
                             .frame(maxWidth: .infinity)
                             .overlay(alignment: .leading) {
                                 GeometryReader { proxy in
-                                    let width = proxy.size.width * model.progressBars[index]
+                                    let progress = model.progressBars[index]
+                                    let width = proxy.size.width * progress
                                     Capsule()
                                         .fill(.white)
                                         .frame(width: width)
@@ -201,6 +197,8 @@ struct StoryViewScreen: View {
 }
 
 // swiftlint:disable force_unwrapping
+import Dependencies
+import Persistence
 
 #Preview {
     prepareDependencies {

@@ -28,7 +28,7 @@ final class StoryViewScreenModel {
     @ObservationIgnored private var startTime = Date()
     @ObservationIgnored private var progressTask: Task<Void, Never>?
     @ObservationIgnored private let defaultTimerDuration: TimeInterval = 3.0
-    @ObservationIgnored private let intervalBetweenProgressUpdates: TimeInterval = 0.05
+    @ObservationIgnored private let intervalBetweenProgressUpdates: TimeInterval = 0.02
     @ObservationIgnored private var playerTimeObserverToken: Any?
     @ObservationIgnored private var playerEndTimeObserver: Any?
 
