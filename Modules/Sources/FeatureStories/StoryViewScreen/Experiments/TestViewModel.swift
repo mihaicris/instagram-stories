@@ -70,15 +70,14 @@ public final class TestViewModel {
     }
 
     private func preload() async {
+        func preloadIfValid(_ index: Int) async {
+            guard urls.indices.contains(index) else { return }
+            _ = await storyPlayerPool.add(segmentID: index, url: urls[index])
+        }
+
         for offset in 1...preloadDistance {
-            let previousIndex = currentIndex - offset
-            if urls.indices.contains(previousIndex) {
-                _ = await storyPlayerPool.add(segmentID: previousIndex, url: urls[previousIndex])
-            }
-            let nextIndex = currentIndex + offset
-            if urls.indices.contains(nextIndex) {
-                _ = await storyPlayerPool.add(segmentID: nextIndex, url: urls[nextIndex])
-            }
+            await preloadIfValid(currentIndex - offset)
+            await preloadIfValid(currentIndex + offset)
         }
     }
 }

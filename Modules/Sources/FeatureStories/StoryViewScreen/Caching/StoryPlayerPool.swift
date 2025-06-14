@@ -10,7 +10,7 @@ actor StoryPlayerPool {
     private var pool: [PoolItem] = []
     private let maxCount: Int
     private var currentSegmentID: Int?
-    
+
     init(maxCount: Int) {
         self.maxCount = maxCount
     }
@@ -36,7 +36,9 @@ actor StoryPlayerPool {
 
     private func evictFarthest() {
         guard let currentID = currentSegmentID else { return }
-        guard let farthest = pool.max(by: { abs($0.segmentID - currentID) < abs($1.segmentID - currentID) }) else { return }
+        guard let farthest = pool.max(by: {
+            abs($0.segmentID - currentID) < abs($1.segmentID - currentID)
+        }) else { return }
 
         pool.removeAll { $0.segmentID == farthest.segmentID }
     }
