@@ -2,11 +2,6 @@ import Kingfisher
 import SwiftUI
 import UIComponents
 
-// -----------------------------------
-// TODO: GESTURI SLIDE DOWN DISMISS IN ACCOUNT IMAGE
-// TODO: GESTURI ZOOM
-// -----------------------------------
-
 struct StoryViewScreen: View {
     @Environment(\.dismiss) var dismiss
 

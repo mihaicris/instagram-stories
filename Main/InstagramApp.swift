@@ -16,7 +16,8 @@ struct InstagramApp: App {
 
     var body: some Scene {
         WindowGroup {
-            StoryListScreen(model: .init())
+//            StoryListScreen(model: .init())
+            TestView(model: .init())
         }
     }
 
