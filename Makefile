@@ -46,6 +46,10 @@ debug:
 release:
 	@$(MAKE) CONFIGURATION=Release build
 
+.PHONY: prod
+prod:
+	@$(MAKE) CONFIGURATION=Release install
+
 .PHONY: launch_simulator
 launch_simulator:
 	@echo "$(COLOR)Booting simulator$(RESET)"
