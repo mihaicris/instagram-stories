@@ -8,8 +8,8 @@ import SwiftUI
 @Observable
 public final class TestViewModel {
     struct Content: Identifiable {
-        let player: AVPlayer
         let id: Int
+        let player: AVPlayer
         let observer: PlayerObserver
     }
 
@@ -24,7 +24,7 @@ public final class TestViewModel {
     @ObservationIgnored
     var currentIndex: Int = 0
 
-    private let storyPlayerPool = PlayersPool(maxCount: 3)
+    private let playersPool = PlayersPool(maxCount: 3)
     private let preloadDistance = 1
 
     let segments: [Segment] = [
@@ -71,7 +71,7 @@ public final class TestViewModel {
 
         let segment = segments[currentIndex]
 
-        let player = await storyPlayerPool.add(index: index, url: segment.url)
+        let player = await playersPool.add(index: index, url: segment.url)
 
         let observer = PlayerObserver(
             player: player,
@@ -87,17 +87,17 @@ public final class TestViewModel {
             }
         )
 
-        content = Content(player: player, id: index, observer: observer)
+        content = Content(id: index, player: player, observer: observer)
         player.play()
 
         await preload()
-        await storyPlayerPool.debugCurrentPlayers()
+        await playersPool.debugCurrentPlayers()
     }
 
     private func preload() async {
         func preloadIfValid(_ index: Int) async {
             guard segments.indices.contains(index) else { return }
-            _ = await storyPlayerPool.add(index: index, url: segments[index].url)
+            _ = await playersPool.add(index: index, url: segments[index].url)
         }
 
         for offset in 1...preloadDistance {
