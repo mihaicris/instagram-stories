@@ -229,6 +229,9 @@ final class StoryViewScreenModel {
     }
 
     private func markAsSeen() async {
+        guard !seen else {
+            return
+        }
         do {
             let data = StoryData(userID: userID, liked: liked, seen: true)
             try await persistenceService.persistStoryData(data)

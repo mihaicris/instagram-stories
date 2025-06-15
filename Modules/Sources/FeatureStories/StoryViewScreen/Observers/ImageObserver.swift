@@ -28,6 +28,7 @@ final class ImageObserver {
 
             if elapsed >= defaultTimerDuration {
                 onTimerEnd()
+                onProgressUpdate(0.0)
             } else {
                 onProgressUpdate(elapsed / defaultTimerDuration)
             }
@@ -37,7 +38,6 @@ final class ImageObserver {
     func stopTimer() {
         timer?.invalidate()
         timer = nil
-        onProgressUpdate(0.0)
     }
 
     deinit {
