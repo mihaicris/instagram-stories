@@ -1,8 +1,7 @@
 import AVFoundation
-import Foundation
 
-actor StoryPlayerPool {
-    private class PoolItem {
+actor PlayersPool {
+    private final class Item {
         let index: Int
         let player: AVPlayer
         let playerItem: AVPlayerItem
@@ -12,23 +11,19 @@ actor StoryPlayerPool {
             self.playerItem = AVPlayerItem(url: url)
             self.player = AVPlayer(playerItem: playerItem)
         }
-        
+
         deinit {
-            stopAndCleanup()
+            player.pause()
+            player.replaceCurrentItem(with: nil)
         }
 
         func prepareForReuse() {
             player.pause()
             player.seek(to: .zero)
         }
-
-        func stopAndCleanup() {
-            player.pause()
-            player.replaceCurrentItem(with: nil)
-        }
     }
 
-    private var pool: [PoolItem] = []
+    private var items: [Item] = []
     private let maxCount: Int
     private var currentIndex: Int?
 
@@ -39,15 +34,15 @@ actor StoryPlayerPool {
     func add(index: Int, url: URL) -> AVPlayer {
         currentIndex = index
 
-        if let existing = pool.first(where: { $0.index == index }) {
+        if let existing = items.first(where: { $0.index == index }) {
             existing.prepareForReuse()
             return existing.player
         }
 
-        let newItem = PoolItem(index: index, url: url)
-        pool.append(newItem)
+        let newItem = Item(index: index, url: url)
+        items.append(newItem)
 
-        if pool.count > maxCount {
+        if items.count > maxCount {
             evictFarthest()
         }
 
@@ -56,19 +51,21 @@ actor StoryPlayerPool {
 
     private func evictFarthest() {
         guard let currentID = currentIndex else { return }
-        guard let farthest = pool.max(by: {
-            abs($0.index - currentID) < abs($1.index - currentID)
-        }) else { return }
+        guard
+            let farthest = items.max(by: {
+                abs($0.index - currentID) < abs($1.index - currentID)
+            })
+        else { return }
 
-        pool.removeAll { $0.index == farthest.index }
+        items.removeAll { $0.index == farthest.index }
     }
 
     func debugCurrentPlayers() {
-        let ids = pool.map(\.index).sorted()
+        let ids = items.map(\.index).sorted()
         print("Current players: \(ids)")
     }
 
     func releaseAll() {
-        pool.removeAll()
+        items.removeAll()
     }
 }

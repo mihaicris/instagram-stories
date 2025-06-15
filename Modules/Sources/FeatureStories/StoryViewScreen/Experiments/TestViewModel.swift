@@ -1,18 +1,18 @@
-//
+// swiftlint:disable force_unwrapping
 
 import AVFoundation
 import Observation
 import SwiftUI
 
-@Observable
 @MainActor
+@Observable
 public final class TestViewModel {
     struct Content: Identifiable {
         let player: AVPlayer
         let id: Int
         let observer: PlayerObserver
     }
-    
+
     struct Segment {
         let segmentID: String
         let url: URL
@@ -24,7 +24,7 @@ public final class TestViewModel {
     @ObservationIgnored
     var currentIndex: Int = 0
 
-    private let storyPlayerPool = StoryPlayerPool(maxCount: 3)
+    private let storyPlayerPool = PlayersPool(maxCount: 3)
     private let preloadDistance = 1
 
     let segments: [Segment] = [
@@ -55,7 +55,7 @@ public final class TestViewModel {
     func onAppear() async {
         await move(to: currentIndex)
     }
-    
+
     func previous() async {
         guard currentIndex > 0 else { return }
         await move(to: currentIndex - 1)
@@ -70,7 +70,7 @@ public final class TestViewModel {
         currentIndex = index
 
         let segment = segments[currentIndex]
-        
+
         let player = await storyPlayerPool.add(index: index, url: segment.url)
 
         let observer = PlayerObserver(

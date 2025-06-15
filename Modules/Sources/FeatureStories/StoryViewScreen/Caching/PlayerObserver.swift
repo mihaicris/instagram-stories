@@ -39,7 +39,7 @@ final class PlayerObserver {
             forName: .AVPlayerItemDidPlayToEndTime,
             object: item,
             queue: .main
-        ) {_ in
+        ) { _ in
             logger.info("Video ended.")
             onVideoEnd()
         }
