@@ -18,18 +18,23 @@ final class StoryViewScreenModel {
         let id: Int
         let model: Model
         let enhancement: Enhancement?
-        
-        func pauseVideo() {
-            guard case .video(let player, let observer) = model else { return }
-            player.pause()
-            player.seek(to: .zero)
+
+        func stop() {
+            switch model {
+            case .image(_, let observer):
+                observer.stopTimer()
+                
+            case .video(let player, _):
+                player.pause()
+                player.seek(to: .zero)
+            }
         }
 
         enum Model {
-            case image(URL)
+            case image(URL, ImageObserver)
             case video(AVPlayer, PlayerObserver)
         }
-        
+
         struct Enhancement {
             let artist: String
             let song: String
@@ -56,11 +61,6 @@ final class StoryViewScreenModel {
     @ObservationIgnored @Dependency(\.persistenceService) private var persistenceService
     @ObservationIgnored let segmentCount: Int
     @ObservationIgnored var currentIndex: Int = 0
-
-//    @ObservationIgnored private var startTime = Date()
-//    @ObservationIgnored private var progressTask: Task<Void, Never>?
-//    private let defaultTimerDuration: Double = 3.0
-//    private let intervalBetweenProgressUpdates: Double = 0.1
 
     init(dto: DTO) {
         self.userID = dto.user.id
@@ -137,6 +137,7 @@ final class StoryViewScreenModel {
 
     private func next() async {
         if isLastSegment {
+            segmentViewModel?.stop()
             await markAsSeen()
             await closeScreen()
         } else {
@@ -145,19 +146,19 @@ final class StoryViewScreenModel {
     }
 
     private func move(to index: Int) async {
-        segmentViewModel?.pauseVideo()
-        
+        segmentViewModel?.stop()
+
         currentIndex = index
-        
+
         let content = media[currentIndex]
-        
+
         let enhancement: SegmentViewModel.Enhancement? = {
             if let artist = content.band, let song = content.song {
                 return .init(artist: artist, song: song)
             }
             return nil
         }()
-        
+
         switch content.type {
         case "video":
             let player = await playersPool.add(index: index, url: content.url)
@@ -177,16 +178,29 @@ final class StoryViewScreenModel {
             )
             segmentViewModel = SegmentViewModel(id: index, model: .video(player, observer), enhancement: enhancement)
             player.play()
-            
+
         case "image":
-            segmentViewModel = SegmentViewModel(id: index, model: .image(content.url), enhancement: enhancement)
-            
+            let observer = ImageObserver(
+                onTimerEnd: {
+                    Task { [weak self] in
+                        await self?.next()
+                    }
+                },
+                onProgressUpdate: { [weak self] progress in
+                    MainActor.assumeIsolated {
+                        self?.progress = progress
+                    }
+                }
+            )
+            segmentViewModel = SegmentViewModel(id: index, model: .image(content.url, observer), enhancement: enhancement)
+            observer.starTimer()
+
         default:
             return
         }
-        
-//        await preload()
-//        await playersPool.debugCurrentPlayers()
+
+        //        await preload()
+        //        await playersPool.debugCurrentPlayers()
     }
 
     private func preload() async {
@@ -209,30 +223,4 @@ final class StoryViewScreenModel {
             logger.error("Couldn't mark story as unseen: \(error.localizedDescription, privacy: .public)")
         }
     }
-
-//    private func startDefaultProgressTimer() {
-//        startTime = Date()
-//
-//        progressTask = Task { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            let startTime = Date()
-//            while !Task.isCancelled {
-//                let elapsed = startTime.timeIntervalSinceNow * -1
-//                if elapsed >= defaultTimerDuration {
-//                    stopDefaultProgressTimer()
-//                    await next()
-//                } else {
-//                    progress = elapsed / defaultTimerDuration
-//                }
-//                try? await Task.sleep(nanoseconds: UInt64(intervalBetweenProgressUpdates * 1_000_000_000))
-//            }
-//        }
-//    }
-//
-//    private func stopDefaultProgressTimer() {
-//        progressTask?.cancel()
-//        progressTask = nil
-//    }
 }

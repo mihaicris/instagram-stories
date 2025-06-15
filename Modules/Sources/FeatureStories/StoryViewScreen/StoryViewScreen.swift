@@ -109,7 +109,7 @@ struct StoryViewScreen: View {
             GeometryReader { geometry in
                 ZStack {
                     switch segmentViewModel.model {
-                    case .image(let url):
+                    case .image(let url, _):
                         KFImage(url)
                             .resizable()
                             .aspectRatio(contentMode: .fill)

@@ -42,6 +42,7 @@ final class PlayerObserver {
         ) { _ in
             logger.info("Video ended.")
             onVideoEnd()
+            onProgressUpdate(0.0)
         }
 
         timeObserverToken = player.addPeriodicTimeObserver(
