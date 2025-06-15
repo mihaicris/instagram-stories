@@ -58,10 +58,17 @@ final class StoryViewScreenModel {
     private let playersPool = PlayersPool(maxCount: 3)
     private let preloadDistance = 1
 
-    @ObservationIgnored @Dependency(\.apiService) private var apiService
-    @ObservationIgnored @Dependency(\.persistenceService) private var persistenceService
-    @ObservationIgnored let segmentCount: Int
-    @ObservationIgnored var currentIndex: Int = 0
+    @ObservationIgnored
+    @Dependency(\.apiService) private var apiService
+    
+    @ObservationIgnored
+    @Dependency(\.persistenceService) private var persistenceService
+    
+    @ObservationIgnored
+    let segmentCount: Int
+    
+    @ObservationIgnored
+    var currentIndex: Int = 0
 
     init(dto: DTO) {
         self.userID = dto.user.id
