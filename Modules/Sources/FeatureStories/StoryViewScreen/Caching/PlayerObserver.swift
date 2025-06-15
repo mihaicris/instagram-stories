@@ -12,16 +12,16 @@ final class PlayerObserver {
 
         statusObservation = item.observe(\.status, options: [.new]) { item, _ in
             if item.status == .failed {
-                print("Player failed: \(item.error?.localizedDescription ?? "Unknown error")")
+                logger.info("Player failed: \(item.error?.localizedDescription ?? "Unknown error", privacy: .public)")
             }
         }
 
         keepUpObservation = item.observe(\.isPlaybackLikelyToKeepUp, options: [.new]) { item, _ in
             if item.isPlaybackLikelyToKeepUp {
-                print("Buffering finished, resuming playback.")
+                logger.info("Buffering finished, resuming playback.")
                 player.play()
             } else {
-                print("Buffering...")
+                logger.info("Buffering...")
                 player.pause()
             }
         }
@@ -31,7 +31,7 @@ final class PlayerObserver {
             object: item,
             queue: .main
         ) { _ in
-            print("Playback stalled. Trying to resume...")
+            logger.info("Playback stalled. Trying to resume...")
             player.play()
         }
 
@@ -40,7 +40,7 @@ final class PlayerObserver {
             object: item,
             queue: .main
         ) {_ in
-            print("Video ended.")
+            logger.info("Video ended.")
             onVideoEnd()
         }
 
@@ -70,10 +70,6 @@ final class PlayerObserver {
         }
         if let observer = endObserver {
             NotificationCenter.default.removeObserver(observer)
-        }
-        if let token = timeObserverToken {
-            // player reference is weak, so no crash if player is deallocated
-            // but normally you should keep a strong reference to player to remove observer
         }
     }
 }

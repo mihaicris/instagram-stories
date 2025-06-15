@@ -2,9 +2,30 @@ import AVFoundation
 import Foundation
 
 actor StoryPlayerPool {
-    private struct PoolItem {
+    private class PoolItem {
         let segmentID: Int
-        let playerWrapper: PooledPlayer
+        let player: AVPlayer
+        let playerItem: AVPlayerItem
+
+        init(segmentID: Int, url: URL) {
+            self.segmentID = segmentID
+            self.playerItem = AVPlayerItem(url: url)
+            self.player = AVPlayer(playerItem: playerItem)
+        }
+        
+        deinit {
+            stopAndCleanup()
+        }
+
+        func prepareForReuse() {
+            player.pause()
+            player.seek(to: .zero)
+        }
+
+        func stopAndCleanup() {
+            player.pause()
+            player.replaceCurrentItem(with: nil)
+        }
     }
 
     private var pool: [PoolItem] = []
@@ -19,19 +40,18 @@ actor StoryPlayerPool {
         currentSegmentID = segmentID
 
         if let existing = pool.first(where: { $0.segmentID == segmentID }) {
-            existing.playerWrapper.prepareForReuse()
-            return existing.playerWrapper.player
+            existing.prepareForReuse()
+            return existing.player
         }
 
-        let pooledPlayer = PooledPlayer(url: url)
-        let newItem = PoolItem(segmentID: segmentID, playerWrapper: pooledPlayer)
+        let newItem = PoolItem(segmentID: segmentID, url: url)
         pool.append(newItem)
 
         if pool.count > maxCount {
             evictFarthest()
         }
 
-        return newItem.playerWrapper.player
+        return newItem.player
     }
 
     private func evictFarthest() {
