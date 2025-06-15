@@ -28,7 +28,7 @@ struct StoryViewScreen: View {
                         HeartButtonView(
                             action: {
                                 Task {
-                                    // await model.onLike()
+                                    await model.onLike()
                                 }
                             },
                             liked: model.liked,
@@ -50,7 +50,7 @@ struct StoryViewScreen: View {
                             ForEach(0..<model.segmentCount, id: \.self) { index in
                                 Capsule().fill(.white)
                                     .opacity(0.3)
-                                    .frame(height: 3)
+                                    .frame(height: 2)
                                     .frame(maxWidth: .infinity)
                                     .overlay(alignment: .leading) {
                                         GeometryReader { proxy in
@@ -89,9 +89,6 @@ struct StoryViewScreen: View {
         }
         .task {
             await model.onAppear()
-        }
-        .onDisappear {
-            // model.onDissapear()
         }
         .onChange(
             of: model.shouldDismiss,
@@ -166,7 +163,6 @@ struct StoryViewScreen: View {
 
                 Spacer()
 
-                // Story Options
                 Button(action: {}) {
                     Image(systemName: "ellipsis")
                         .imageScale(.medium)
@@ -175,7 +171,6 @@ struct StoryViewScreen: View {
                 .padding(12)
                 .contentShape(Circle())
 
-                // Story closing
                 Button(action: { onClose() }) {
                     Image(systemName: "xmark")
                         .imageScale(.large)

@@ -46,7 +46,7 @@ final class PlayerObserver {
         }
 
         timeObserverToken = player.addPeriodicTimeObserver(
-            forInterval: CMTime(seconds: 0.1, preferredTimescale: 600),
+            forInterval: CMTime(seconds: 0.01, preferredTimescale: 600),
             queue: .main
         ) { [weak player] time in
             guard
