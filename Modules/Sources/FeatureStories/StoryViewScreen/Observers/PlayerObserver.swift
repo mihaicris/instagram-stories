@@ -7,7 +7,11 @@ final class PlayerObserver {
     private var endObserver: NSObjectProtocol?
     private var timeObserverToken: Any?
 
-    init(player: AVPlayer, onVideoEnd: @Sendable @escaping () -> Void, onProgressUpdate: @Sendable @escaping (Double) -> Void) {
+    init(
+        player: AVPlayer,
+        onVideoEnd: @Sendable @escaping () -> Void,
+        onProgressUpdate: @Sendable @escaping (Double) -> Void
+    ) {
         guard let item = player.currentItem else { return }
 
         statusObservation = item.observe(\.status, options: [.new]) { item, _ in
