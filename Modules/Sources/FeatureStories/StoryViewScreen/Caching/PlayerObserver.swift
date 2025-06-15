@@ -44,9 +44,8 @@ final class PlayerObserver {
             onVideoEnd()
         }
 
-        // Progress observer every 0.5 seconds
         timeObserverToken = player.addPeriodicTimeObserver(
-            forInterval: CMTime(seconds: 0.2, preferredTimescale: 600),
+            forInterval: CMTime(seconds: 0.1, preferredTimescale: 600),
             queue: .main
         ) { [weak player] time in
             guard

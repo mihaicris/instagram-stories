@@ -14,11 +14,11 @@ public struct PersistenceServiceUserDefaults: PersistenceService {
 
     public func persistStoryData(_ data: StoryData) async throws {
         let encoded = try encoder.encode(data)
-        suite.set(encoded, forKey: data.userId.description)
+        suite.set(encoded, forKey: data.userID.description)
     }
 
     public func clearStoryData(_ data: StoryData) async throws {
-        suite.set(nil, forKey: data.userId.description)
+        suite.set(nil, forKey: data.userID.description)
     }
 
     public func getPersistedStoryData(userId: Int) async throws -> StoryData? {

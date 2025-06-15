@@ -1,7 +1,7 @@
 import CoreData
 
 final class StoryEntry: NSManagedObject {
-    @NSManaged var userId: Int32
+    @NSManaged var userID: Int32
     @NSManaged var liked: Bool
     @NSManaged var seen: Bool
 

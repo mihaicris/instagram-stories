@@ -17,10 +17,10 @@ public final class PersistenceServiceCoreData {
         entity.name = StoryEntry.entityName
         entity.managedObjectClassName = NSStringFromClass(StoryEntry.self)
 
-        let userIdAttribute = NSAttributeDescription()
-        userIdAttribute.name = "userId"
-        userIdAttribute.attributeType = .integer32AttributeType
-        userIdAttribute.isOptional = false
+        let userIDAttribute = NSAttributeDescription()
+        userIDAttribute.name = "userID"
+        userIDAttribute.attributeType = .integer32AttributeType
+        userIDAttribute.isOptional = false
 
         let likedAttribute = NSAttributeDescription()
         likedAttribute.name = "liked"
@@ -34,8 +34,8 @@ public final class PersistenceServiceCoreData {
         seenAttribute.isOptional = false
         seenAttribute.defaultValue = false
 
-        entity.properties = [userIdAttribute, likedAttribute, seenAttribute]
-        entity.uniquenessConstraints = [["userId"]]
+        entity.properties = [userIDAttribute, likedAttribute, seenAttribute]
+        entity.uniquenessConstraints = [["userID"]]
 
         model.entities = [entity]
 
@@ -82,7 +82,7 @@ extension PersistenceServiceCoreData: PersistenceService {
                 do {
                     // Check if entry already exists
                     let fetchRequest = StoryEntry.fetchRequest()
-                    fetchRequest.predicate = NSPredicate(format: "userId == %d", data.userId)
+                    fetchRequest.predicate = NSPredicate(format: "userID == %d", data.userID)
 
                     let existingEntries = try self.context.fetch(fetchRequest)
 
@@ -96,7 +96,7 @@ extension PersistenceServiceCoreData: PersistenceService {
                                 forEntityName: StoryEntry.entityName,
                                 into: self.context
                             ) as! StoryEntry  // swiftlint:disable:this force_cast
-                        entry.userId = Int32(data.userId)
+                        entry.userID = Int32(data.userID)
                     }
 
                     entry.liked = data.liked
@@ -116,7 +116,7 @@ extension PersistenceServiceCoreData: PersistenceService {
             context.perform {
                 do {
                     let fetchRequest = StoryEntry.fetchRequest()
-                    fetchRequest.predicate = NSPredicate(format: "userId == %d", data.userId)
+                    fetchRequest.predicate = NSPredicate(format: "userID == %d", data.userID)
 
                     let entries = try self.context.fetch(fetchRequest)
 
@@ -138,13 +138,13 @@ extension PersistenceServiceCoreData: PersistenceService {
             context.perform {
                 do {
                     let fetchRequest = StoryEntry.fetchRequest()
-                    fetchRequest.predicate = NSPredicate(format: "userId == %d", userId)
+                    fetchRequest.predicate = NSPredicate(format: "userID == %d", userId)
                     fetchRequest.fetchLimit = 1
 
                     let entries = try self.context.fetch(fetchRequest)
 
                     if let entry = entries.first {
-                        let data = StoryData(userId: Int(entry.userId), liked: entry.liked, seen: entry.seen)
+                        let data = StoryData(userID: Int(entry.userID), liked: entry.liked, seen: entry.seen)
                         continuation.resume(returning: data)
                     } else {
                         continuation.resume(returning: nil)

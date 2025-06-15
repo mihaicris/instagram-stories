@@ -67,5 +67,6 @@ actor PlayersPool {
 
     func releaseAll() {
         items.removeAll()
+        debugCurrentPlayers()
     }
 }

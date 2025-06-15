@@ -7,118 +7,6 @@ import Persistence
 @MainActor
 @Observable
 final class StoryViewScreenModel {
-    var currentSegment: Segment
-
-    var progressBars: [Double] = []
-    var liked: Bool = false
-    var seen: Bool = false
-    var shouldDismiss = false
-    let userProfileImageURL: URL
-    let username: String
-    let userVerified: Bool
-    let activeTime: String
-
-    @ObservationIgnored @Dependency(\.apiService) private var apiService
-    @ObservationIgnored @Dependency(\.persistenceService) private var persistenceService
-
-    @ObservationIgnored private var segments: [Segment] = []
-    @ObservationIgnored private let dto: DTO
-    @ObservationIgnored private var segmentsCount: Int
-    @ObservationIgnored private var currentSegmentIndex: Int = 0
-    @ObservationIgnored private var startTime = Date()
-    @ObservationIgnored private var progressTask: Task<Void, Never>?
-    @ObservationIgnored private let defaultTimerDuration: TimeInterval = 3.0
-    @ObservationIgnored private let intervalBetweenProgressUpdates: TimeInterval = 0.02
-    @ObservationIgnored private var playerTimeObserverToken: Any?
-    @ObservationIgnored private var playerEndTimeObserver: Any?
-
-    init(dto: DTO) {
-        self.dto = dto
-        self.liked = dto.story.liked
-        self.seen = dto.story.seen
-        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? URL.temporaryDirectory
-        self.username = dto.user.name
-        self.userVerified = Bool.random()
-        self.activeTime = "\((1...8).randomElement() ?? 1)h"
-        self.segmentsCount = dto.story.content.count
-        self.segments = dto.story.content.map { media in
-            switch media.type {
-            case "image":
-                return .init(
-                    id: media.id,
-                    type: .image(media.url),
-                    band: media.band,
-                    song: media.song
-                )
-
-            case "video":
-                return .init(
-                    id: media.id,
-                    type: .video(AVPlayer(url: media.url)),
-                    band: media.band,
-                    song: media.song
-                )
-
-            default:
-                return .init(id: 0, type: .image(.temporaryDirectory), band: nil, song: nil)
-            }
-        }
-        self.currentSegment = self.segments.first!  // swiftlint:disable:this force_unwrapping
-        self.progressBars = [Double](repeating: 0.0, count: self.segmentsCount)
-    }
-
-    func onClose() {
-        closeScreen()
-    }
-
-    func onRegionTap(x: CGFloat, width: CGFloat) async {
-        if x > width / 2 {
-            if isLastSegment {
-                await markAsSeen()
-                closeScreen()
-            } else {
-                gotoNextSegment()
-            }
-        } else {
-            if isFirstSegment {
-                closeScreen()
-            } else {
-                goToPreviousSegment()
-            }
-        }
-    }
-
-    func onAppear() {
-        startTimer()
-    }
-
-    func onDissapear() {
-        stopTimer()
-    }
-
-    func onLike() async {
-        do {
-            liked.toggle()
-            let data = StoryData(userId: dto.story.userId, liked: liked, seen: seen)
-            try await apiService.request(.updateStoryLikeStatus(storyID: dto.story.id, liked: liked))
-            try await persistenceService.persistStoryData(data)
-        } catch {
-            liked.toggle()  // rollback state
-            let data = StoryData(userId: dto.story.userId, liked: liked, seen: seen)
-            try? await persistenceService.persistStoryData(data)
-            logger.error("Couldn't like/unlike the story: \(error.localizedDescription, privacy: .public)")
-        }
-    }
-
-    func markAsSeen() async {
-        do {
-            let data = StoryData(userId: dto.story.userId, liked: liked, seen: true)
-            try await persistenceService.persistStoryData(data)
-        } catch {
-            logger.error("Couldn't mark story as unseen: \(error.localizedDescription, privacy: .public)")
-        }
-    }
-
     struct DTO: Identifiable {
         let story: Story
         let user: User
@@ -126,176 +14,225 @@ final class StoryViewScreenModel {
         var id: Int { user.id }
     }
 
-    struct Segment: Identifiable {
+    struct SegmentViewModel: Identifiable {
         let id: Int
-        let type: MediaType
-        let band: String?
-        let song: String?
+        let model: Model
+        let enhancement: Enhancement?
+        
+        func pauseVideo() {
+            guard case .video(let player, let observer) = model else { return }
+            player.pause()
+            player.seek(to: .zero)
+        }
 
-        enum MediaType {
+        enum Model {
             case image(URL)
-            case video(AVPlayer)
+            case video(AVPlayer, PlayerObserver)
+        }
+        
+        struct Enhancement {
+            let artist: String
+            let song: String
         }
     }
 
-    // MARK: - Private methods
+    var liked: Bool
+    var seen: Bool
+    var progress: Double = 0.0
+    var segmentViewModel: SegmentViewModel?
+    var shouldDismiss = false
+    let storyID: Int
+    let userID: Int
+    let userProfileImageURL: URL
+    let username: String
+    let userVerified: Bool
+    let activeTime: String
 
-    private func updateProgressForCurrentSegment(_ progress: Double) {
-        progressBars = (0..<segmentsCount).map { index in
-            if index < currentSegmentIndex {
-                return 1.0
-            }
-            if index == currentSegmentIndex {
-                return progress
-            }
-            return 0.0
-        }
+    private let media: [Story.Media]
+    private let playersPool = PlayersPool(maxCount: 3)
+    private let preloadDistance = 1
 
-        if progress == 1.0 {
-            if currentSegmentIndex < segmentsCount - 1 {
-                gotoNextSegment()
-            } else {
-                Task {
-                    await markAsSeen()
-                    closeScreen()
-                }
-            }
-        }
+    @ObservationIgnored @Dependency(\.apiService) private var apiService
+    @ObservationIgnored @Dependency(\.persistenceService) private var persistenceService
+    @ObservationIgnored let segmentCount: Int
+    @ObservationIgnored var currentIndex: Int = 0
+
+//    @ObservationIgnored private var startTime = Date()
+//    @ObservationIgnored private var progressTask: Task<Void, Never>?
+//    private let defaultTimerDuration: Double = 3.0
+//    private let intervalBetweenProgressUpdates: Double = 0.1
+
+    init(dto: DTO) {
+        self.userID = dto.user.id
+        self.storyID = dto.story.id
+        self.media = dto.story.content
+        self.segmentCount = self.media.count
+        self.liked = dto.story.liked
+        self.seen = dto.story.seen
+
+        /// TODO: Provide fallback user profile picture URL
+        self.userProfileImageURL =
+            URL(string: dto.user.profilePictureURL)
+            ?? .userDirectory
+
+        self.username = dto.user.name
+        self.userVerified = Bool.random()
+
+        /// TODO: Include user verified status in User model
+        self.activeTime = "\((1...8).randomElement() ?? 1)h"/// TODO: Include user active time in User model
     }
 
-    private func startTimer() {
-        switch currentSegment.type {
-        case .image:
-            startDefaultProgressTimer()
-
-        case .video(let player):
-            startMovieProgressTimer(player: player)
-            player.play()
-        }
+    func onAppear() async {
+        await move(to: currentIndex)
     }
 
-    private func stopTimer() {
-        switch currentSegment.type {
-        case .image:
-            stopDefaultProgressTimer()
-
-        case .video(let player):
-            stopMovieProgressTimer(player: player)
-        }
+    func onClose() async {
+        await closeScreen()
     }
 
-    private func gotoNextSegment() {
-        stopTimer()
-        currentSegmentIndex += (currentSegmentIndex < segmentsCount - 1) ? 1 : 0
-        currentSegment = segments[currentSegmentIndex]
-        startTimer()
-    }
-
-    private func goToPreviousSegment() {
-        stopTimer()
-        currentSegmentIndex -= (currentSegmentIndex > 0) ? 1 : 0
-        currentSegment = segments[currentSegmentIndex]
-        startTimer()
-    }
-
-    private func startDefaultProgressTimer() {
-        startTime = Date()
-
-        progressTask = Task { [weak self, defaultTimerDuration] in
-            guard let self else {
-                return
-            }
-
-            let startTime = Date()
-
-            while !Task.isCancelled {
-                let elapsed = startTime.timeIntervalSinceNow * -1
-
-                await MainActor.run { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    updateProgressForCurrentSegment(elapsed >= defaultTimerDuration ? 1.0 : elapsed / defaultTimerDuration)
-                }
-
-                if elapsed >= defaultTimerDuration {
-                    stopDefaultProgressTimer()
-                }
-
-                try? await Task.sleep(nanoseconds: UInt64(intervalBetweenProgressUpdates * 1_000_000_000))
-            }
+    func onLike() async {
+        do {
+            liked.toggle()
+            let data = StoryData(userID: userID, liked: liked, seen: seen)
+            try await apiService.request(.updateStoryLikeStatus(storyID: storyID, liked: liked))
+            try await persistenceService.persistStoryData(data)
+        } catch {
+            liked.toggle()  // rollback state
+            let data = StoryData(userID: userID, liked: liked, seen: seen)
+            try? await persistenceService.persistStoryData(data)
+            logger.error("Couldn't like/unlike the story: \(error.localizedDescription, privacy: .public)")
         }
     }
 
-    private func stopDefaultProgressTimer() {
-        progressTask?.cancel()
-        progressTask = nil
-    }
-
-    private func startMovieProgressTimer(player: AVPlayer) {
-        playerEndTimeObserver = NotificationCenter.default.addObserver(
-            forName: .AVPlayerItemDidPlayToEndTime,
-            object: player.currentItem,
-            queue: .main
-        ) { [weak self] _ in
-            Task { @MainActor [weak self] in
-                self?.stopMovieProgressTimer(player: player)
-            }
-        }
-
-        let interval = CMTime(seconds: intervalBetweenProgressUpdates, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-        playerTimeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [player] time in
-            Task { @MainActor [weak self] in
-                guard let self, let duration = player.currentItem?.duration.seconds, duration > 0 else {
-                    return
-                }
-                updateProgressForCurrentSegment(time.seconds / duration)
-            }
+    func onRegionTap(x: CGFloat, width: CGFloat) async {
+        if x > width / 2 {
+            await next()
+        } else {
+            await previous()
         }
     }
 
-    private func stopMovieProgressTimer(player: AVPlayer) {
-        player.pause()
-        player.seek(to: .zero)
-        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
-        if let token = playerTimeObserverToken {
-            player.removeTimeObserver(token)
-            playerTimeObserverToken = nil
-        }
-        playerEndTimeObserver = nil
-    }
+    // MARK: - Helpers
 
     private var isFirstSegment: Bool {
-        currentSegmentIndex == 0
+        currentIndex == 0
     }
 
     private var isLastSegment: Bool {
-        currentSegmentIndex == segmentsCount - 1
+        currentIndex == media.count - 1
     }
-    
-    private func closeScreen() {
-        prepareForDeinit()
+
+    private func closeScreen() async {
+        await playersPool.releaseAll()
         shouldDismiss = true
     }
-    
-    private func prepareForDeinit() {
-        stopTimer()
-        segments.forEach { segment in
-            if case .video(let player) = segment.type {
-                player.pause()
-                if let asset = player.currentItem?.asset {
-                    asset.cancelLoading()
-                }
-                if let token = playerTimeObserverToken {
-                    player.removeTimeObserver(token)
-                }
-                player.replaceCurrentItem(with: nil)
-            }
+
+    private func previous() async {
+        if isFirstSegment {
+            await closeScreen()
+        } else {
+            await move(to: currentIndex - 1)
         }
-        if case .video(let player) = currentSegment.type {
-            player.pause()
-            player.replaceCurrentItem(with: nil)
-        }
-        segments = []
     }
+
+    private func next() async {
+        if isLastSegment {
+            await markAsSeen()
+            await closeScreen()
+        } else {
+            await move(to: currentIndex + 1)
+        }
+    }
+
+    private func move(to index: Int) async {
+        segmentViewModel?.pauseVideo()
+        
+        currentIndex = index
+        
+        let content = media[currentIndex]
+        
+        let enhancement: SegmentViewModel.Enhancement? = {
+            if let artist = content.band, let song = content.song {
+                return .init(artist: artist, song: song)
+            }
+            return nil
+        }()
+        
+        switch content.type {
+        case "video":
+            let player = await playersPool.add(index: index, url: content.url)
+
+            let observer = PlayerObserver(
+                player: player,
+                onVideoEnd: { [weak self] in
+                    Task {
+                        await self?.next()
+                    }
+                },
+                onProgressUpdate: { [weak self] progress in
+                    MainActor.assumeIsolated {
+                        self?.progress = progress
+                    }
+                }
+            )
+            segmentViewModel = SegmentViewModel(id: index, model: .video(player, observer), enhancement: enhancement)
+            player.play()
+            
+        case "image":
+            segmentViewModel = SegmentViewModel(id: index, model: .image(content.url), enhancement: enhancement)
+            
+        default:
+            return
+        }
+        
+//        await preload()
+//        await playersPool.debugCurrentPlayers()
+    }
+
+    private func preload() async {
+        func preloadIfValid(_ index: Int) async {
+            guard media.indices.contains(index), media[index].type == "video" else { return }
+            _ = await playersPool.add(index: index, url: media[index].url)
+        }
+
+        for offset in 1...preloadDistance {
+            await preloadIfValid(currentIndex - offset)
+            await preloadIfValid(currentIndex + offset)
+        }
+    }
+
+    private func markAsSeen() async {
+        do {
+            let data = StoryData(userID: userID, liked: liked, seen: true)
+            try await persistenceService.persistStoryData(data)
+        } catch {
+            logger.error("Couldn't mark story as unseen: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+//    private func startDefaultProgressTimer() {
+//        startTime = Date()
+//
+//        progressTask = Task { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            let startTime = Date()
+//            while !Task.isCancelled {
+//                let elapsed = startTime.timeIntervalSinceNow * -1
+//                if elapsed >= defaultTimerDuration {
+//                    stopDefaultProgressTimer()
+//                    await next()
+//                } else {
+//                    progress = elapsed / defaultTimerDuration
+//                }
+//                try? await Task.sleep(nanoseconds: UInt64(intervalBetweenProgressUpdates * 1_000_000_000))
+//            }
+//        }
+//    }
+//
+//    private func stopDefaultProgressTimer() {
+//        progressTask?.cancel()
+//        progressTask = nil
+//    }
 }
