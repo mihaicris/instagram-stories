@@ -3,12 +3,12 @@ import Foundation
 
 actor StoryPlayerPool {
     private class PoolItem {
-        let segmentID: Int
+        let index: Int
         let player: AVPlayer
         let playerItem: AVPlayerItem
 
-        init(segmentID: Int, url: URL) {
-            self.segmentID = segmentID
+        init(index: Int, url: URL) {
+            self.index = index
             self.playerItem = AVPlayerItem(url: url)
             self.player = AVPlayer(playerItem: playerItem)
         }
@@ -30,21 +30,21 @@ actor StoryPlayerPool {
 
     private var pool: [PoolItem] = []
     private let maxCount: Int
-    private var currentSegmentID: Int?
+    private var currentIndex: Int?
 
     init(maxCount: Int) {
         self.maxCount = maxCount
     }
 
-    func add(segmentID: Int, url: URL) -> AVPlayer {
-        currentSegmentID = segmentID
+    func add(index: Int, url: URL) -> AVPlayer {
+        currentIndex = index
 
-        if let existing = pool.first(where: { $0.segmentID == segmentID }) {
+        if let existing = pool.first(where: { $0.index == index }) {
             existing.prepareForReuse()
             return existing.player
         }
 
-        let newItem = PoolItem(segmentID: segmentID, url: url)
+        let newItem = PoolItem(index: index, url: url)
         pool.append(newItem)
 
         if pool.count > maxCount {
@@ -55,16 +55,16 @@ actor StoryPlayerPool {
     }
 
     private func evictFarthest() {
-        guard let currentID = currentSegmentID else { return }
+        guard let currentID = currentIndex else { return }
         guard let farthest = pool.max(by: {
-            abs($0.segmentID - currentID) < abs($1.segmentID - currentID)
+            abs($0.index - currentID) < abs($1.index - currentID)
         }) else { return }
 
-        pool.removeAll { $0.segmentID == farthest.segmentID }
+        pool.removeAll { $0.index == farthest.index }
     }
 
     func debugCurrentPlayers() {
-        let ids = pool.map(\.segmentID).sorted()
+        let ids = pool.map(\.index).sorted()
         print("Current players: \(ids)")
     }
 

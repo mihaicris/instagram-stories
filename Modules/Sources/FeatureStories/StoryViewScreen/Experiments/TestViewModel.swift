@@ -12,6 +12,11 @@ public final class TestViewModel {
         let id: Int
         let observer: PlayerObserver
     }
+    
+    struct Segment {
+        let segmentID: String
+        let url: URL
+    }
 
     var content: Content?
     var progress: Double = 0.0
@@ -22,23 +27,41 @@ public final class TestViewModel {
     private let storyPlayerPool = StoryPlayerPool(maxCount: 3)
     private let preloadDistance = 1
 
-    let urls: [URL] = [
-        URL(string: "https://videos.pexels.com/video-files/32488204/13853910_1080_1920_25fps.mp4")!,
-        URL(string: "https://videos.pexels.com/video-files/5532771/5532771-uhd_1440_2732_25fps.mp4")!,
-        URL(string: "https://videos.pexels.com/video-files/32426802/13830960_1080_1920_30fps.mp4")!,
-        URL(string: "https://videos.pexels.com/video-files/32415027/13827220_1440_2560_60fps.mp4")!,
-        URL(string: "https://videos.pexels.com/video-files/32144507/13705434_1440_2560_30fps.mp4")!,
+    let segments: [Segment] = [
+        Segment(
+            segmentID: "A",
+            url: URL(string: "https://videos.pexels.com/video-files/32488204/13853910_1080_1920_25fps.mp4")!
+        ),
+        Segment(
+            segmentID: "B",
+            url: URL(string: "https://videos.pexels.com/video-files/5532771/5532771-uhd_1440_2732_25fps.mp4")!
+        ),
+        Segment(
+            segmentID: "C",
+            url: URL(string: "https://videos.pexels.com/video-files/32426802/13830960_1080_1920_30fps.mp4")!
+        ),
+        Segment(
+            segmentID: "D",
+            url: URL(string: "https://videos.pexels.com/video-files/32415027/13827220_1440_2560_60fps.mp4")!
+        ),
+        Segment(
+            segmentID: "E",
+            url: URL(string: "https://videos.pexels.com/video-files/32144507/13705434_1440_2560_30fps.mp4")!
+        ),
     ]
 
     public init() {}
 
-    func onAppear() async { await move(to: currentIndex) }
+    func onAppear() async {
+        await move(to: currentIndex)
+    }
+    
     func previous() async {
         guard currentIndex > 0 else { return }
         await move(to: currentIndex - 1)
     }
     func next() async {
-        guard currentIndex < urls.count - 1 else { return }
+        guard currentIndex < segments.count - 1 else { return }
         await move(to: currentIndex + 1)
     }
 
@@ -46,7 +69,9 @@ public final class TestViewModel {
         content?.player.pause()
         currentIndex = index
 
-        let player = await storyPlayerPool.add(segmentID: index, url: urls[index])
+        let segment = segments[currentIndex]
+        
+        let player = await storyPlayerPool.add(index: index, url: segment.url)
 
         let observer = PlayerObserver(
             player: player,
@@ -71,8 +96,8 @@ public final class TestViewModel {
 
     private func preload() async {
         func preloadIfValid(_ index: Int) async {
-            guard urls.indices.contains(index) else { return }
-            _ = await storyPlayerPool.add(segmentID: index, url: urls[index])
+            guard segments.indices.contains(index) else { return }
+            _ = await storyPlayerPool.add(index: index, url: segments[index].url)
         }
 
         for offset in 1...preloadDistance {
