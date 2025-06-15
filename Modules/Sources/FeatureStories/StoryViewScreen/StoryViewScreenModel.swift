@@ -3,6 +3,7 @@ import Dependencies
 import Foundation
 import Observation
 import Persistence
+import Kingfisher
 
 @MainActor
 @Observable
@@ -205,8 +206,20 @@ final class StoryViewScreenModel {
 
     private func preload() async {
         func preloadIfValid(_ index: Int) async {
-            guard media.indices.contains(index), media[index].type == "video" else { return }
-            _ = await playersPool.add(index: index, url: media[index].url)
+            guard media.indices.contains(index) else {
+                return
+            }
+            let url = media[index].url
+            if media[index].type == "video" {
+                _ = await playersPool.add(index: index, url: url)
+                logger.info("Preloaded video asset with url: \(url, privacy: .public)")
+            } else {
+                KingfisherManager.shared.retrieveImage(with: url) { result in
+                    guard case .success = result else { return }
+                    logger.info("Preloaded image asset with url: \(url, privacy: .public)")                    
+                }
+            }
+            
         }
 
         for offset in 1...preloadDistance {
