@@ -199,8 +199,8 @@ final class StoryViewScreenModel {
             return
         }
 
-        //        await preload()
-        //        await playersPool.debugCurrentPlayers()
+        await preload()
+        await playersPool.debugCurrentPlayers()
     }
 
     private func preload() async {
