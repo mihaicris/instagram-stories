@@ -1,4 +1,6 @@
+import Dependencies
 import Kingfisher
+import Persistence
 import SwiftUI
 import UIComponents
 
@@ -187,9 +189,6 @@ extension EnvironmentValues {
         set { self[IsLoadingMoreKey.self] = newValue }
     }
 }
-
-import Dependencies
-import Persistence
 
 #Preview {
     prepareDependencies {

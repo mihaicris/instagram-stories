@@ -16,7 +16,7 @@ final class ImageObserver {
         self.onProgressUpdate = onProgressUpdate
         self.startTime = Date()
     }
-    
+
     func starTimer() {
         let startTime = self.startTime
         let defaultTimerDuration = self.defaultTimerDuration
@@ -33,13 +33,13 @@ final class ImageObserver {
             }
         }
     }
-    
+
     func stopTimer() {
         timer?.invalidate()
         timer = nil
         onProgressUpdate(0.0)
     }
-    
+
     deinit {
         stopTimer()
     }

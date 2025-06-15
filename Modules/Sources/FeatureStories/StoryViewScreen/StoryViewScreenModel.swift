@@ -1,9 +1,9 @@
 import AVFoundation
 import Dependencies
 import Foundation
+import Kingfisher
 import Observation
 import Persistence
-import Kingfisher
 
 @MainActor
 @Observable
@@ -24,7 +24,7 @@ final class StoryViewScreenModel {
             switch model {
             case .image(_, let observer):
                 observer.stopTimer()
-                
+
             case .video(let player, _):
                 player.pause()
                 player.seek(to: .zero)
@@ -216,10 +216,10 @@ final class StoryViewScreenModel {
             } else {
                 KingfisherManager.shared.retrieveImage(with: url) { result in
                     guard case .success = result else { return }
-                    logger.info("Preloaded image asset with url: \(url, privacy: .public)")                    
+                    logger.info("Preloaded image asset with url: \(url, privacy: .public)")
                 }
             }
-            
+
         }
 
         for offset in 1...preloadDistance {
