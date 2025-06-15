@@ -77,17 +77,10 @@ final class StoryViewScreenModel {
         self.segmentCount = self.media.count
         self.liked = dto.story.liked
         self.seen = dto.story.seen
-
-        /// TODO: Provide fallback user profile picture URL
-        self.userProfileImageURL =
-            URL(string: dto.user.profilePictureURL)
-            ?? .userDirectory
-
+        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? .userDirectory /// Hardcoded fallback user profile picture URL
         self.username = dto.user.name
-        self.userVerified = Bool.random()
-
-        /// TODO: Include user verified status in User model
-        self.activeTime = "\((1...8).randomElement() ?? 1)h"/// TODO: Include user active time in User model
+        self.userVerified = Bool.random() /// Hardcoded user profile verified
+        self.activeTime = "\((1...8).randomElement() ?? 1)h" /// Hardcoded user active time
     }
 
     func onAppear() async {
