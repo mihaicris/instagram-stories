@@ -45,12 +45,15 @@ debug:
 .PHONY: release
 release:
 	@$(MAKE) CONFIGURATION=Release build
-	
-.PHONY: install
-install: build
+
+.PHONY: launch_simulator
+launch_simulator:
 	@echo "$(COLOR)Booting simulator$(RESET)"
 	@xcrun simctl boot $(DEVICE) >/dev/null 2>&1 || true
 	@open -a Simulator
+
+.PHONY: install
+install: launch_simulator build
 	@APP_PATH=$$(find $(DERIVED_DATA) -path "*/Build/Products/$(CONFIGURATION)-iphonesimulator/$(PROJECT_NAME).app" -type d | head -n 1); \
 	if [ -z "$$APP_PATH" ]; then echo "❌ .app not found"; exit 1; fi; \
 	BASENAME=$$(basename "$$APP_PATH"); \
