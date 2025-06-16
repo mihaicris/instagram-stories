@@ -30,6 +30,20 @@
                     "https://images.pexels.com/photos/1684880/pexels-photo-1684880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "band": "Eagles",
                 "song": "Hotel California"
+            },
+            {
+                "id": 4,
+                "type": "video",
+                "url": "https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4",
+                "band": "Led Zeppelin",
+                "song": "Stairway to Heaven"
+            },
+            {
+                "id": 5,
+                "type": "video",
+                "url": "https://videos.pexels.com/video-files/5532771/5532771-uhd_1440_2732_25fps.mp4",
+                "band": "Bob Dylan",
+                "song": "Like a Rolling Stone"
             }
         ],
         "id": 1,

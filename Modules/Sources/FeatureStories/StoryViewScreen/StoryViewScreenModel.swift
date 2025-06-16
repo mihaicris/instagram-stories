@@ -60,13 +60,13 @@ final class StoryViewScreenModel {
 
     @ObservationIgnored
     @Dependency(\.apiService) private var apiService
-    
+
     @ObservationIgnored
     @Dependency(\.persistenceService) private var persistenceService
-    
+
     @ObservationIgnored
     let segmentCount: Int
-    
+
     @ObservationIgnored
     var currentIndex: Int = 0
 
@@ -77,10 +77,12 @@ final class StoryViewScreenModel {
         self.segmentCount = self.media.count
         self.liked = dto.story.liked
         self.seen = dto.story.seen
-        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? .userDirectory /// Hardcoded fallback user profile picture URL
+        self.userProfileImageURL = URL(string: dto.user.profilePictureURL) ?? .userDirectory
+        /// Hardcoded fallback user profile picture URL
         self.username = dto.user.name
-        self.userVerified = Bool.random() /// Hardcoded user profile verified
-        self.activeTime = "\((1...8).randomElement() ?? 1)h" /// Hardcoded user active time
+        self.userVerified = Bool.random()
+        /// Hardcoded user profile verified
+        self.activeTime = "\((1...8).randomElement() ?? 1)h"/// Hardcoded user active time
     }
 
     func onAppear() async {
@@ -139,7 +141,9 @@ final class StoryViewScreenModel {
     private func next() async {
         if isLastSegment {
             segmentViewModel?.stop()
-            await markAsSeen()
+            if !seen {
+                await markAsSeen()
+            }
             await closeScreen()
         } else {
             await move(to: currentIndex + 1)
@@ -212,14 +216,11 @@ final class StoryViewScreenModel {
             let url = media[index].url
             if media[index].type == "video" {
                 _ = await playersPool.add(index: index, url: url)
-                logger.info("Preloaded video asset with url: \(url, privacy: .public)")
             } else {
                 KingfisherManager.shared.retrieveImage(with: url) { result in
                     guard case .success = result else { return }
-                    logger.info("Preloaded image asset with url: \(url, privacy: .public)")
                 }
             }
-
         }
 
         for offset in 1...preloadDistance {
@@ -229,9 +230,6 @@ final class StoryViewScreenModel {
     }
 
     private func markAsSeen() async {
-        guard !seen else {
-            return
-        }
         do {
             let data = StoryData(userID: userID, liked: liked, seen: true)
             try await persistenceService.persistStoryData(data)

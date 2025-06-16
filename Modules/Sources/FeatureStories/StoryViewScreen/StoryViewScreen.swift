@@ -215,7 +215,7 @@ struct StoryViewScreen: View {
     return StoryViewScreen(
         model: StoryViewScreenModel(
             dto: StoryViewScreenModel.DTO(
-                story: .mockData(userId: 1)!,
+                story: .mockData(userID: 1)!,
                 user: .mockUser(id: 1)!
             )
         )

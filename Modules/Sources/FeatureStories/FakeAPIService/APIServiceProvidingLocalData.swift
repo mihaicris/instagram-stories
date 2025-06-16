@@ -57,7 +57,7 @@ public struct APIServiceProvidingLocalData: APIService {
         guard urlPath(for: request) == "/story",
             let value = queryItemValue(for: "userId", in: request),
             let userId = Int(value),
-            let story = Story.mockData(userId: userId) as? T
+            let story = Story.mockData(userID: userId) as? T
         else {
             return nil
         }

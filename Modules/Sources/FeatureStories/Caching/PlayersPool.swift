@@ -40,16 +40,17 @@ actor PlayersPool {
         }
 
         let newItem = Item(index: index, url: url)
+        logger.info("🎦 🟢 Loaded VIDEO \(index, privacy: .public)")
         items.append(newItem)
 
         if items.count > maxCount {
-            evictFarthest()
+            clearItem()
         }
 
         return newItem.player
     }
 
-    private func evictFarthest() {
+    private func clearItem() {
         guard let currentID = currentIndex else { return }
         guard
             let farthest = items.max(by: {
@@ -58,13 +59,14 @@ actor PlayersPool {
         else { return }
 
         items.removeAll { $0.index == farthest.index }
+        logger.info("🎦 ⚪️ Cleared VIDEO \(farthest.index, privacy: .public)")
     }
 
     func debugCurrentPlayers() {
         let ids = items.map(\.index).sorted()
         print("Current players: \(ids)")
     }
-
+    
     func releaseAll() {
         items.removeAll()
         debugCurrentPlayers()
