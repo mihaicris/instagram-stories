@@ -1,29 +1,7 @@
 import AVFoundation
 
 actor PlayersPool {
-    private final class Item {
-        let index: Int
-        let player: AVPlayer
-        let playerItem: AVPlayerItem
-
-        init(index: Int, url: URL) {
-            self.index = index
-            self.playerItem = AVPlayerItem(url: url)
-            self.player = AVPlayer(playerItem: playerItem)
-        }
-
-        deinit {
-            player.pause()
-            player.replaceCurrentItem(with: nil)
-        }
-
-        func prepareForReuse() {
-            player.pause()
-            player.seek(to: .zero)
-        }
-    }
-
-    private var items: [Item] = []
+    private var items: [PoolItem] = []
     private let maxCount: Int
     private var currentIndex: Int?
 
@@ -39,7 +17,7 @@ actor PlayersPool {
             return existing.player
         }
 
-        let newItem = Item(index: index, url: url)
+        let newItem = PoolItem(index: index, url: url)
         logger.info("🎦 🟢 Loaded VIDEO \(index, privacy: .public)")
         items.append(newItem)
 
