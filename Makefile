@@ -28,7 +28,6 @@ environment:
 	@echo "$(COLOR)Xcode: $(RESET)$(XCODE_VERSION)"
 	@echo "$(COLOR)Swift: $(RESET)$(SWIFT_VERSION)"
 	@echo "$(COLOR)macOS: $(RESET)$(shell sw_vers -productVersion)"
-	@echo "$(COLOR)Swiftlint: $(RESET)$(shell swiftlint version)"
 	@echo ""
 
 .PHONY: build
