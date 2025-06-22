@@ -131,7 +131,9 @@ final class StoryViewScreenModel {
     }
 
     private func previous() async {
+        progress = 0.0
         if isFirstSegment {
+            segmentViewModel?.stop()
             await closeScreen()
         } else {
             await move(to: currentIndex - 1)
@@ -139,9 +141,10 @@ final class StoryViewScreenModel {
     }
 
     private func next() async {
+        progress = 0.0
         if isLastSegment {
-            segmentViewModel?.stop()
             if !seen {
+                segmentViewModel?.stop()
                 await markAsSeen()
             }
             await closeScreen()
@@ -152,7 +155,6 @@ final class StoryViewScreenModel {
 
     private func move(to index: Int) async {
         segmentViewModel?.stop()
-
         currentIndex = index
 
         let content = media[currentIndex]
