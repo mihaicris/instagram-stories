@@ -25,3 +25,6 @@ A SwiftUI implementation of an Instagram-like Stories feature for iOS.
 - **Instagram-Inspired UX**: Gestures, animations, and visual design  
 - **Dependencies**: [`swift-dependencies`](https://github.com/pointfreeco/swift-dependencies), [`Kingfisher`](https://github.com/onevcat/Kingfisher), [`Alamofire`](https://github.com/Alamofire/Alamofire)
 
+## Demo
+
+![Stories Demo](demo/stories-demo.gif)
