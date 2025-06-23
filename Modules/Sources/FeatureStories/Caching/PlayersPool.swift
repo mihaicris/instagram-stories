@@ -44,7 +44,7 @@ actor PlayersPool {
         let ids = items.map(\.index).sorted()
         print("Current players: \(ids)")
     }
-    
+
     func releaseAll() {
         items.removeAll()
         debugCurrentPlayers()

@@ -1,5 +1,5 @@
 import AVFoundation
- 
+
 final class PoolItem {
     let index: Int
     let player: AVPlayer

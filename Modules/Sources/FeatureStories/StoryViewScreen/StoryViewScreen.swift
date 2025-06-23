@@ -22,7 +22,7 @@ struct StoryViewScreen: View {
                         }
                     )
                     .id(segmentViewModel.id)
-                    
+
                     HStack(spacing: 12) {
                         MesssageInputButtonView(action: {})
 

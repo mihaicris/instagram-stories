@@ -13,7 +13,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
-        // .package(url: "https://github.com/Kolos65/Mockable.git", .upToNextMajor(from: "0.3.0")),
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "8.3.0")),
         .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.9.0")),
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.59.0"),
@@ -58,7 +57,6 @@ let package = Package(
 
 func settings(languageMode: SwiftLanguageMode) -> [SwiftSetting] {
     [
-        //       .define("MOCKING", .when(configuration: .debug)),
         .swiftLanguageMode(languageMode)
     ]
 }
@@ -66,7 +64,6 @@ func settings(languageMode: SwiftLanguageMode) -> [SwiftSetting] {
 func dependencies() -> [Target.Dependency] {
     [
         .product(name: "Dependencies", package: "swift-dependencies")
-        //      .product(name: "Mockable", package: "Mockable"),
     ]
 }
 
